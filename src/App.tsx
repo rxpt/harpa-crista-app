@@ -1,0 +1,62 @@
+import 'react-native-gesture-handler';
+import React from 'react';
+import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {materialColors, robotoWeights} from 'react-native-typography';
+
+// Screens
+import HomeScreen from './screens/HomeScreen';
+import AnthemScreen from './screens/AnthemScreen';
+
+const Stack = createNativeStackNavigator();
+
+const StackNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="home"
+      screenOptions={{
+        animation: 'slide_from_right',
+        headerStyle: {
+          backgroundColor: materialColors.blackPrimary,
+        },
+        headerTintColor: materialColors.whitePrimary,
+        headerTitleStyle: {
+          color: materialColors.whitePrimary,
+          fontFamily: robotoWeights.light.fontFamily,
+          fontWeight: robotoWeights.light.fontWeight,
+        },
+        headerTitleAlign: 'center',
+      }}>
+      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen
+        name="anthem"
+        component={AnthemScreen}
+        options={({route}: {route: {params?: {title?: string}}}) => ({
+          title: route?.params?.title ?? undefined,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={materialColors.blackPrimary}
+      />
+      <SafeAreaView style={styles.container}>
+        <StackNavigator />
+      </SafeAreaView>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: materialColors.blackTertiary,
+  },
+});
