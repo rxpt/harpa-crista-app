@@ -7,7 +7,6 @@ export interface Config {
 export interface Anthem {
   id: number;
   title: string;
-  isFavorite: boolean;
 }
 
 export interface Verse {
