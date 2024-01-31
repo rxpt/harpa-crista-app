@@ -21,7 +21,7 @@ const Item: React.FC<Props> = ({id, title}) => {
           },
         }}>
         <Text style={[styles.content, styles.bold]}>
-          {id} - {title}
+          {id} - {title.toUpperCase()}
         </Text>
       </Link>
       <Divider height={2} />

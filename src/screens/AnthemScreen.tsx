@@ -10,7 +10,7 @@ const AnthemScreen: React.FC = ({route}: any) => {
   useKeepAwake();
 
   const {id} = route.params;
-  const verse = lodash.orderBy(lodash.filter(verses, {idAnthem: id}), [
+  const verse = lodash.orderBy(lodash.filter(verses, {anthemId: id}), [
     'order',
   ]) as Verse[];
 
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     ...robotoWeights.light,
   },
   chorus: {
-    textAlign: 'right',
     fontStyle: 'italic',
     ...robotoWeights.bold,
   },
