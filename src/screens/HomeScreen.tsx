@@ -1,28 +1,40 @@
-import React, {useRef, useState} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   View,
   TextInputFocusEventData,
   NativeSyntheticEvent,
+  ScrollView,
 } from 'react-native';
-import {materialColors} from 'react-native-typography';
+import {human, materialColors} from 'react-native-typography';
 import {Anthem} from '../utils/interfaces';
 import anthems from '../data/anthems.json';
 import Item from '../components/Item';
 import Icon from '../components/Icon';
+import AnthemFlatList from '../components/AnthemFlatList';
+
+const MenuIcon = (state: boolean, onPress: () => void) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.menuIcon}>
+      <Icon
+        name={state ? 'close' : 'menu'}
+        size={24}
+        color={materialColors.whitePrimary}
+      />
+    </TouchableOpacity>
+  );
+};
 
 const HomeScreen: React.FC = ({navigation}: any) => {
   const [search, setSearch] = React.useState('');
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const flatListRef = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Harpa Cristã',
       headerSearchBarOptions: {
-        placeholder: 'Digite o número ou o título',
+        placeholder: 'Digite número ou título',
         textColor: materialColors.whitePrimary,
         headerIconColor: materialColors.whitePrimary,
         hintTextColor: materialColors.whiteSecondary,
@@ -30,8 +42,9 @@ const HomeScreen: React.FC = ({navigation}: any) => {
         onChangeText: (event: NativeSyntheticEvent<TextInputFocusEventData>) =>
           setSearch(event.nativeEvent.text),
       },
+      headerLeft: () => MenuIcon(isMenuOpen, () => setIsMenuOpen(!isMenuOpen)),
     });
-  }, [navigation]);
+  }, [navigation, isMenuOpen]);
 
   const filteredAnthem = anthems.filter((anthem: Anthem) => {
     return (
@@ -40,41 +53,38 @@ const HomeScreen: React.FC = ({navigation}: any) => {
     );
   });
 
-  const handleTitlePress = () => {
-    if (flatListRef.current) {
-      (flatListRef.current as any)?.scrollToOffset({offset: 0, animated: true});
-    }
-  };
+  if (isMenuOpen) {
+    return (
+      <View style={styles.container}>
+        <ScrollView>
+          <Item
+            screen="topicList"
+            params={{
+              title: 'Índice dos assuntos',
+            }}
+          />
+        </ScrollView>
+      </View>
+    );
+  }
 
-  const renderItem = ({item}: {item: Anthem}) => (
-    <Item id={item.id} title={item.title} />
-  );
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={filteredAnthem}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        onScroll={event => {
-          setScrollPosition(event.nativeEvent.contentOffset.y);
-        }}
-        contentInsetAdjustmentBehavior="automatic"
-      />
-      {scrollPosition > 100 && (
-        <TouchableOpacity style={styles.backToTop} onPress={handleTitlePress}>
-          <Icon name="arrow-up" size={20} color={materialColors.whitePrimary} />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
+  return <AnthemFlatList data={filteredAnthem} />;
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: materialColors.blackPrimary,
+  },
+  text: {
+    color: materialColors.whitePrimary,
+    fontSize: human.title3Object.fontSize,
+  },
+  menuIcon: {
+    padding: 10,
+  },
+  menuContent: {
+    padding: 20,
   },
   backToTop: {
     position: 'absolute',
