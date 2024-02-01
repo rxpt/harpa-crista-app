@@ -5,12 +5,14 @@ import {Anthem} from '../utils/interfaces';
 import Item from '../components/Item';
 import Icon from '../components/Icon';
 import styles from '../utils/styles';
+import {useScrollToTop} from '@react-navigation/native';
 
 const AnthemFlatList = ({data}: any) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const flatListRef = useRef(null);
+  useScrollToTop(flatListRef);
 
-  const handleTitlePress = () => {
+  const backToTop = () => {
     if (flatListRef.current) {
       (flatListRef.current as any)?.scrollToOffset({offset: 0, animated: true});
     }
@@ -37,9 +39,10 @@ const AnthemFlatList = ({data}: any) => {
           setScrollPosition(event.nativeEvent.contentOffset.y);
         }}
         contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={styles.content}
       />
       {scrollPosition > 100 && (
-        <TouchableOpacity style={styles.backToTop} onPress={handleTitlePress}>
+        <TouchableOpacity style={styles.backToTop} onPress={backToTop}>
           <Icon name="arrow-up" size={20} color={materialColors.whitePrimary} />
         </TouchableOpacity>
       )}

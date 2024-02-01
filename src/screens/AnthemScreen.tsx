@@ -1,13 +1,27 @@
-import React from 'react';
-import {Text, View, FlatList} from 'react-native';
-import {useKeepAwake} from '@sayem314/react-native-keep-awake';
-import lodash from 'lodash';
+import React, {useEffect} from 'react';
+import {Text, View, ScrollView, StyleSheet} from 'react-native';
+import {AudioPlayer} from 'react-native-simple-audio-player';
+import {
+  activateKeepAwake,
+  deactivateKeepAwake,
+} from '@sayem314/react-native-keep-awake';
+import {useIsFocused} from '@react-navigation/native';
+import lodash, {padStart} from 'lodash';
 import {Verse} from '../utils/interfaces';
 import verses from '../data/verses.json';
 import styles from '../utils/styles';
+import {materialColors} from 'react-native-typography';
 
 const AnthemScreen: React.FC = ({route}: any) => {
-  useKeepAwake();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      activateKeepAwake();
+    } else {
+      deactivateKeepAwake();
+    }
+  }, [isFocused]);
 
   const {id} = route.params;
   const verse = lodash.orderBy(lodash.filter(verses, {anthemId: id}), [
@@ -18,22 +32,44 @@ const AnthemScreen: React.FC = ({route}: any) => {
     return (
       <Text
         key={anthem.id}
-        style={[styles.versus, anthem.isChorus && styles.chorus]}>
-        {anthem.verse}
+        style={[
+          styles.verse,
+          anthem.order % 2 === 0 && styles.verseEven,
+          anthem.isChorus && styles.chorus,
+        ]}>
+        {anthem.verse
+          .split('\n')
+          .map(line => line.trim())
+          .filter(line => isNaN(parseInt(line, 10)) && line !== '')
+          .join('\n')
+          .trim()}
       </Text>
     );
   }
 
+  const anthemAudioUrl = `https://harpa.nyc3.digitaloceanspaces.com/${padStart(
+    id,
+    3,
+    '0',
+  )}.mp3`;
+
   return (
     <View style={styles.container}>
-      <FlatList
-        data={verse}
-        style={styles.content}
-        renderItem={({item}) => renderVerse(item)}
-        keyExtractor={item => item.id.toString()}
-      />
+      <ScrollView>
+        <AudioPlayer url={anthemAudioUrl} style={AudioStyles.audioPlayer} />
+        {verse.map(renderVerse)}
+      </ScrollView>
     </View>
   );
 };
 
-export default AnthemScreen;
+const AudioStyles = StyleSheet.create({
+  audioPlayer: {
+    backgroundColor: materialColors.blackPrimary,
+    paddingTop: 20,
+  },
+});
+
+const AnthemScreenMemo = React.memo(AnthemScreen);
+
+export default AnthemScreenMemo;

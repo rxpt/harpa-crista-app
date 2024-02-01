@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
-import {Text} from 'react-native';
-import {Link} from '@react-navigation/native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {Avatar, Chip, Text} from 'react-native-paper';
 import styles from '../utils/styles';
 
 interface Props {
@@ -8,19 +8,25 @@ interface Props {
   params: any;
 }
 
+const anthemNumber = (number: number) => (
+  <Avatar.Text size={24} label={number?.toString()} />
+);
+
 const Item: React.FC<Props> = ({screen, params}) => {
+  const navigation = useNavigation<NavigationProp<any>>();
+
   return (
-    <Link
+    <Chip
+      avatar={anthemNumber(params?.id)}
+      mode="outlined"
       style={styles.item}
-      to={{
-        screen: screen as never,
-        params: params as never,
+      onPress={() => {
+        navigation.navigate<any>(screen, params);
       }}>
-      {params?.id && <Text style={styles.subtitle}>{params.id} </Text>}
       <Text style={[styles.title, styles.bold]}>
         {params?.title.toUpperCase()}
       </Text>
-    </Link>
+    </Chip>
   );
 };
 

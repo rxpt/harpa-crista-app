@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@gorhom/sticky-item": "^2.1.1",
+    "@react-native-community/slider": "^4.5.0",
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
@@ -19,11 +20,15 @@
     "react": "18.2.0",
     "react-native": "0.73.2",
     "react-native-gesture-handler": "^2.14.1",
+    "react-native-paper": "^5.12.3",
     "react-native-reanimated": "^3.6.1",
-    "react-native-safe-area-context": "^4.8.2",
+    "react-native-safe-area-context": "^4.9.0",
     "react-native-screens": "^3.29.0",
+    "react-native-simple-audio-player": "^1.0.3",
+    "react-native-simple-bottom-sheet": "^1.0.4",
     "react-native-typography": "^1.4.1",
-    "react-native-vector-icons": "^10.0.3"
+    "react-native-vector-icons": "^10.0.3",
+    "react-native-video": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
