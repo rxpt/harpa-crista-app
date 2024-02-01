@@ -10,3 +10,8 @@ export interface Verse {
   isChorus: boolean;
   anthemId: number;
 }
+
+export interface Topic {
+  id: number;
+  title: string;
+}

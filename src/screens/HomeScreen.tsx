@@ -1,20 +1,18 @@
-import React, {useRef, useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   View,
   TextInputFocusEventData,
   NativeSyntheticEvent,
   ScrollView,
-  Text,
 } from 'react-native';
-import {Link} from '@react-navigation/native';
 import {human, materialColors} from 'react-native-typography';
 import {Anthem} from '../utils/interfaces';
 import anthems from '../data/anthems.json';
 import Item from '../components/Item';
 import Icon from '../components/Icon';
+import AnthemFlatList from '../components/AnthemFlatList';
 
 const MenuIcon = (state: boolean, onPress: () => void) => {
   return (
@@ -31,8 +29,6 @@ const MenuIcon = (state: boolean, onPress: () => void) => {
 const HomeScreen: React.FC = ({navigation}: any) => {
   const [search, setSearch] = React.useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const flatListRef = useRef(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -57,47 +53,22 @@ const HomeScreen: React.FC = ({navigation}: any) => {
     );
   });
 
-  const handleTitlePress = () => {
-    if (flatListRef.current) {
-      (flatListRef.current as any)?.scrollToOffset({offset: 0, animated: true});
-    }
-  };
-
-  const renderItem = ({item}: {item: Anthem}) => (
-    <Item id={item.id} title={item.title} />
-  );
-
   if (isMenuOpen) {
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.menuContent}>
-          <Link to="/topicList">
-            <Text style={styles.text}>Índice dos assuntos</Text>
-          </Link>
+        <ScrollView>
+          <Item
+            screen="topicList"
+            params={{
+              title: 'Índice dos assuntos',
+            }}
+          />
         </ScrollView>
       </View>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={filteredAnthem}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        onScroll={event => {
-          setScrollPosition(event.nativeEvent.contentOffset.y);
-        }}
-        contentInsetAdjustmentBehavior="automatic"
-      />
-      {scrollPosition > 100 && (
-        <TouchableOpacity style={styles.backToTop} onPress={handleTitlePress}>
-          <Icon name="arrow-up" size={20} color={materialColors.whitePrimary} />
-        </TouchableOpacity>
-      )}
-    </View>
-  );
+  return <AnthemFlatList data={filteredAnthem} />;
 };
 
 const styles = StyleSheet.create({

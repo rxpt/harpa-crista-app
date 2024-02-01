@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import {robotoWeights, materialColors, human} from 'react-native-typography';
+import {Text, View, FlatList} from 'react-native';
 import {useKeepAwake} from '@sayem314/react-native-keep-awake';
 import lodash from 'lodash';
 import {Verse} from '../utils/interfaces';
 import verses from '../data/verses.json';
+import styles from '../utils/styles';
 
 const AnthemScreen: React.FC = ({route}: any) => {
   useKeepAwake();
@@ -18,37 +18,22 @@ const AnthemScreen: React.FC = ({route}: any) => {
     return (
       <Text
         key={anthem.id}
-        style={[styles.content, anthem.isChorus && styles.chorus]}>
+        style={[styles.versus, anthem.isChorus && styles.chorus]}>
         {anthem.verse}
       </Text>
     );
   }
 
   return (
-    <View style={styles.main}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {verse.map(renderVerse)}
-      </ScrollView>
+    <View style={styles.container}>
+      <FlatList
+        data={verse}
+        style={styles.content}
+        renderItem={({item}) => renderVerse(item)}
+        keyExtractor={item => item.id.toString()}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: materialColors.blackPrimary,
-  },
-  container: {
-    padding: 20,
-  },
-  content: {
-    ...human.bodyWhiteObject,
-    ...robotoWeights.light,
-  },
-  chorus: {
-    fontStyle: 'italic',
-    ...robotoWeights.bold,
-  },
-});
 
 export default AnthemScreen;

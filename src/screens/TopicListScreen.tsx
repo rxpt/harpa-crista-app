@@ -1,9 +1,9 @@
 import React, {useLayoutEffect} from 'react';
-import {View, ScrollView, Text, StyleSheet} from 'react-native';
-import {Link} from '@react-navigation/native';
+import {View, FlatList} from 'react-native';
 import lodash from 'lodash';
 import topics from '../data/topics.json';
-import {materialColors} from 'react-native-typography';
+import Item from '../components/Item';
+import styles from '../utils/styles';
 
 const TopicsScreen: React.FC = ({navigation}: any) => {
   useLayoutEffect(() => {
@@ -14,40 +14,21 @@ const TopicsScreen: React.FC = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {lodash.orderBy(topics, ['title'], ['asc']).map(topic => (
-          <Link
-            key={topic.id}
-            to={{
-              screen: 'topicItems',
-              params: {
-                topicId: topic.id,
-                title: topic.title,
-              },
+      <FlatList
+        data={lodash.orderBy(topics, ['title'], ['asc'])}
+        renderItem={({item}) => (
+          <Item
+            screen="topicItems"
+            params={{
+              topicId: item.id,
+              title: item.title,
             }}
-            style={styles.button}>
-            <Text style={styles.text}>{topic.title.toUpperCase()}</Text>
-          </Link>
-        ))}
-      </ScrollView>
+          />
+        )}
+        keyExtractor={item => item.id.toString()}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: materialColors.blackPrimary,
-  },
-  button: {
-    padding: 16,
-    backgroundColor: materialColors.blackTertiary,
-    borderRadius: 8,
-    margin: 8,
-  },
-  text: {
-    color: materialColors.whitePrimary,
-  },
-});
 
 export default TopicsScreen;
