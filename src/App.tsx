@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {StatusBar, SafeAreaView, StyleSheet} from 'react-native';
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {materialColors, robotoWeights} from 'react-native-typography';
@@ -51,16 +51,7 @@ export default function App() {
         barStyle="light-content"
         backgroundColor={materialColors.blackPrimary}
       />
-      <SafeAreaView style={styles.container}>
-        <StackNavigator />
-      </SafeAreaView>
+      <StackNavigator />
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: materialColors.blackTertiary,
-  },
-});

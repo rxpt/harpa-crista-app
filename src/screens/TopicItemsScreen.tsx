@@ -23,4 +23,6 @@ const TopicItemsScreen: React.FC = ({route, navigation}: any) => {
   return <AnthemFlatList data={filteredAnthem} />;
 };
 
-export default TopicItemsScreen;
+const TopicItemsScreenMemo = React.memo(TopicItemsScreen);
+
+export default TopicItemsScreenMemo;

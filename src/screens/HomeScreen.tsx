@@ -1,22 +1,22 @@
 import React, {useState, useLayoutEffect} from 'react';
 import {
   TouchableOpacity,
-  StyleSheet,
   View,
   TextInputFocusEventData,
   NativeSyntheticEvent,
   ScrollView,
 } from 'react-native';
-import {human, materialColors} from 'react-native-typography';
+import {materialColors} from 'react-native-typography';
 import {Anthem} from '../utils/interfaces';
 import anthems from '../data/anthems.json';
 import Item from '../components/Item';
 import Icon from '../components/Icon';
+import styles from '../utils/styles';
 import AnthemFlatList from '../components/AnthemFlatList';
 
 const MenuIcon = (state: boolean, onPress: () => void) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.menuIcon}>
+    <TouchableOpacity onPress={onPress}>
       <Icon
         name={state ? 'close' : 'menu'}
         size={24}
@@ -41,6 +41,7 @@ const HomeScreen: React.FC = ({navigation}: any) => {
         shouldShowHintSearchIcon: false,
         onChangeText: (event: NativeSyntheticEvent<TextInputFocusEventData>) =>
           setSearch(event.nativeEvent.text),
+        onOpen: () => setIsMenuOpen(false),
       },
       headerLeft: () => MenuIcon(isMenuOpen, () => setIsMenuOpen(!isMenuOpen)),
     });
@@ -56,7 +57,7 @@ const HomeScreen: React.FC = ({navigation}: any) => {
   if (isMenuOpen) {
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.content}>
           <Item
             screen="topicList"
             params={{
@@ -71,29 +72,6 @@ const HomeScreen: React.FC = ({navigation}: any) => {
   return <AnthemFlatList data={filteredAnthem} />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: materialColors.blackPrimary,
-  },
-  text: {
-    color: materialColors.whitePrimary,
-    fontSize: human.title3Object.fontSize,
-  },
-  menuIcon: {
-    padding: 10,
-  },
-  menuContent: {
-    padding: 20,
-  },
-  backToTop: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: materialColors.blackTertiary,
-    padding: 20,
-    borderRadius: 10,
-  },
-});
+const HomeScreenMemo = React.memo(HomeScreen);
 
-export default HomeScreen;
+export default HomeScreenMemo;

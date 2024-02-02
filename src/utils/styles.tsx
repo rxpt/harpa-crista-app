@@ -15,11 +15,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   item: {
-    padding: 12,
-    marginTop: 20,
-    marginHorizontal: 20,
+    padding: 8,
     backgroundColor: materialColors.blackTertiary,
-    borderRadius: 10,
   },
   title: {
     fontSize: human.title3Object.fontSize,
@@ -29,18 +26,25 @@ const styles = StyleSheet.create({
     ...human.subheadWhiteObject,
   },
   content: {
-    padding: 20,
+    padding: 10,
+    paddingTop: 5,
+    gap: 5,
   },
-  versus: {
+  verse: {
     ...human.bodyWhiteObject,
     ...robotoWeights.light,
+    padding: 20,
+  },
+  verseEven: {
+    backgroundColor: materialColors.blackTertiary,
   },
   chorus: {
     fontStyle: 'italic',
-    ...robotoWeights.bold,
+    fontWeight: 'bold',
+    padding: 40,
   },
   bold: {
-    ...robotoWeights.bold,
+    fontWeight: 'bold',
   },
 });
 

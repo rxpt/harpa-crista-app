@@ -26,9 +26,12 @@ const TopicsScreen: React.FC = ({navigation}: any) => {
           />
         )}
         keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.content}
       />
     </View>
   );
 };
 
-export default TopicsScreen;
+const TopicListScreenMeno = React.memo(TopicsScreen);
+
+export default TopicListScreenMeno;
