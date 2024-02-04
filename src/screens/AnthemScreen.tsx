@@ -8,7 +8,6 @@ import {
 import {useIsFocused} from '@react-navigation/native';
 import {padStart} from 'lodash';
 import {Verse} from '../utils/interfaces';
-import verses from '../data/anthems.json';
 import styles from '../utils/styles';
 import {materialColors} from 'react-native-typography';
 
@@ -23,10 +22,7 @@ const AnthemScreen: React.FC = ({route}: any) => {
     }
   }, [isFocused]);
 
-  const {id} = route.params;
-  const findVerse = verses.find(v => v.id === id);
-  const verse = findVerse.verses as Verse[];
-  const author = findVerse.author;
+  const {id, verses, author} = route.params;
 
   function renderVerse(anthem: Verse) {
     return (
@@ -57,7 +53,7 @@ const AnthemScreen: React.FC = ({route}: any) => {
     <View style={styles.container}>
       <ScrollView>
         <AudioPlayer url={anthemAudioUrl} style={AudioStyles.audioPlayer} />
-        {verse.map(renderVerse)}
+        {verses.map(renderVerse)}
         {author && <Text style={styles.author}>{author}</Text>}
       </ScrollView>
     </View>

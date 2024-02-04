@@ -9,7 +9,11 @@ interface Props {
 }
 
 const anthemNumber = (number: number) => (
-  <Avatar.Text size={24} label={number?.toString()} />
+  <Avatar.Text
+    size={24}
+    label={number?.toString()}
+    theme={{colors: {primary: 'white'}}}
+  />
 );
 
 const Item: React.FC<Props> = ({screen, params}) => {
@@ -23,9 +27,7 @@ const Item: React.FC<Props> = ({screen, params}) => {
       onPress={() => {
         navigation.navigate<any>(screen, params);
       }}>
-      <Text style={[styles.title, styles.bold]}>
-        {params?.title.toUpperCase()}
-      </Text>
+      <Text style={[styles.title, styles.bold]}>{params?.title}</Text>
     </Chip>
   );
 };

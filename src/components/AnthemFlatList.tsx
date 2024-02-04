@@ -19,13 +19,7 @@ const AnthemFlatList = ({data}: any) => {
   };
 
   const renderItem = ({item}: {item: Anthem}) => (
-    <Item
-      screen="anthem"
-      params={{
-        id: item.id,
-        title: item.title,
-      }}
-    />
+    <Item screen="anthem" params={item} />
   );
 
   return (
