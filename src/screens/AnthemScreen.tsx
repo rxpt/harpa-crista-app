@@ -6,9 +6,9 @@ import {
   deactivateKeepAwake,
 } from '@sayem314/react-native-keep-awake';
 import {useIsFocused} from '@react-navigation/native';
-import lodash, {padStart} from 'lodash';
+import {padStart} from 'lodash';
 import {Verse} from '../utils/interfaces';
-import verses from '../data/verses.json';
+import verses from '../data/anthems.json';
 import styles from '../utils/styles';
 import {materialColors} from 'react-native-typography';
 
@@ -24,20 +24,20 @@ const AnthemScreen: React.FC = ({route}: any) => {
   }, [isFocused]);
 
   const {id} = route.params;
-  const verse = lodash.orderBy(lodash.filter(verses, {anthemId: id}), [
-    'order',
-  ]) as Verse[];
+  const verse = verses[id].verses as Verse[];
+  //const title = verses[id].title;
+  const author = verses[id].author;
 
   function renderVerse(anthem: Verse) {
     return (
       <Text
-        key={anthem.id}
+        key={anthem.sequence}
         style={[
           styles.verse,
-          anthem.order % 2 === 0 && styles.verseEven,
-          anthem.isChorus && styles.chorus,
+          anthem.sequence % 2 === 0 && styles.verseEven,
+          anthem.chorus && styles.chorus,
         ]}>
-        {anthem.verse
+        {anthem.lyrics
           .split('\n')
           .map(line => line.trim())
           .filter(line => isNaN(parseInt(line, 10)) && line !== '')
@@ -58,6 +58,7 @@ const AnthemScreen: React.FC = ({route}: any) => {
       <ScrollView>
         <AudioPlayer url={anthemAudioUrl} style={AudioStyles.audioPlayer} />
         {verse.map(renderVerse)}
+        {author && <Text style={styles.author}>{author}</Text>}
       </ScrollView>
     </View>
   );

@@ -1,7 +1,7 @@
 import React, {useLayoutEffect} from 'react';
 import {View, FlatList} from 'react-native';
 import lodash from 'lodash';
-import topics from '../data/topics.json';
+import indexes from '../data/indexes.json';
 import Item from '../components/Item';
 import styles from '../utils/styles';
 
@@ -15,13 +15,13 @@ const TopicsScreen: React.FC = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={lodash.orderBy(topics, ['title'], ['asc'])}
+        data={lodash.orderBy(indexes, ['title'], ['asc'])}
         renderItem={({item}) => (
           <Item
             screen="topicItems"
             params={{
-              topicId: item.id,
               title: item.title,
+              anthems: item.anthems,
             }}
           />
         )}

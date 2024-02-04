@@ -1,10 +1,9 @@
 import React, {useLayoutEffect} from 'react';
-import anthems from '../data/anthems.json';
-import anthemTopics from '../data/anthems_topics.json';
+import anthemsJson from '../data/anthems.json';
 import AnthemFlatList from '../components/AnthemFlatList';
 
 const TopicItemsScreen: React.FC = ({route, navigation}: any) => {
-  const {topicId, title} = route.params;
+  const {anthems, title} = route.params;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -12,15 +11,11 @@ const TopicItemsScreen: React.FC = ({route, navigation}: any) => {
     });
   }, [navigation, title]);
 
-  const filteredAnthem = anthemTopics
-    .filter((anthemTopic: any) => {
-      return anthemTopic.topicId === topicId;
-    })
-    .map((anthemTopic: any) => {
-      return anthems.find((anthem: any) => anthem.id === anthemTopic.anthemId);
-    });
+  const filteredAnthems = anthemsJson.filter((anthem: any) =>
+    anthems.includes(anthem.id),
+  );
 
-  return <AnthemFlatList data={filteredAnthem} />;
+  return <AnthemFlatList data={filteredAnthems} />;
 };
 
 const TopicItemsScreenMemo = React.memo(TopicItemsScreen);
