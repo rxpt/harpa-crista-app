@@ -1,14 +1,13 @@
 export interface Anthem {
   id: number;
   title: string;
+  verses: Verse[];
 }
 
 export interface Verse {
-  id: number;
-  verse: string;
-  order: number;
-  isChorus: boolean;
-  anthemId: number;
+  sequence: number;
+  lyrics: string;
+  chorus: boolean;
 }
 
 export interface Topic {

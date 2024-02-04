@@ -46,6 +46,13 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
   },
+  author: {
+    color: materialColors.whitePrimary,
+    fontSize: human.footnoteObject.fontSize,
+    fontStyle: 'italic',
+    textAlign: 'right',
+    padding: 20,
+  },
 });
 
 export default styles;
