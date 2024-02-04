@@ -24,9 +24,9 @@ const AnthemScreen: React.FC = ({route}: any) => {
   }, [isFocused]);
 
   const {id} = route.params;
-  const verse = verses[id].verses as Verse[];
-  //const title = verses[id].title;
-  const author = verses[id].author;
+  const findVerse = verses.find(v => v.id === id);
+  const verse = findVerse.verses as Verse[];
+  const author = findVerse.author;
 
   function renderVerse(anthem: Verse) {
     return (
