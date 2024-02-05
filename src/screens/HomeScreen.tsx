@@ -1,51 +1,14 @@
-import React, {useState, useLayoutEffect} from 'react';
-import {
-  TouchableOpacity,
-  View,
-  TextInputFocusEventData,
-  NativeSyntheticEvent,
-  ScrollView,
-} from 'react-native';
-import {materialColors} from 'react-native-typography';
+import React, {useState} from 'react';
+import {View, ScrollView} from 'react-native';
 import {Anthem} from '../utils/interfaces';
 import anthems from '../data/anthems.json';
 import Item from '../components/Item';
-import Icon from '../components/Icon';
-import styles from '../utils/styles';
+import {styles} from '../utils/theme';
 import AnthemFlatList from '../components/AnthemFlatList';
 
-const MenuIcon = (state: boolean, onPress: () => void) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <Icon
-        name={state ? 'close' : 'menu'}
-        size={24}
-        color={materialColors.whitePrimary}
-      />
-    </TouchableOpacity>
-  );
-};
-
-const HomeScreen: React.FC = ({navigation}: any) => {
-  const [search, setSearch] = React.useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Harpa Cristã',
-      headerSearchBarOptions: {
-        placeholder: 'Digite número ou título',
-        textColor: materialColors.whitePrimary,
-        headerIconColor: materialColors.whitePrimary,
-        hintTextColor: materialColors.whiteSecondary,
-        shouldShowHintSearchIcon: false,
-        onChangeText: (event: NativeSyntheticEvent<TextInputFocusEventData>) =>
-          setSearch(event.nativeEvent.text),
-        onOpen: () => setIsMenuOpen(false),
-      },
-      headerLeft: () => MenuIcon(isMenuOpen, () => setIsMenuOpen(!isMenuOpen)),
-    });
-  }, [navigation, isMenuOpen]);
+const HomeScreen: React.FC = ({route}: any) => {
+  const search = route.params?.searchQuery || '';
+  const [isMenuOpen, _] = useState(false);
 
   const filteredAnthem = anthems.filter((anthem: Anthem) => {
     return (
@@ -57,7 +20,7 @@ const HomeScreen: React.FC = ({navigation}: any) => {
   if (isMenuOpen) {
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView>
           <Item
             screen="topicList"
             params={{

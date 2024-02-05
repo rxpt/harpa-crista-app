@@ -3,7 +3,7 @@ import {View, FlatList} from 'react-native';
 import lodash from 'lodash';
 import Item from '../components/Item';
 import indexes from '../data/indexes.json';
-import styles from '../utils/styles';
+import {styles} from '../utils/theme';
 
 const TopicsScreen: React.FC = ({navigation}: any) => {
   useLayoutEffect(() => {

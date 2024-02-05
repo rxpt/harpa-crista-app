@@ -3,7 +3,32 @@ import React from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {materialColors, robotoWeights} from 'react-native-typography';
+import {
+  PaperProvider,
+  MD3DarkTheme,
+  adaptNavigationTheme,
+} from 'react-native-paper';
+import {
+  NavigationTheme,
+  ThemeProp,
+} from 'react-native-paper/lib/typescript/types';
+import {SearchProvider, Search} from './components/Search';
+
+// Theme
+const theme = {
+  ...MD3DarkTheme,
+  colors: {
+    ...MD3DarkTheme.colors,
+  },
+  dark: true,
+  mode: 'adaptive',
+};
+
+// Navigation theme
+const navigationTheme = adaptNavigationTheme({
+  reactNavigationLight: MD3DarkTheme as unknown as NavigationTheme,
+  reactNavigationDark: MD3DarkTheme as unknown as NavigationTheme,
+});
 
 // Screens
 import HomeScreen from './screens/HomeScreen';
@@ -19,39 +44,27 @@ const StackNavigator = () => {
       initialRouteName="home"
       screenOptions={{
         animation: 'slide_from_right',
-        headerStyle: {
-          backgroundColor: materialColors.blackPrimary,
-        },
-        headerTintColor: materialColors.whitePrimary,
-        headerTitleStyle: {
-          color: materialColors.whitePrimary,
-          fontFamily: robotoWeights.light.fontFamily,
-          fontWeight: robotoWeights.light.fontWeight,
-        },
-        headerTitleAlign: 'center',
+        headerShown: false,
       }}>
       <Stack.Screen name="home" component={HomeScreen} />
       <Stack.Screen name="topicList" component={TopicListScreen} />
       <Stack.Screen name="topicItems" component={TopicItemsScreen} />
-      <Stack.Screen
-        name="anthem"
-        component={AnthemScreen}
-        options={({route}: {route: {params?: {title?: string}}}) => ({
-          title: route?.params?.title ?? undefined,
-        })}
-      />
+      <Stack.Screen name="anthem" component={AnthemScreen} />
     </Stack.Navigator>
   );
 };
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={materialColors.blackPrimary}
-      />
-      <StackNavigator />
-    </NavigationContainer>
+    <PaperProvider theme={theme as ThemeProp}>
+      <StatusBar barStyle="light-content" />
+      <NavigationContainer
+        theme={{...navigationTheme, dark: true, colors: theme.colors as any}}>
+        <SearchProvider>
+          <Search />
+          <StackNavigator />
+        </SearchProvider>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

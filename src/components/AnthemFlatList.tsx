@@ -1,16 +1,23 @@
-import React, {useRef, useState} from 'react';
-import {TouchableOpacity, FlatList, View} from 'react-native';
-import {materialColors} from 'react-native-typography';
+import React, {useRef, useState, useEffect} from 'react';
+import {FlatList, View} from 'react-native';
+import {AnimatedFAB} from 'react-native-paper';
+import {useSearchContext} from './Search';
 import {Anthem} from '../utils/interfaces';
 import Item from '../components/Item';
-import Icon from '../components/Icon';
-import styles from '../utils/styles';
-import {useScrollToTop} from '@react-navigation/native';
+import {styles} from '../utils/theme';
 
 const AnthemFlatList = ({data}: any) => {
+  const {open, close} = useSearchContext();
   const [scrollPosition, setScrollPosition] = useState(0);
   const flatListRef = useRef(null);
-  useScrollToTop(flatListRef);
+
+  useEffect(() => {
+    if (scrollPosition > 100) {
+      close();
+    } else {
+      open();
+    }
+  }, [close, open, scrollPosition]);
 
   const backToTop = () => {
     if (flatListRef.current) {
@@ -30,15 +37,20 @@ const AnthemFlatList = ({data}: any) => {
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         onScroll={event => {
-          setScrollPosition(event.nativeEvent.contentOffset.y);
+          const currentOffset =
+            Math.floor(event.nativeEvent?.contentOffset?.y) ?? 0;
+          setScrollPosition(currentOffset);
         }}
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={styles.content}
       />
       {scrollPosition > 100 && (
-        <TouchableOpacity style={styles.backToTop} onPress={backToTop}>
-          <Icon name="arrow-up" size={20} color={materialColors.whitePrimary} />
-        </TouchableOpacity>
+        <AnimatedFAB
+          icon="arrow-up"
+          label="Voltar"
+          extended={false}
+          onPress={backToTop}
+          style={[styles.absolute, styles.end, styles.bottom, styles.margin]}
+        />
       )}
     </View>
   );
