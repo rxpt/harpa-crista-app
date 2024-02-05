@@ -377,7 +377,7 @@
       },
       {
         "sequence": 4,
-        "lyrics": "Vê o Salvador co'as feridas mãos\nTe chamando, ó pecador!\nVida eterna têm os que nele crêem\nE aceitam o Seu amor.",
+        "lyrics": "Vê o Salvador co'as feridas mãos\nTe chamando, ó pecador!\nVida eterna têm os que nEle crêem\nE aceitam o Seu amor.",
         "chorus": false
       },
       {
@@ -386,11 +386,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / A.S."
   },
   {
     "id": 13,
-    "title": "Jesus Comprou Me",
+    "title": "Jesus Comprou-me",
     "verses": [
       {
         "sequence": 1,
@@ -399,7 +399,7 @@
       },
       {
         "sequence": 2,
-        "lyrics": "Jesus comprou-me da escravidão,\nA paz eu gozo por seu perdão;\nSou desprezado um pouco aqui,\nMas eu espero gozar ali.\nSou desprezado um pouco aqui,\nMas eu espero gozar ali.",
+        "lyrics": "Jesus comprou-me da escravidão,\nA paz eu gozo por Seu perdão;\nSou desprezado um pouco aqui,\nMas eu espero gozar ali.\nSou desprezado um pouco aqui,\nMas eu espero gozar ali.",
         "chorus": false
       },
       {
@@ -418,7 +418,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / S.N."
   },
   {
     "id": 14,
@@ -436,7 +436,7 @@
       },
       {
         "sequence": 3,
-        "lyrics": "Livre do pecado ja estou,\nDo abismo me retirou,\nSobre a rocha eterna me firmou;\nGlória a meu Jesus!",
+        "lyrics": "Livre do pecado já estou,\nDo abismo me retirou,\nSobre a rocha eterna me firmou;\nGlória a meu Jesus!",
         "chorus": false
       },
       {
@@ -450,15 +450,15 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / J.J.S."
   },
   {
     "id": 15,
-    "title": "Conversao",
+    "title": "Conversão",
     "verses": [
       {
         "sequence": 1,
-        "lyrics": "Oh! Quão cego andei, e perdido vaguei\nLonge, longe do Meu Salvador\nMas do Céu Ele desceu,\ne Seu Sangue Verteu\nPra Salvar um tão pobre pecador.",
+        "lyrics": "Oh! quão cego andei, e perdido vaguei\nLonge, longe do meu Salvador\nMas do céu Ele desceu,\ne Seu sangue verteu\nPra Salvar um tão pobre pecador.",
         "chorus": false
       },
       {
@@ -468,21 +468,21 @@
       },
       {
         "sequence": 3,
-        "lyrics": "Eu ouvia falar, Nessa Graça sem Par\nQue do Céu trouxe, Nosso Jesus\nMas eu surdo me fiz, Converter-me não quis\nAo Senhor, que por mim morreu na Cruz.",
+        "lyrics": "Eu ouvia falar dessa graça sem par\nQue do Céu trouxe nosso Jesus\nMas eu surdo me fiz,\nConverter-me não quis\nAo Senhor, que por mim morreu na Cruz.",
         "chorus": false
       },
       {
         "sequence": 4,
-        "lyrics": "Mas um dia senti meu pecado e vi\nSobre mim a Espada da Lei\nApressado fugi, em Jesus me escondi\nE abrigo seguro nele Achei.",
+        "lyrics": "Mas um dia senti meu pecado e vi\nSobre mim a espada da lei\nApressado fugi, em Jesus me escondi\nE abrigo seguro nEle achei.",
         "chorus": false
       },
       {
         "sequence": 5,
-        "lyrics": "Quão ditoso, então, este meu Coração\nConhecendo o excelso Amor\nQue levou meu Jesus, a sofrer lá na Cruz\nPra Salvar um tão pobre pecador.",
+        "lyrics": "Quão ditoso, então, este meu coração\nConhecendo o excelso Amor\nQue levou meu Jesus, a sofrer lá na cruz\nPra Salvar um tão pobre pecador.",
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 16,
@@ -505,7 +505,7 @@
       },
       {
         "sequence": 4,
-        "lyrics": "No celeste lar entrando,\nComo irei ao Salvador?\nQuantas almas irei levando.\nPara meu fiel Senhor?",
+        "lyrics": "No celeste lar entrando,\nComo irei ao Salvador?\nQuantas almas irei levando,\nPara meu fiel Senhor?",
         "chorus": false
       },
       {
@@ -519,7 +519,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / S.L."
   },
   {
     "id": 17,
@@ -527,12 +527,12 @@
     "verses": [
       {
         "sequence": 1,
-        "lyrics": "Nas horas que passo pensando em Jesus\nAs trevas desfaço, busacando a luz;\nQue horas de vida, tão doces pra mim,\nJesus me convida, que eu suba p'ra si!",
+        "lyrics": "Nas horas que passo pensando em Jesus\nAs trevas desfaço, busacando a luz;\nQue horas de vida, tão doces pra mim,\nJesus me convida, que eu suba p'ra Si!",
         "chorus": false
       },
       {
         "sequence": 2,
-        "lyrics": "Da vida voando, sem nenhum temor;\nAcima buscando do véu o amor;\nQue doce ventura, que aspecto feliz,\nQue nova natura minh\"alma bendiz.",
+        "lyrics": "Da vida voando, sem nenhum temor;\nAcima buscando do véu o amor;\nQue doce ventura, que aspecto feliz,\nQue nova natura minh'alma bendiz.",
         "chorus": false
       },
       {
@@ -542,11 +542,11 @@
       },
       {
         "sequence": 4,
-        "lyrics": "Minh'alma ansiosa já que percorrer\nA senda gloriosa que eu hei de ver;\nQue coisa tão bela; oh! que luz sem véu!\nJesus me revela mistérios do céu.",
+        "lyrics": "Minh'alma ansiosa já quer percorrer\nA senda gloriosa que eu hei de ver;\nQue coisa tão bela; oh! que luz sem véu!\nJesus me revela mistérios do céu.",
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / ***"
   },
   {
     "id": 18,
@@ -564,7 +564,7 @@
       },
       {
         "sequence": 3,
-        "lyrics": "Com ofertas e obras mortas,\nSacrifícios sem valor,\nEnganado, pensa o homem,\nPropiciar Seu Criador,\nClama, roga em seu favor,\nA supostos madiadores,\nDesprezando o Deus de amor.",
+        "lyrics": "Com ofertas e obras mortas,\nSacrifícios sem valor,\nEnganado, pensa o homem,\nPropiciar Seu Criador,\nMeios de salvar-se inventa;\nClama, roga em seu favor,\nA supostos madiadores,\nDesprezando o Deus de amor.",
         "chorus": false
       },
       {
@@ -573,7 +573,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / A.S."
   },
   {
     "id": 19,
@@ -591,7 +591,7 @@
       },
       {
         "sequence": 3,
-        "lyrics": "Sobre s vozes sedutoras,\nDe mudanas atrações,\nClama a meiga voz de Cristo:\n\"Dai-me vossos corações!\"",
+        "lyrics": "Sobre as vozes sedutoras,\nDe mudanas atrações,\nClama a meiga voz de Cristo:\n\"Dai-me vossos corações!\"",
         "chorus": false
       },
       {
@@ -601,7 +601,7 @@
       },
       {
         "sequence": 5,
-        "lyrics": "Na vereda estreita e santa,\nJá pisada por Jesus,\nA segui-lo, Ele te chama:\n\"Vem, cristão, andar na luz!\"",
+        "lyrics": "Na vereda estreita e santa,\nJá pisada por Jesus,\nA segui-Lo, Ele te chama:\n\"Vem, cristão, andar na luz!\"",
         "chorus": false
       },
       {
@@ -610,11 +610,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 20,
-    "title": "Olhai P Ra O Cordeiro De Deus",
+    "title": "Olhai P'ra O Cordeiro De Deus",
     "verses": [
       {
         "sequence": 1,
@@ -638,11 +638,11 @@
       },
       {
         "sequence": 5,
-        "lyrics": "Se na vossa senda sombras vêm cair,\nOlhai p'ra o Cordeiro de Deus!\nEle, com sua graça, tudo quer suprir.\nOlhai p'ra o Cordeiro de Deus!",
+        "lyrics": "Se na vossa senda sombras vêm cair,\nOlhai p'ra o Cordeiro de Deus!\nEle, com Sua graça, tudo quer suprir.\nOlhai p'ra o Cordeiro de Deus!",
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.E.N."
   },
   {
     "id": 21,
@@ -669,7 +669,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / O.N."
   },
   {
     "id": 22,
@@ -701,11 +701,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / J.B.C."
   },
   {
     "id": 23,
-    "title": "Gloria A Jesus",
+    "title": "Glória A Jesus",
     "verses": [
       {
         "sequence": 1,
@@ -738,7 +738,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / P.L.M."
   },
   {
     "id": 24,
@@ -770,11 +770,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / A.S."
   },
   {
     "id": 25,
-    "title": "Jesus Tu Es Bom",
+    "title": "Jesus Tu És Bom",
     "verses": [
       {
         "sequence": 1,
@@ -797,11 +797,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / J.Car."
   },
   {
     "id": 26,
-    "title": "A Formosa Jerusalem",
+    "title": "A Formosa Jerusalém",
     "verses": [
       {
         "sequence": 1,
@@ -824,7 +824,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / E.C."
   },
   {
     "id": 27,
@@ -851,7 +851,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 28,
@@ -878,7 +878,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / F.V."
   },
   {
     "id": 29,
@@ -925,11 +925,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 30,
-    "title": "Nao Sou Meu",
+    "title": "Não Sou Meu",
     "verses": [
       {
         "sequence": 1,
@@ -957,11 +957,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 31,
-    "title": "Gloria Ao Meu Jesus",
+    "title": "Glória Ao Meu Jesus",
     "verses": [
       {
         "sequence": 1,
@@ -989,11 +989,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 32,
-    "title": "Meu Cristo Meu Cristo",
+    "title": "Meu Cristo! Meu Cristo!",
     "verses": [
       {
         "sequence": 1,
@@ -1031,11 +1031,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 33,
-    "title": "Com Tua Mao",
+    "title": "Com Tua Mão Segura",
     "verses": [
       {
         "sequence": 1,
@@ -1063,11 +1063,11 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 34,
-    "title": "Milicia De Jesus",
+    "title": "Milícia De Jesus",
     "verses": [
       {
         "sequence": 1,
@@ -1085,7 +1085,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 35,
@@ -1117,7 +1117,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "CPAD / H.M.W."
   },
   {
     "id": 36,
@@ -18326,7 +18326,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "O.B."
   },
   {
     "id": 638,
@@ -18348,7 +18348,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "J.O.D.E."
   },
   {
     "id": 639,
@@ -18380,7 +18380,7 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "E.V."
   },
   {
     "id": 640,
@@ -18412,6 +18412,6 @@
         "chorus": false
       }
     ],
-    "author": "CPAD"
+    "author": "J.J.C.C.M."
   }
 ]
