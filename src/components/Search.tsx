@@ -1,62 +1,40 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  createContext,
-  useContext,
-} from 'react';
-import {View} from 'react-native';
+import React, {useCallback, useRef, useEffect} from 'react';
+import {View, Dimensions} from 'react-native';
 import {Searchbar} from 'react-native-paper';
 import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {useAppContext, actions} from '../contexts/AppContext';
 import {styles} from '../utils/theme';
 
-const SearchContext = createContext<any>(null);
-
-export const useSearchContext = () => {
-  const context = useContext(SearchContext);
-  if (!context) {
-    throw new Error('useSearchContext must be used within a SearchProvider');
-  }
-  return context;
-};
-
-export const SearchProvider = ({children}: any) => {
-  const [searchOpen, setSearchOpen] = useState(true);
-
-  const open = useCallback(() => {
-    setSearchOpen(true);
-  }, []);
-
-  const close = useCallback(() => {
-    setSearchOpen(false);
-  }, []);
-
-  return (
-    <SearchContext.Provider value={{open, close, searchOpen}}>
-      {children}
-    </SearchContext.Provider>
-  );
-};
-
 export const Search = (): JSX.Element => {
-  const {searchOpen} = useSearchContext();
+  const {
+    state: {showSearch, scrollY, searchQuery},
+    dispatch,
+  } = useAppContext();
+
+  const {height} = Dimensions.get('window');
 
   const navigation = useNavigation<NavigationProp<any>>();
   const searchRef = useRef<any>(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  useEffect(() => {
+    dispatch(actions.searchRef(searchRef));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(actions.showSearch(scrollY < height / 2 || !scrollY));
+  }, [dispatch, height, scrollY]);
+
   const onChangeSearch = useCallback(
     (query: string) => {
-      setSearchQuery(query);
-
-      navigation.navigate<any>('home', {searchQuery: query});
+      dispatch(actions.searchQuery(query));
+      navigation.navigate<any>('home');
     },
-    [navigation],
+    [dispatch, navigation],
   );
 
   return (
     <View style={[styles.flexRow, styles.spaceBetween, styles.alignCenter]}>
-      {searchOpen && (
+      {showSearch && (
         <Searchbar
           ref={searchRef}
           placeholder="Digite o número ou título"

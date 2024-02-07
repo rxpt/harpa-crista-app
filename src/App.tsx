@@ -12,7 +12,7 @@ import {
   NavigationTheme,
   ThemeProp,
 } from 'react-native-paper/lib/typescript/types';
-import {SearchProvider, Search} from './components/Search';
+import {AppProvider} from './contexts/AppContext';
 
 // Theme
 const theme = {
@@ -60,10 +60,9 @@ export default function App() {
       <StatusBar barStyle="light-content" />
       <NavigationContainer
         theme={{...navigationTheme, dark: true, colors: theme.colors as any}}>
-        <SearchProvider>
-          <Search />
+        <AppProvider>
           <StackNavigator />
-        </SearchProvider>
+        </AppProvider>
       </NavigationContainer>
     </PaperProvider>
   );

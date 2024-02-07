@@ -1,25 +1,30 @@
-import React, {useEffect, useRef, useMemo, useState, useCallback} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {View, ScrollView} from 'react-native';
 import {Text, Appbar, Divider} from 'react-native-paper';
-import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {
   activateKeepAwake,
   deactivateKeepAwake,
 } from '@sayem314/react-native-keep-awake';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useAppContext, actions} from '../contexts/AppContext';
 import {padStart} from 'lodash';
 import Video from 'react-native-video';
 import {Verse} from '../utils/interfaces';
-import {colors, styles} from '../utils/theme';
+import {styles} from '../utils/theme';
 
 const AnthemScreen: React.FC = ({route}: any) => {
   const {id, title, verses, author} = route.params;
+  const {
+    state: {showSearch},
+    dispatch,
+  } = useAppContext();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const scrollRef = useRef<ScrollView>(null);
 
-  const [bottomSheetIsVisible, setBottomSheetIsVisible] = useState(false);
-  const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['25%', '25%'], []);
+  useEffect(() => {
+    dispatch(actions.scrollRef(scrollRef));
+  }, [dispatch]);
 
   useEffect(() => {
     if (isFocused) {
@@ -28,17 +33,6 @@ const AnthemScreen: React.FC = ({route}: any) => {
       deactivateKeepAwake();
     }
   }, [isFocused]);
-
-  /* callbacks */
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetIsVisible
-      ? (bottomSheetModalRef.current as any)?.dismiss()
-      : (bottomSheetModalRef.current as any)?.present();
-  }, [bottomSheetIsVisible]);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    setBottomSheetIsVisible(index > 0);
-  }, []);
 
   function renderVerse(anthem: Verse) {
     return (
@@ -62,39 +56,42 @@ const AnthemScreen: React.FC = ({route}: any) => {
   )}.mp3`;
 
   return (
-    <BottomSheetModalProvider>
-      <View style={styles.container}>
-        <Appbar.Header>
-          {navigation.canGoBack() && (
-            <Appbar.BackAction
-              onPress={() => navigation.canGoBack() && navigation.goBack()}
-            />
-          )}
-          <Appbar.Content title={`${id} - ${title}`} />
-          <Appbar.Action icon="play" onPress={handlePresentModalPress} />
-        </Appbar.Header>
+    <View style={styles.container}>
+      <Appbar.Header>
+        {navigation.canGoBack() && (
+          <Appbar.BackAction
+            onPress={() => {
+              !showSearch && dispatch(actions.showSearch(true));
+              navigation.canGoBack() && navigation.goBack();
+            }}
+          />
+        )}
+        <Appbar.Content title={`${id} - ${title}`} />
+        {!showSearch && (
+          <Appbar.Action
+            icon="text-search"
+            onPress={() => {
+              dispatch(actions.showSearch(true));
+            }}
+          />
+        )}
+      </Appbar.Header>
+      <Divider />
+      <ScrollView
+        ref={scrollRef}
+        onScroll={e => {
+          dispatch(actions.scroll(e.nativeEvent.contentOffset.y));
+        }}>
+        {verses.map(renderVerse)}
         <Divider />
-        <ScrollView>
-          {verses.map(renderVerse)}
-          <Divider />
-          {author && (
-            <Text variant="bodyLarge" style={styles.author}>
-              {author}
-            </Text>
-          )}
-        </ScrollView>
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-          backgroundStyle={[styles.primaryContainer, styles.boxShadow]}
-          handleIndicatorStyle={{backgroundColor: colors.secondary}}
-          style={styles.content}>
-          <Video source={{uri: anthemAudioUrl}} controls />
-        </BottomSheetModal>
-      </View>
-    </BottomSheetModalProvider>
+        {author && (
+          <Text variant="bodyLarge" style={styles.author}>
+            {author}
+          </Text>
+        )}
+      </ScrollView>
+      <Video source={{uri: anthemAudioUrl}} controls paused />
+    </View>
   );
 };
 
