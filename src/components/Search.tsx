@@ -16,7 +16,7 @@ export const Search = (): JSX.Element => {
   } = useAppContext();
 
   const navigation = useNavigation<NavigationProp<any>>();
-  const routeIndex = useNavigationState(state => state).index;
+  const routeIndex = useNavigationState(state => state)?.index ?? 0;
   const searchRef = useRef<any>(null);
 
   const animatedValue = useRef(new Animated.Value(0)).current;
