@@ -67,6 +67,7 @@ const AnthemFlatList = () => {
         ref={flatListRef}
         data={data as Anthem[]}
         renderItem={renderItem}
+        initialNumToRender={5}
         keyExtractor={item => item.id.toString()}
         onScroll={e => {
           const currentOffset =
@@ -106,6 +107,7 @@ const AnthemFlatList = () => {
         <BottomSheetFlatList
           ref={bottomFlatListRef}
           data={lodash.orderBy(indexes, ['title'], ['asc'])}
+          initialNumToRender={5}
           contentContainerStyle={[styles.padding, styles.gap]}
           keyExtractor={item => item.title + item.anthems.length}
           renderItem={({item}) => {
