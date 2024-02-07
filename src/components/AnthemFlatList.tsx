@@ -1,6 +1,6 @@
 import React, {useRef, useMemo, useState, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
-import {Text, Button, Divider} from 'react-native-paper';
+import {Text, Button, Divider, Appbar} from 'react-native-paper';
 import {useFocusEffect} from '@react-navigation/native';
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {useAppContext, actions} from '../contexts/AppContext';
@@ -95,11 +95,13 @@ const AnthemFlatList = () => {
         handleIndicatorStyle={{
           backgroundColor: theme.colors.secondary,
         }}>
-        <Text
-          variant="headlineSmall"
-          style={[styles.centered, styles.marginBottom]}>
-          Índice de Assuntos
-        </Text>
+        <Appbar.Header
+          style={{
+            backgroundColor: theme.colors.onSecondary,
+          }}>
+          <Appbar.Content title="Índice de Assuntos" />
+          <Appbar.Action icon="restore" onPress={() => setData(anthems)} />
+        </Appbar.Header>
         <Divider />
         <BottomSheetFlatList
           ref={bottomFlatListRef}
