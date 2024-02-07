@@ -1,14 +1,18 @@
 [
   {
-    "title": "Deus O Filho",
+    "title": "Todos",
+    "anthems": []
+  },
+  {
+    "title": "Deus, O Filho",
     "anthems": [48, 173, 198, 451, 547]
   },
   {
-    "title": "Vida Crista",
+    "title": "Vida Cristã",
     "anthems": [91]
   },
   {
-    "title": "Culto Publico",
+    "title": "Culto Público",
     "anthems": [170, 218, 310, 435, 438, 556]
   },
   {
@@ -16,11 +20,7 @@
     "anthems": [10, 185, 307, 313, 436, 487]
   },
   {
-    "title": "Sem Categoria",
-    "anthems": [71, 72, 92, 165, 226, 493, 529, 604]
-  },
-  {
-    "title": "Deus O Pai",
+    "title": "Deus, O Pai",
     "anthems": [99, 216, 219, 396, 526, 527, 528]
   },
   {
@@ -34,7 +34,7 @@
     ]
   },
   {
-    "title": "Aspiracao Pelo Ceu",
+    "title": "Aspiração Pelo Ceu",
     "anthems": [2, 26, 36, 94, 118, 214, 279, 357, 500, 513, 625, 629, 630]
   },
   {
@@ -45,13 +45,13 @@
     ]
   },
   {
-    "title": "Protecao E Ajuda",
+    "title": "Proteção E Ajuda",
     "anthems": [
       4, 267, 268, 273, 278, 406, 524, 575, 576, 578, 579, 581, 582, 593, 628
     ]
   },
   {
-    "title": "Consagracao",
+    "title": "Consagração",
     "anthems": [5, 30, 266, 354, 355, 363, 380, 390, 432, 434, 440, 591, 595]
   },
   {
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "title": "Luta E Vitoria",
+    "title": "Luta E Vitória",
     "anthems": [
       9, 11, 46, 50, 67, 108, 153, 163, 167, 186, 212, 225, 253, 260, 298, 304,
       305, 372, 418, 448, 471, 501, 580, 606, 607, 608, 609, 610, 611, 619
@@ -98,7 +98,7 @@
     ]
   },
   {
-    "title": "Comunhao",
+    "title": "Comunhão",
     "anthems": [17, 161, 262, 400]
   },
   {
@@ -115,7 +115,7 @@
     ]
   },
   {
-    "title": "Seu Nascimento Natal",
+    "title": "Seu Nascimento, Natal",
     "anthems": [21, 120, 366, 475, 481, 489]
   },
   {
@@ -123,7 +123,7 @@
     "anthems": [22, 53, 199, 233, 367, 482]
   },
   {
-    "title": "Sua Graca Vida E Amor",
+    "title": "Sua Graça, Vida E Amor",
     "anthems": [
       27, 32, 33, 35, 79, 104, 156, 180, 205, 248, 283, 315, 417, 461, 464, 512,
       534, 535, 537, 542
@@ -156,20 +156,20 @@
     "anthems": [52, 54, 84, 107, 126, 133, 193, 258, 330, 384, 385, 452, 599]
   },
   {
-    "title": "Aspiracao",
+    "title": "Aspiração",
     "anthems": [
       55, 83, 131, 145, 179, 187, 254, 338, 341, 374, 398, 421, 587, 594, 598
     ]
   },
   {
-    "title": "Oracao",
+    "title": "Oração",
     "anthems": [
       57, 58, 88, 136, 151, 181, 191, 221, 257, 280, 326, 331, 337, 339, 352,
       356, 365, 407, 408, 414, 423, 427, 502, 577, 612
     ]
   },
   {
-    "title": "Missoes",
+    "title": "Missões",
     "anthems": [65, 395]
   },
   {
@@ -181,7 +181,7 @@
     ]
   },
   {
-    "title": "Admoestacao",
+    "title": "Admoestação",
     "anthems": [77]
   },
   {
@@ -189,7 +189,7 @@
     "anthems": [85, 100, 101, 102, 103, 340, 391, 511, 551]
   },
   {
-    "title": "Satisfacao",
+    "title": "Satisfação",
     "anthems": [86, 232, 265, 410, 473, 561, 585, 592]
   },
   {
@@ -209,7 +209,7 @@
     "anthems": [150, 195]
   },
   {
-    "title": "Viagem Para O Ceu",
+    "title": "Viagem Para O Céu",
     "anthems": [
       152, 159, 203, 204, 213, 230, 241, 316, 332, 361, 378, 392, 463, 485, 515,
       552, 613, 615, 616, 617, 618, 620, 621, 622, 624, 627
@@ -240,11 +240,11 @@
     "anthems": [251, 263, 573]
   },
   {
-    "title": "Decisao",
+    "title": "Decisão",
     "anthems": [284]
   },
   {
-    "title": "Gratidao",
+    "title": "Gratidão",
     "anthems": [370, 411, 596, 597]
   },
   {
@@ -256,11 +256,11 @@
     "anthems": [479, 480, 504, 574]
   },
   {
-    "title": "Consagracao De Templos",
+    "title": "Consagração De Templos",
     "anthems": [631, 632]
   },
   {
-    "title": "Pela Evangelizacao Da Patria",
+    "title": "Pela Evangelização Da Patria",
     "anthems": [633, 634, 635, 636]
   }
 ]

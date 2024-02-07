@@ -12,7 +12,7 @@ interface Props {
 
 const Item: React.FC<Props> = ({screen, params}) => {
   const {
-    state: {showSearch},
+    state: {showSearch, searchQuery, scrollY},
     dispatch,
   } = useAppContext();
   const navigation = useNavigation<NavigationProp<any>>();
@@ -20,7 +20,9 @@ const Item: React.FC<Props> = ({screen, params}) => {
   return (
     <TouchableOpacity
       onPress={() => {
+        searchQuery && dispatch(actions.searchQuery(''));
         showSearch && dispatch(actions.showSearch(false));
+        scrollY && dispatch(actions.scroll(0));
         navigation.navigate<any>(screen, params);
       }}>
       <View style={[styles.flexRow, styles.alignCenter]}>

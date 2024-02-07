@@ -15,24 +15,21 @@ import {styles} from '../utils/theme';
 const AnthemScreen: React.FC = ({route}: any) => {
   const {id, title, verses, author} = route.params;
   const {
-    state: {showSearch},
+    state: {showSearch, searchRef},
     dispatch,
   } = useAppContext();
-  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const scrollRef = useRef<ScrollView>(null);
-
-  useEffect(() => {
-    dispatch(actions.scrollRef(scrollRef));
-  }, [dispatch]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       activateKeepAwake();
+      dispatch(actions.scrollRef(scrollRef));
     } else {
       deactivateKeepAwake();
     }
-  }, [isFocused]);
+  }, [dispatch, isFocused]);
 
   function renderVerse(anthem: Verse) {
     return (
@@ -72,6 +69,8 @@ const AnthemScreen: React.FC = ({route}: any) => {
             icon="text-search"
             onPress={() => {
               dispatch(actions.showSearch(true));
+              (searchRef as any).current &&
+                ((searchRef as any).current as any)?.focus();
             }}
           />
         )}
@@ -80,7 +79,9 @@ const AnthemScreen: React.FC = ({route}: any) => {
       <ScrollView
         ref={scrollRef}
         onScroll={e => {
-          dispatch(actions.scroll(e.nativeEvent.contentOffset.y));
+          const currentOffset =
+            Math.floor(e.nativeEvent?.contentOffset?.y) ?? 0;
+          dispatch(actions.scroll(currentOffset));
         }}>
         {verses.map(renderVerse)}
         <Divider />
