@@ -1,7 +1,11 @@
 import React, {useCallback, useRef, useEffect, useLayoutEffect} from 'react';
 import {Animated} from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  useNavigationState,
+} from '@react-navigation/native';
 import {useAppContext, actions} from '../contexts/AppContext';
 import {styles} from '../utils/theme';
 
@@ -12,6 +16,7 @@ export const Search = (): JSX.Element => {
   } = useAppContext();
 
   const navigation = useNavigation<NavigationProp<any>>();
+  const routeIndex = useNavigationState(state => state).index;
   const searchRef = useRef<any>(null);
 
   const animatedValue = useRef(new Animated.Value(0)).current;
@@ -32,12 +37,13 @@ export const Search = (): JSX.Element => {
     (query: string) => {
       dispatch(actions.searchQuery(query));
 
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'home'}],
-      });
+      routeIndex !== 0 &&
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'home'}],
+        });
     },
-    [dispatch, navigation],
+    [dispatch, navigation, routeIndex],
   );
 
   const onFocus = useCallback(() => {

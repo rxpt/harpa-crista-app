@@ -1,6 +1,6 @@
 import React, {useRef, useMemo, useState, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
-import {Text, Button} from 'react-native-paper';
+import {Text, Button, Divider} from 'react-native-paper';
 import {useFocusEffect} from '@react-navigation/native';
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {useAppContext, actions} from '../contexts/AppContext';
@@ -23,11 +23,20 @@ const AnthemFlatList = () => {
   const bottomFlatListRef = useRef(null);
   const sheetRef = useRef<BottomSheet>(null);
 
+  const normalize = (str: string) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  };
+
   useEffect(() => {
     if (searchQuery) {
-      const filteredAnthems = anthems.filter(anthem =>
-        anthem.title.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
+      const filteredAnthems = anthems.filter(anthem => {
+        return (
+          anthem.id === parseInt(searchQuery, 10) ||
+          normalize(anthem.title)
+            .toLowerCase()
+            .includes(normalize(searchQuery).toLowerCase())
+        );
+      });
       setData(filteredAnthems);
     } else {
       setData(anthems);
@@ -66,6 +75,7 @@ const AnthemFlatList = () => {
           dispatch(actions.scroll(currentOffset));
         }}
         contentInsetAdjustmentBehavior="automatic"
+        style={styles.marginBottom}
       />
       <BottomSheet
         ref={sheetRef}
@@ -75,6 +85,8 @@ const AnthemFlatList = () => {
             setData(anthems);
 
             (flatListRef.current as any)?.scrollToOffset({offset: 0});
+          } else {
+            (bottomFlatListRef.current as any)?.scrollToOffset({offset: 0});
           }
         }}
         backgroundStyle={{
@@ -83,14 +95,15 @@ const AnthemFlatList = () => {
         handleIndicatorStyle={{
           backgroundColor: theme.colors.secondary,
         }}>
+        <Text
+          variant="headlineSmall"
+          style={[styles.centered, styles.marginBottom]}>
+          Índice de Assuntos
+        </Text>
+        <Divider />
         <BottomSheetFlatList
           ref={bottomFlatListRef}
           data={lodash.orderBy(indexes, ['title'], ['asc'])}
-          ListHeaderComponent={
-            <Text variant="headlineLarge" style={styles.centered}>
-              Índice de Assuntos
-            </Text>
-          }
           contentContainerStyle={[styles.padding, styles.gap]}
           keyExtractor={item => item.title + item.anthems.length}
           renderItem={({item}) => {
@@ -102,7 +115,7 @@ const AnthemFlatList = () => {
                     animated: true,
                     index: 0,
                   });
-                  if (item.anthems.length > 1) {
+                  if (item.anthems.length > 0) {
                     setData(
                       anthems.filter(anthem =>
                         item.anthems.includes(anthem.id),
@@ -112,7 +125,7 @@ const AnthemFlatList = () => {
                     setData(anthems);
                   }
                 }}>
-                <Text variant="titleMedium">{item.title}</Text>
+                <Text>{item.title}</Text>
               </Button>
             );
           }}
