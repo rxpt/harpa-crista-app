@@ -33,8 +33,6 @@ const navigationTheme = adaptNavigationTheme({
 // Screens
 import HomeScreen from './screens/HomeScreen';
 import AnthemScreen from './screens/AnthemScreen';
-import TopicListScreen from './screens/TopicListScreen';
-import TopicItemsScreen from './screens/TopicItemsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,8 +45,6 @@ const StackNavigator = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="home" component={HomeScreen} />
-      <Stack.Screen name="topicList" component={TopicListScreen} />
-      <Stack.Screen name="topicItems" component={TopicItemsScreen} />
       <Stack.Screen name="anthem" component={AnthemScreen} />
     </Stack.Navigator>
   );
