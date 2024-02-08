@@ -2,6 +2,7 @@ export interface Anthem {
   id: number;
   title: string;
   verses: Verse[];
+  author?: string;
 }
 
 export interface Verse {
@@ -10,7 +11,8 @@ export interface Verse {
   chorus: boolean;
 }
 
-export interface Topic {
+export interface Indexes {
   id: number;
   title: string;
+  anthems: number[]; // Array of anthem ids
 }
