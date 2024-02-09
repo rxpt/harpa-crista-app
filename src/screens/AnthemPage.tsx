@@ -1,31 +1,28 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {View, ScrollView, TouchableOpacity, Dimensions} from 'react-native';
-import {Text, Appbar, Divider, Searchbar, Button} from 'react-native-paper';
+import React, {useState, useEffect} from 'react';
+import {View, ScrollView} from 'react-native';
+import {Text, Appbar, Divider} from 'react-native-paper';
 import AnthemProgress from '../components/AnthemProgress';
 import {activateKeepAwake} from '@sayem314/react-native-keep-awake';
-import {useAppContext} from '../providers/AppProvider';
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import TrackPlayer, {useIsPlaying} from 'react-native-track-player';
-import {sample, padStart} from 'lodash';
-import {Anthem, Verse} from '../utils/interfaces';
-import {styles, theme} from '../utils/theme';
-import {searchAnthems} from '../utils';
-import anthems from '../data/anthems.json';
-import indexes from '../data/indexes.json';
+import {useAppContext} from '../providers/AppProvider';
+import AnthemVerses from '../components/AnthemVerses';
+import AnthemsModal from '../components/AnthemsModal';
+import IndexesModal from '../components/IndexesModal';
+import {anthemAudioURL, getAnthem, randomAnthem} from '../utils';
+import {styles} from '../utils/theme';
 
 const AnthemPage: React.FC = () => {
   activateKeepAwake();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const isPlaying = useIsPlaying().playing;
+  const [anthem, setAnthem] = useState(getAnthem(1));
+  const [searchIndex, setSearchIndex] = useState(-1);
+  const [anthemsModalOpen, setAnthemsModalOpen] = useState(false);
+  const [indexesModalOpen, setIndexesModalOpen] = useState(false);
 
-  const anthemsModalRef = useRef(null);
-  const anthemsModalFlatListRef = useRef(null);
-  const indexesModalRef = useRef(null);
+  const isPlaying = useIsPlaying().playing;
 
   const {state, dispatch} = useAppContext();
   const [MIN_FONT_SIZE, MAX_FONT_SIZE] = [16, 26];
-  const {height} = Dimensions.get('window');
 
   const changeFontSize = (fontSize: number) => {
     if (fontSize > MAX_FONT_SIZE || fontSize < MIN_FONT_SIZE) {
@@ -43,9 +40,6 @@ const AnthemPage: React.FC = () => {
     changeFontSize(state.fontSize - 1);
   };
 
-  const [anthem, setAnthem] = useState<Anthem>(anthems[0]);
-  const [anthemListIndex, setAnthemListIndex] = useState(-1);
-
   useEffect(() => {
     if (!state.playerReady) {
       return;
@@ -54,41 +48,12 @@ const AnthemPage: React.FC = () => {
     (async () => {
       await TrackPlayer.reset();
       await TrackPlayer.load({
-        url: `https://harpa.nyc3.digitaloceanspaces.com/${padStart(
-          anthem.id.toString(),
-          3,
-          '0',
-        )}.mp3`,
+        url: anthemAudioURL(anthem.id),
         title: anthem.title,
         artist: anthem.author,
       });
     })();
   }, [anthem, state.playerReady]);
-
-  const randomAnthem = () => {
-    setAnthem(sample(anthems) as Anthem);
-  };
-
-  const renderVerse = (anthemVerse: Verse) => {
-    return (
-      <Text
-        key={anthemVerse.sequence}
-        variant="bodyLarge"
-        style={[
-          styles.verse,
-          anthemVerse.sequence % 2 === 0 &&
-            !anthemVerse.chorus &&
-            styles.verseEven,
-          anthemVerse.chorus && styles.chorus,
-          {
-            fontSize: state.fontSize,
-            lineHeight: state.fontSize * 1.25,
-          },
-        ]}>
-        {anthemVerse.lyrics}
-      </Text>
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -115,27 +80,28 @@ const AnthemPage: React.FC = () => {
           icon="format-annotation-plus"
           onPress={increaseFontSize}
         />
-        <Appbar.Action icon="shuffle-variant" onPress={randomAnthem} />
+        <Appbar.Action
+          icon="shuffle-variant"
+          onPress={() => setAnthem(randomAnthem())}
+        />
         <Appbar.Action
           icon="magnify"
           onPress={() => {
-            if (anthemListIndex > -1) {
-              setAnthemListIndex(-1);
-            }
-
-            (anthemsModalRef.current as any)?.present();
+            setAnthemsModalOpen(true);
+            setIndexesModalOpen(false);
           }}
         />
         <Appbar.Action
           icon="dots-vertical"
           onPress={() => {
-            (indexesModalRef.current as any)?.present();
+            setIndexesModalOpen(true);
+            setAnthemsModalOpen(false);
           }}
         />
       </Appbar.Header>
       <Divider />
       <ScrollView>
-        {anthem.verses.map(renderVerse)}
+        <AnthemVerses verses={anthem.verses} />
         <Divider />
         {anthem.author && (
           <Text variant="bodySmall" style={styles.author}>
@@ -144,100 +110,21 @@ const AnthemPage: React.FC = () => {
         )}
       </ScrollView>
       <AnthemProgress />
-      {/* Anthems list */}
-      <BottomSheetModal
-        ref={anthemsModalRef}
-        snapPoints={[height]}
-        backgroundStyle={{
-          backgroundColor: theme.colors.onSecondary,
+      <AnthemsModal
+        open={anthemsModalOpen}
+        searchIndex={searchIndex}
+        onAnthemSelect={setAnthem}
+        onSearchQueryChange={() => setSearchIndex(-1)}
+        onDismiss={() => setAnthemsModalOpen(false)}
+      />
+      <IndexesModal
+        open={indexesModalOpen}
+        onSearchIndexChange={(index: number) => {
+          setSearchIndex(index);
+          setAnthemsModalOpen(true);
         }}
-        handleIndicatorStyle={{
-          backgroundColor: theme.colors.secondary,
-        }}>
-        <Searchbar
-          placeholder="Digite o número ou título"
-          onChangeText={text => {
-            if (anthemListIndex > -1) {
-              setAnthemListIndex(-1);
-            }
-
-            setSearchQuery(text);
-          }}
-          onClearIconPress={() => {
-            setSearchQuery('');
-          }}
-          value={searchQuery}
-          style={styles.marginHorizontal}
-        />
-        <BottomSheetFlatList
-          ref={anthemsModalFlatListRef}
-          data={searchAnthems(searchQuery, anthemListIndex)}
-          initialNumToRender={5}
-          contentContainerStyle={[styles.padding, styles.gap]}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => {
-            return (
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    setAnthem(item);
-                    (anthemsModalRef.current as any)?.dismiss();
-                  }}>
-                  <View style={[styles.flexRow, styles.alignCenter]}>
-                    {item.id && (
-                      <View style={styles.number}>
-                        <Text style={styles.centered}>{item.id}</Text>
-                      </View>
-                    )}
-                    <Text variant="titleMedium" style={styles.title}>
-                      {item.title}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <Divider />
-              </View>
-            );
-          }}
-        />
-      </BottomSheetModal>
-      {/* Indexes list */}
-      <BottomSheetModal
-        ref={indexesModalRef}
-        snapPoints={[height / 2]}
-        backgroundStyle={{
-          backgroundColor: theme.colors.onSecondary,
-        }}
-        handleIndicatorStyle={{
-          backgroundColor: theme.colors.secondary,
-        }}>
-        <Appbar.Header
-          mode="center-aligned"
-          style={{
-            backgroundColor: theme.colors.onSecondary,
-          }}>
-          <Appbar.Content title="Índice de Assuntos" />
-        </Appbar.Header>
-        <Divider />
-        <BottomSheetFlatList
-          data={indexes}
-          initialNumToRender={5}
-          contentContainerStyle={[styles.padding, styles.gap]}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({item, index}) => {
-            return (
-              <Button
-                mode="outlined"
-                onPress={() => {
-                  (indexesModalRef.current as any)?.dismiss();
-                  setAnthemListIndex(item.anthems?.length > 0 ? index : -1);
-                  (anthemsModalRef.current as any)?.present();
-                }}>
-                <Text>{item.title}</Text>
-              </Button>
-            );
-          }}
-        />
-      </BottomSheetModal>
+        onDismiss={() => setIndexesModalOpen(false)}
+      />
     </View>
   );
 };
