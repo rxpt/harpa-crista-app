@@ -3,7 +3,7 @@ import {Dimensions} from 'react-native';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {Appbar, Button, Divider, Text} from 'react-native-paper';
 import {styles, theme} from '../utils/theme';
-import indexes from '../data/indexes.json';
+import {getIndexes} from '../utils';
 
 type IndexesModalProps = {
   open: boolean;
@@ -47,7 +47,7 @@ const IndexesModal = ({
       </Appbar.Header>
       <Divider />
       <BottomSheetFlatList
-        data={indexes}
+        data={getIndexes()}
         initialNumToRender={5}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={(_, index) => index.toString()}

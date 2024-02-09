@@ -7,9 +7,10 @@ type AnthemHeaderBarProps = {
   title: string;
   buttons?: {
     icon: string;
-    label: string;
+    label?: string;
     action: () => void;
     disabled?: boolean;
+    hidden?: boolean;
   }[];
 };
 
@@ -51,14 +52,17 @@ const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
           disabled={state.fontSize >= MAX_FONT_SIZE}
         />
         {buttons &&
-          buttons.map((button, index) => (
-            <Appbar.Action
-              key={index}
-              icon={button.icon}
-              onPress={button.action}
-              disabled={button.disabled}
-            />
-          ))}
+          buttons.map(
+            (button, index) =>
+              !button.hidden && (
+                <Appbar.Action
+                  key={index}
+                  icon={button.icon}
+                  onPress={button.action}
+                  disabled={button.disabled}
+                />
+              ),
+          )}
       </Appbar.Header>
       <Divider />
     </View>

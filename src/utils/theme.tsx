@@ -49,8 +49,9 @@ export const styles = StyleSheet.create({
   author: {
     fontSize: theme.fonts.bodySmall.fontSize,
     fontStyle: 'italic',
-    textAlign: 'right',
+    textAlign: 'center',
     padding: padding,
+    paddingVertical: padding * 2,
   },
   backToTop: {
     position: 'absolute',
