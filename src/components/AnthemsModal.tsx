@@ -1,7 +1,7 @@
 import React from 'react';
 import BottomSheet from './BottomSheet';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
-import {Divider, Searchbar, Text} from 'react-native-paper';
+import {Divider, Searchbar, SegmentedButtons, Text} from 'react-native-paper';
 import {TouchableOpacity, View} from 'react-native';
 import {useAppContext} from '../providers/AppProvider';
 import {searchAnthems} from '../utils';
@@ -9,7 +9,9 @@ import {styles} from '../utils/theme';
 
 const AnthemsModal = () => {
   const {state, dispatch} = useAppContext();
-  const flatListRef = React.useRef(null);
+  const [searchType, setSearchType] = React.useState<'numeric' | 'default'>(
+    'numeric',
+  );
 
   React.useEffect(() => {
     dispatch({
@@ -21,8 +23,10 @@ const AnthemsModal = () => {
   return (
     <BottomSheet name="anthems">
       <Searchbar
-        placeholder="Digite o número"
-        keyboardType="numeric"
+        placeholder={`Pesquisar hino ${
+          searchType === 'numeric' ? 'por número' : 'por título'
+        }`}
+        keyboardType={searchType}
         onChangeText={text => {
           dispatch({type: 'SET_SEARCH_QUERY', payload: text});
         }}
@@ -32,8 +36,25 @@ const AnthemsModal = () => {
         value={state.searchQuery}
         style={styles.marginHorizontal}
       />
+      <SegmentedButtons
+        style={styles.marginHorizontal}
+        density="small"
+        value={searchType}
+        onValueChange={value => setSearchType(value as 'numeric' | 'default')}
+        buttons={[
+          {
+            icon: 'numeric',
+            value: 'numeric',
+            label: 'Teclado numérico',
+          },
+          {
+            icon: 'format-title',
+            value: 'default',
+            label: 'Teclado alfabético',
+          },
+        ]}
+      />
       <BottomSheetFlatList
-        ref={flatListRef}
         data={state.searchResults}
         initialNumToRender={5}
         contentContainerStyle={[styles.padding, styles.gap]}

@@ -17,7 +17,7 @@ const HistoryModal = () => {
         style={{
           backgroundColor: theme.colors.onSecondary,
         }}>
-        <Appbar.Content title="Histórico" />
+        <Appbar.Content title="Histórico (últimos 10)" />
       </Appbar.Header>
       <Divider />
       <BottomSheetFlatList

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {View, ScrollView} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
-import {Text, Divider, FAB} from 'react-native-paper';
+import {Text, Divider, FAB, Snackbar} from 'react-native-paper';
 import {activateKeepAwake} from '@sayem314/react-native-keep-awake';
 import {useAppContext} from '../providers/AppProvider';
 import AnthemVerses from '../components/AnthemVerses';
@@ -12,12 +12,17 @@ import AnthemHeaderBar from '../components/AnthemHeaderBar';
 import AnthemAudioProgress from '../components/AnthemAudioProgress';
 import {anthemAudioURL, randomAnthem} from '../utils';
 import {styles} from '../utils/theme';
+import HistoryModal from '../components/HistoryModal';
 
 const AnthemScreen: React.FC = () => {
   activateKeepAwake();
 
   const {state, dispatch} = useAppContext();
   const isFavorite = state.favorites.includes(state.currentAnthem.id);
+
+  const [visibleSnackBar, setVisibleSnackBar] = React.useState(false);
+  const [snackBarMessage, setSnackBarMessage] = React.useState('');
+  const onDismissSnackBar = () => setVisibleSnackBar(false);
 
   useEffect(() => {
     if (!state.playerReady) {
@@ -40,6 +45,12 @@ const AnthemScreen: React.FC = () => {
                   type: isFavorite ? 'REMOVE_FAVORITE' : 'ADD_FAVORITE',
                   payload: state.currentAnthem.id,
                 });
+                setVisibleSnackBar(true);
+                setSnackBarMessage(
+                  isFavorite
+                    ? 'Hino removido dos favoritos'
+                    : 'Hino adicionado aos favoritos',
+                );
               },
             },
             {
@@ -62,11 +73,12 @@ const AnthemScreen: React.FC = () => {
       <AnthemsModal />
       <IndexesModal />
       <FavoritesModal />
+      <HistoryModal />
       {/* More */}
       <FAB.Group
-        open={state.currentModal === 'more'}
+        open={state.bottomMenu}
         visible
-        icon={state.currentModal === 'more' ? 'dots-vertical' : 'plus'}
+        icon={state.bottomMenu ? 'close' : 'plus'}
         actions={[
           {
             icon: 'star',
@@ -75,16 +87,22 @@ const AnthemScreen: React.FC = () => {
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'favorites'}),
           },
           {
-            icon: 'shuffle-variant',
-            label: 'Hino aleatório',
+            icon: 'history',
+            label: 'Histórico',
             onPress: () =>
-              dispatch({type: 'SET_CURRENT_ANTHEM', payload: randomAnthem()}),
+              dispatch({type: 'SET_CURRENT_MODAL', payload: 'history'}),
           },
           {
             icon: 'format-list-bulleted-square',
             label: 'Índices de Assuntos',
             onPress: () =>
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'indexes'}),
+          },
+          {
+            icon: 'shuffle-variant',
+            label: 'Hino aleatório',
+            onPress: () =>
+              dispatch({type: 'SET_CURRENT_ANTHEM', payload: randomAnthem()}),
           },
           {
             icon: state.isPlaying ? 'stop' : 'play',
@@ -104,12 +122,19 @@ const AnthemScreen: React.FC = () => {
           },
         ]}
         onStateChange={({open}) => {
-          dispatch({type: 'SET_CURRENT_MODAL', payload: open ? 'more' : null});
+          dispatch({type: 'SET_BOTTOM_MENU', payload: open});
         }}
         onPress={() => {
-          dispatch({type: 'SET_CURRENT_MODAL', payload: 'more'});
+          dispatch({type: 'SET_BOTTOM_MENU', payload: true});
         }}
       />
+      <Snackbar
+        duration={2000}
+        visible={visibleSnackBar}
+        onDismiss={onDismissSnackBar}
+        onIconPress={() => setVisibleSnackBar(false)}>
+        {snackBarMessage}
+      </Snackbar>
     </View>
   );
 };

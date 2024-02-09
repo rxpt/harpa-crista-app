@@ -30,6 +30,7 @@ interface State {
     duration: number;
   };
   isPlaying: boolean;
+  bottomMenu: boolean;
 }
 
 type Action =
@@ -44,7 +45,8 @@ type Action =
   | {type: 'SET_CURRENT_ANTHEM'; payload: Anthem}
   | {type: 'SET_CURRENT_MODAL'; payload: string | null}
   | {type: 'SET_TRACK_PROGRESS'; payload: {position: number; duration: number}}
-  | {type: 'SET_IS_PLAYING'; payload: boolean};
+  | {type: 'SET_IS_PLAYING'; payload: boolean}
+  | {type: 'SET_BOTTOM_MENU'; payload: boolean};
 
 const initialState: State = {
   playerReady: false,
@@ -52,7 +54,7 @@ const initialState: State = {
   maxFontSize: 32,
   fontSize: storage.getNumber('fontSize') ?? 16,
   favorites: JSON.parse(storage.getString('favorites') ?? '[]'),
-  history: [],
+  history: JSON.parse(storage.getString('history') ?? '[]'),
   searchIndex: -1,
   searchQuery: '',
   searchResults: [],
@@ -64,6 +66,7 @@ const initialState: State = {
     duration: 0,
   },
   isPlaying: false,
+  bottomMenu: false,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -104,7 +107,8 @@ const reducer = (state: State, action: Action): State => {
       const addHistory = [
         payload,
         ...state.history.filter(id => id !== payload),
-      ];
+      ].slice(0, 10);
+      storage.set('history', JSON.stringify(addHistory));
       return {
         ...state,
         history: addHistory,
@@ -145,6 +149,11 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         isPlaying: payload,
       };
+    case 'SET_BOTTOM_MENU':
+      return {
+        ...state,
+        bottomMenu: payload,
+      };
 
     default:
       throw new Error(`Ação desconhecida: ${type}`);
@@ -176,6 +185,10 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({
   useEffect(() => {
     dispatch({type: 'SET_IS_PLAYING', payload: playing || false});
   }, [playing]);
+
+  useEffect(() => {
+    dispatch({type: 'ADD_HISTORY', payload: state.currentAnthem.id});
+  }, [state.currentAnthem.id]);
 
   useEffect(() => {
     const initializePlayer = async () => {
