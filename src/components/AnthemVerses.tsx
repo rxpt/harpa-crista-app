@@ -2,14 +2,13 @@ import React from 'react';
 import {styles} from '../utils/theme';
 import {Text} from 'react-native-paper';
 import {useAppContext} from '../providers/AppProvider';
-import {Verse} from '../utils/interfaces';
 
-const AnthemVerses = ({verses}: {verses: Verse[]}) => {
+const AnthemVerses = () => {
   const {
-    state: {fontSize},
+    state: {fontSize, currentAnthem},
   } = useAppContext();
 
-  return verses.map(verse => (
+  return currentAnthem.verses.map(verse => (
     <Text
       key={verse.sequence}
       variant="bodyLarge"

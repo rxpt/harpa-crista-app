@@ -1,76 +1,40 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet from './BottomSheet';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {Divider, Searchbar, Text} from 'react-native-paper';
 import {TouchableOpacity, View} from 'react-native';
-import {styles, theme} from '../utils/theme';
+import {useAppContext} from '../providers/AppProvider';
 import {searchAnthems} from '../utils';
+import {styles} from '../utils/theme';
 
-type AnthemsModalProps = {
-  open: boolean;
-  searchIndex: number;
-  onDismiss?: () => void;
-  onAnthemSelect: (anthem: any) => void;
-  onSearchQueryChange?: (query: string) => void;
-  onSearchQueryClear?: () => void;
-};
-
-const AnthemsModal = ({
-  open,
-  searchIndex = -1,
-  onDismiss,
-  onAnthemSelect,
-  onSearchQueryChange,
-  onSearchQueryClear,
-}: AnthemsModalProps) => {
-  const anthemsModalRef = React.useRef(null);
-  const anthemsModalFlatListRef = React.useRef(null);
-  const {height} = Dimensions.get('window');
-
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [anthemList, setAnthemList] = React.useState(
-    searchAnthems(searchQuery, searchIndex),
-  );
+const AnthemsModal = () => {
+  const {state, dispatch} = useAppContext();
+  const flatListRef = React.useRef(null);
 
   React.useEffect(() => {
-    if (open) {
-      (anthemsModalRef.current as any)?.present();
-    } else {
-      (anthemsModalRef.current as any)?.dismiss();
-    }
-  }, [open]);
-
-  React.useEffect(() => {
-    setAnthemList(searchAnthems(searchQuery, searchIndex));
-  }, [searchIndex, searchQuery]);
+    dispatch({
+      type: 'SET_SEARCH_RESULTS',
+      payload: searchAnthems(state.searchQuery, state.searchIndex),
+    });
+  }, [dispatch, state.searchIndex, state.searchQuery]);
 
   return (
-    <BottomSheetModal
-      ref={anthemsModalRef}
-      snapPoints={[height]}
-      backgroundStyle={{
-        backgroundColor: theme.colors.onSecondary,
-      }}
-      handleIndicatorStyle={{
-        backgroundColor: theme.colors.secondary,
-      }}
-      onDismiss={onDismiss}>
+    <BottomSheet name="anthems">
       <Searchbar
-        placeholder="Digite o número ou título"
+        placeholder="Digite o número"
+        keyboardType="numeric"
         onChangeText={text => {
-          onSearchQueryChange?.(text);
-          setSearchQuery(text);
+          dispatch({type: 'SET_SEARCH_QUERY', payload: text});
         }}
         onClearIconPress={() => {
-          onSearchQueryClear?.();
-          setSearchQuery('');
+          dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
         }}
-        value={searchQuery}
+        value={state.searchQuery}
         style={styles.marginHorizontal}
       />
       <BottomSheetFlatList
-        ref={anthemsModalFlatListRef}
-        data={anthemList}
+        ref={flatListRef}
+        data={state.searchResults}
         initialNumToRender={5}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={item => item.id.toString()}
@@ -79,8 +43,8 @@ const AnthemsModal = ({
             <View>
               <TouchableOpacity
                 onPress={() => {
-                  onAnthemSelect(item);
-                  (anthemsModalRef.current as any)?.dismiss();
+                  dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
+                  dispatch({type: 'SET_CURRENT_MODAL', payload: null});
                 }}>
                 <View style={[styles.flexRow, styles.alignCenter]}>
                   {item.id && (
@@ -98,7 +62,7 @@ const AnthemsModal = ({
           );
         }}
       />
-    </BottomSheetModal>
+    </BottomSheet>
   );
 };
 

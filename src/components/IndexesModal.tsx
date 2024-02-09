@@ -1,43 +1,16 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet from './BottomSheet';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {Appbar, Button, Divider, Text} from 'react-native-paper';
+import {useAppContext} from '../providers/AppProvider';
 import {styles, theme} from '../utils/theme';
 import {getIndexes} from '../utils';
 
-type IndexesModalProps = {
-  open: boolean;
-  onDismiss?: () => void;
-  onSearchIndexChange: (index: number) => void;
-};
-
-const IndexesModal = ({
-  open,
-  onDismiss,
-  onSearchIndexChange,
-}: IndexesModalProps) => {
-  const indexesModalRef = React.useRef(null);
-  const {height} = Dimensions.get('window');
-
-  React.useEffect(() => {
-    if (open) {
-      (indexesModalRef.current as any)?.present();
-    } else {
-      (indexesModalRef.current as any)?.dismiss();
-    }
-  }, [open]);
+const IndexesModal = () => {
+  const {dispatch} = useAppContext();
 
   return (
-    <BottomSheetModal
-      ref={indexesModalRef}
-      snapPoints={[height / 2]}
-      onDismiss={onDismiss}
-      backgroundStyle={{
-        backgroundColor: theme.colors.onSecondary,
-      }}
-      handleIndicatorStyle={{
-        backgroundColor: theme.colors.secondary,
-      }}>
+    <BottomSheet name="indexes">
       <Appbar.Header
         mode="center-aligned"
         style={{
@@ -56,15 +29,18 @@ const IndexesModal = ({
             <Button
               mode="outlined"
               onPress={() => {
-                (indexesModalRef.current as any)?.dismiss();
-                onSearchIndexChange(item.anthems?.length > 0 ? index : -1);
+                dispatch({
+                  type: 'SET_SEARCH_INDEX',
+                  payload: item.anthems?.length > 0 ? index : -1,
+                });
+                dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'});
               }}>
               <Text>{item.title}</Text>
             </Button>
           );
         }}
       />
-    </BottomSheetModal>
+    </BottomSheet>
   );
 };
 

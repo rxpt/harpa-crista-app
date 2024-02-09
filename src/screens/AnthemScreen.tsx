@@ -1,32 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {View, ScrollView} from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import {Text, Divider, FAB} from 'react-native-paper';
-import TrackPlayer, {useIsPlaying} from 'react-native-track-player';
 import {activateKeepAwake} from '@sayem314/react-native-keep-awake';
 import {useAppContext} from '../providers/AppProvider';
 import AnthemVerses from '../components/AnthemVerses';
 import AnthemsModal from '../components/AnthemsModal';
 import IndexesModal from '../components/IndexesModal';
+import FavoritesModal from '../components/FavoritesModal';
 import AnthemHeaderBar from '../components/AnthemHeaderBar';
 import AnthemAudioProgress from '../components/AnthemAudioProgress';
-import {anthemAudioURL, getAnthem, randomAnthem} from '../utils';
+import {anthemAudioURL, randomAnthem} from '../utils';
 import {styles} from '../utils/theme';
-import FavoritesModal from '../components/FavoritesModal';
 
 const AnthemScreen: React.FC = () => {
   activateKeepAwake();
 
-  const [anthem, setAnthem] = useState(getAnthem(1));
-  const [searchIndex, setSearchIndex] = useState(-1);
-  const [currentModal, setCurrentModal] = useState<
-    'anthems' | 'indexes' | 'favorites' | undefined
-  >('anthems');
-  const [openMenu, setOpenMenu] = useState(false);
-
   const {state, dispatch} = useAppContext();
-  const isPlaying = useIsPlaying().playing;
-  const {favorites} = state;
-  const isFavorite = favorites.includes(anthem.id);
+  const isFavorite = state.favorites.includes(state.currentAnthem.id);
 
   useEffect(() => {
     if (!state.playerReady) {
@@ -34,101 +25,89 @@ const AnthemScreen: React.FC = () => {
     }
 
     TrackPlayer.reset();
-  }, [state.playerReady, anthem]);
+  }, [state.playerReady, state.currentAnthem]);
 
   return (
     <View style={styles.container}>
       <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll>
         <AnthemHeaderBar
-          title={`${anthem.id}. ${anthem.title}`}
+          title={`${state.currentAnthem.id}. ${state.currentAnthem.title}`}
           buttons={[
             {
               icon: isFavorite ? 'heart' : 'heart-outline',
               action: () => {
                 dispatch({
                   type: isFavorite ? 'REMOVE_FAVORITE' : 'ADD_FAVORITE',
-                  payload: anthem.id,
+                  payload: state.currentAnthem.id,
                 });
               },
             },
             {
               icon: 'magnify',
               action: () => {
-                setSearchIndex(-1);
-                setCurrentModal('anthems');
+                dispatch({type: 'SET_SEARCH_INDEX', payload: -1});
+                dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'});
               },
-              disabled: currentModal === 'anthems',
+              disabled: state.currentModal === 'anthems',
             },
           ]}
         />
-        <AnthemVerses verses={anthem.verses} />
+        <AnthemVerses />
         <Divider />
         <Text variant="bodySmall" style={styles.author}>
-          {anthem?.author || 'Autor desconhecido'}
+          {state.currentAnthem?.author || 'Autor desconhecido'}
         </Text>
       </ScrollView>
       <AnthemAudioProgress />
-      <AnthemsModal
-        open={currentModal === 'anthems'}
-        searchIndex={searchIndex}
-        onAnthemSelect={setAnthem}
-        onSearchQueryChange={() => setSearchIndex(-1)}
-        onDismiss={() => setCurrentModal(undefined)}
-      />
-      <IndexesModal
-        open={currentModal === 'indexes'}
-        onSearchIndexChange={(index: number) => {
-          setSearchIndex(index);
-          setCurrentModal('anthems');
-        }}
-        onDismiss={() => setCurrentModal(undefined)}
-      />
-      <FavoritesModal
-        open={currentModal === 'favorites'}
-        onAnthemSelect={setAnthem}
-        onDismiss={() => setCurrentModal(undefined)}
-      />
+      <AnthemsModal />
+      <IndexesModal />
+      <FavoritesModal />
       {/* More */}
       <FAB.Group
-        open={openMenu}
+        open={state.currentModal === 'more'}
         visible
-        icon={openMenu ? 'dots-vertical' : 'plus'}
+        icon={state.currentModal === 'more' ? 'dots-vertical' : 'plus'}
         actions={[
           {
             icon: 'star',
             label: 'Favoritos',
-            onPress: () => setCurrentModal('favorites'),
+            onPress: () =>
+              dispatch({type: 'SET_CURRENT_MODAL', payload: 'favorites'}),
           },
           {
             icon: 'shuffle-variant',
             label: 'Hino aleatório',
-            onPress: () => setAnthem(randomAnthem()),
+            onPress: () =>
+              dispatch({type: 'SET_CURRENT_ANTHEM', payload: randomAnthem()}),
           },
           {
             icon: 'format-list-bulleted-square',
             label: 'Índices de Assuntos',
-            onPress: () => setCurrentModal('indexes'),
+            onPress: () =>
+              dispatch({type: 'SET_CURRENT_MODAL', payload: 'indexes'}),
           },
           {
-            icon: isPlaying ? 'stop' : 'play',
-            label: isPlaying ? 'Parar' : 'Ouvir hino',
+            icon: state.isPlaying ? 'stop' : 'play',
+            label: state.isPlaying ? 'Parar' : 'Ouvir hino',
             onPress: async () => {
-              if (isPlaying) {
+              if (state.isPlaying) {
                 await TrackPlayer.stop();
               } else {
                 await TrackPlayer.load({
-                  url: anthemAudioURL(anthem.id),
-                  title: anthem.title,
-                  artist: anthem.author,
+                  url: anthemAudioURL(state.currentAnthem.id),
+                  title: state.currentAnthem.title,
+                  artist: state.currentAnthem.author,
                 });
                 await TrackPlayer.play();
               }
             },
           },
         ]}
-        onStateChange={({open}) => setOpenMenu(open)}
+        onStateChange={({open}) => {
+          dispatch({type: 'SET_CURRENT_MODAL', payload: open ? 'more' : null});
+        }}
         onPress={() => {
-          setOpenMenu(!openMenu);
+          dispatch({type: 'SET_CURRENT_MODAL', payload: 'more'});
         }}
       />
     </View>

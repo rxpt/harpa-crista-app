@@ -8,12 +8,13 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useIsPlaying, useProgress} from 'react-native-track-player';
+import {useAppContext} from '../providers/AppProvider';
 import {theme} from '../utils/theme';
 
 const AnthemAudioProgress = () => {
-  const isPlaying = useIsPlaying().playing;
-  const progress = useProgress();
+  const {
+    state: {isPlaying, trackProgress: progress},
+  } = useAppContext();
 
   const width = useSharedValue(0);
 

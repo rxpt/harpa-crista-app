@@ -1,49 +1,18 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import BottomSheet from './BottomSheet';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {Appbar, Button, Divider, Text} from 'react-native-paper';
 import {styles, theme} from '../utils/theme';
 import {useAppContext} from '../providers/AppProvider';
 import {getAnthem} from '../utils';
 
-type FavoritesModalProps = {
-  open: boolean;
-  onDismiss?: () => void;
-  onAnthemSelect: (anthem: any) => void;
-};
-
-const FavoritesModal = ({
-  open,
-  onDismiss,
-  onAnthemSelect,
-}: FavoritesModalProps) => {
-  const favoritesModalRef = React.useRef(null);
-  const {height} = Dimensions.get('window');
-  const {
-    state: {favorites},
-  } = useAppContext();
-
-  const getFavorites = () => favorites.map(favorite => getAnthem(favorite));
-
-  React.useEffect(() => {
-    if (open) {
-      (favoritesModalRef.current as any)?.present();
-    } else {
-      (favoritesModalRef.current as any)?.dismiss();
-    }
-  }, [open]);
+const FavoritesModal = () => {
+  const {state, dispatch} = useAppContext();
+  const getFavorites = () =>
+    state.favorites.map(favorite => getAnthem(favorite));
 
   return (
-    <BottomSheetModal
-      ref={favoritesModalRef}
-      snapPoints={[height / 2]}
-      onDismiss={onDismiss}
-      backgroundStyle={{
-        backgroundColor: theme.colors.onSecondary,
-      }}
-      handleIndicatorStyle={{
-        backgroundColor: theme.colors.secondary,
-      }}>
+    <BottomSheet name="favorites">
       <Appbar.Header
         mode="center-aligned"
         style={{
@@ -63,8 +32,8 @@ const FavoritesModal = ({
             <Button
               mode="outlined"
               onPress={() => {
-                (favoritesModalRef.current as any)?.dismiss();
-                onAnthemSelect(item);
+                dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
+                dispatch({type: 'SET_CURRENT_MODAL', payload: null});
               }}>
               <Text>
                 {item.id}. {item.title}
@@ -73,7 +42,7 @@ const FavoritesModal = ({
           );
         }}
       />
-    </BottomSheetModal>
+    </BottomSheet>
   );
 };
 

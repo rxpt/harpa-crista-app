@@ -21,19 +21,7 @@ const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
   const MIN_FONT_SIZE = state.minFontSize;
 
   const changeFontSize = (fontSize: number) => {
-    if (fontSize > MAX_FONT_SIZE || fontSize < MIN_FONT_SIZE) {
-      return;
-    }
-
     dispatch({type: 'SET_FONT_SIZE', payload: fontSize});
-  };
-
-  const increaseFontSize = () => {
-    changeFontSize(state.fontSize + 1);
-  };
-
-  const decreaseFontSize = () => {
-    changeFontSize(state.fontSize - 1);
   };
 
   return (
@@ -43,12 +31,12 @@ const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
         {/* music music-note autorenew backup-restore bookmark-plus bookmark-remove format-annotation-minus format-annotation-plus heart heart-outline history  */}
         <Appbar.Action
           icon="format-annotation-minus"
-          onPress={decreaseFontSize}
+          onPress={() => changeFontSize(state.fontSize - 1)}
           disabled={state.fontSize <= MIN_FONT_SIZE}
         />
         <Appbar.Action
           icon="format-annotation-plus"
-          onPress={increaseFontSize}
+          onPress={() => changeFontSize(state.fontSize + 1)}
           disabled={state.fontSize >= MAX_FONT_SIZE}
         />
         {buttons &&

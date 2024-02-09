@@ -5,8 +5,11 @@ import React, {
   useEffect,
   Dispatch,
 } from 'react';
-import {setupPlayer} from '../services';
 import {MMKV} from 'react-native-mmkv';
+import {setupPlayer} from '../services';
+import {getAnthem} from '../utils';
+import {Anthem} from '../utils/interfaces';
+import {useProgress, useIsPlaying} from 'react-native-track-player';
 
 export const storage = new MMKV();
 
@@ -17,6 +20,16 @@ interface State {
   maxFontSize: number;
   favorites: number[];
   history: number[];
+  searchIndex: number;
+  searchQuery: string;
+  searchResults: Anthem[];
+  currentAnthem: Anthem;
+  currentModal: string | null;
+  trackProgress: {
+    position: number;
+    duration: number;
+  };
+  isPlaying: boolean;
 }
 
 type Action =
@@ -24,7 +37,14 @@ type Action =
   | {type: 'SET_PLAYER_READY'; payload: boolean}
   | {type: 'ADD_FAVORITE'; payload: number}
   | {type: 'REMOVE_FAVORITE'; payload: number}
-  | {type: 'ADD_HISTORY'; payload: number};
+  | {type: 'ADD_HISTORY'; payload: number}
+  | {type: 'SET_SEARCH_INDEX'; payload: number}
+  | {type: 'SET_SEARCH_QUERY'; payload: string}
+  | {type: 'SET_SEARCH_RESULTS'; payload: Anthem[]}
+  | {type: 'SET_CURRENT_ANTHEM'; payload: Anthem}
+  | {type: 'SET_CURRENT_MODAL'; payload: string | null}
+  | {type: 'SET_TRACK_PROGRESS'; payload: {position: number; duration: number}}
+  | {type: 'SET_IS_PLAYING'; payload: boolean};
 
 const initialState: State = {
   playerReady: false,
@@ -33,6 +53,17 @@ const initialState: State = {
   fontSize: storage.getNumber('fontSize') ?? 16,
   favorites: JSON.parse(storage.getString('favorites') ?? '[]'),
   history: [],
+  searchIndex: -1,
+  searchQuery: '',
+  searchResults: [],
+  currentAnthem:
+    JSON.parse(storage.getString('currentAnthem') ?? 'null') ?? getAnthem(1),
+  currentModal: null,
+  trackProgress: {
+    position: 0,
+    duration: 0,
+  },
+  isPlaying: false,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -78,6 +109,42 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         history: addHistory,
       };
+    case 'SET_SEARCH_INDEX':
+      return {
+        ...state,
+        searchIndex: payload,
+      };
+    case 'SET_SEARCH_QUERY':
+      return {
+        ...state,
+        searchQuery: payload,
+      };
+    case 'SET_SEARCH_RESULTS':
+      return {
+        ...state,
+        searchResults: payload,
+      };
+    case 'SET_CURRENT_ANTHEM':
+      storage.set('currentAnthem', JSON.stringify(payload));
+      return {
+        ...state,
+        currentAnthem: payload,
+      };
+    case 'SET_CURRENT_MODAL':
+      return {
+        ...state,
+        currentModal: payload,
+      };
+    case 'SET_TRACK_PROGRESS':
+      return {
+        ...state,
+        trackProgress: payload,
+      };
+    case 'SET_IS_PLAYING':
+      return {
+        ...state,
+        isPlaying: payload,
+      };
 
     default:
       throw new Error(`Ação desconhecida: ${type}`);
@@ -93,6 +160,22 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const {playing} = useIsPlaying();
+  const progress = useProgress();
+
+  useEffect(() => {
+    dispatch({
+      type: 'SET_TRACK_PROGRESS',
+      payload: {
+        position: progress.position,
+        duration: progress.duration,
+      },
+    });
+  }, [progress.duration, progress.position]);
+
+  useEffect(() => {
+    dispatch({type: 'SET_IS_PLAYING', payload: playing || false});
+  }, [playing]);
 
   useEffect(() => {
     const initializePlayer = async () => {
