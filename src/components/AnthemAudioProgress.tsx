@@ -3,11 +3,10 @@ import {Animated, StyleSheet, View} from 'react-native';
 import {theme} from '../utils/theme';
 import {Text} from 'react-native-paper';
 import {padStart} from 'lodash';
-import {State, usePlaybackState, useProgress} from 'react-native-track-player';
+import {useIsPlaying, useProgress} from 'react-native-track-player';
 
 const AnthemAudioProgress: React.FC = () => {
-  const playerState = usePlaybackState().state;
-  const isPlaying = playerState === State.Playing;
+  const isPlaying = useIsPlaying().playing;
   const progress = useProgress();
   const width = useRef(new Animated.Value(0)).current;
 
@@ -16,7 +15,7 @@ const AnthemAudioProgress: React.FC = () => {
       toValue: isPlaying
         ? Math.round((progress.position / progress.duration) * 100)
         : 0,
-      duration: 300,
+      duration: 1000,
       useNativeDriver: false,
     }).start();
   });

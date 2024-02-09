@@ -15,14 +15,16 @@ type AnthemHeaderBarProps = {
 
 const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
   const {state, dispatch} = useAppContext();
-  const [MIN_FONT_SIZE, MAX_FONT_SIZE] = [16, 32];
+
+  const MAX_FONT_SIZE = state.maxFontSize;
+  const MIN_FONT_SIZE = state.minFontSize;
 
   const changeFontSize = (fontSize: number) => {
     if (fontSize > MAX_FONT_SIZE || fontSize < MIN_FONT_SIZE) {
       return;
     }
 
-    dispatch({type: 'fontSize', payload: fontSize});
+    dispatch({type: 'SET_FONT_SIZE', payload: fontSize});
   };
 
   const increaseFontSize = () => {

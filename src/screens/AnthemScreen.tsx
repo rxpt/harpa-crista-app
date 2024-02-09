@@ -29,11 +29,11 @@ const AnthemScreen: React.FC = () => {
     }
 
     TrackPlayer.reset();
-  }, [state.playerReady]);
+  }, [state.playerReady, anthem]);
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll>
         <AnthemHeaderBar
           title={`${anthem.id}. ${anthem.title}`}
           buttons={[
