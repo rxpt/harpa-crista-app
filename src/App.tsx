@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {StatusBar} from 'react-native';
-import AnthemPage from './screens/AnthemPage';
+import AnthemScreen from './screens/AnthemScreen';
 import {PaperProvider} from 'react-native-paper';
 import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
@@ -19,7 +19,7 @@ export default function App() {
       />
       <BottomSheetModalProvider>
         <AppProvider>
-          <AnthemPage />
+          <AnthemScreen />
         </AppProvider>
       </BottomSheetModalProvider>
     </PaperProvider>

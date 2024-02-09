@@ -5,7 +5,7 @@ import {Text} from 'react-native-paper';
 import {padStart} from 'lodash';
 import {State, usePlaybackState, useProgress} from 'react-native-track-player';
 
-const AnthemProgress: React.FC = () => {
+const AnthemAudioProgress: React.FC = () => {
   const playerState = usePlaybackState().state;
   const isPlaying = playerState === State.Playing;
   const progress = useProgress();
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnthemProgress;
+export default AnthemAudioProgress;
