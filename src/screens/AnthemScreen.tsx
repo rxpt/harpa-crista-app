@@ -17,7 +17,7 @@ const AnthemScreen: React.FC = () => {
 
   const [anthem, setAnthem] = useState(getAnthem(1));
   const [searchIndex, setSearchIndex] = useState(-1);
-  const [anthemsModalOpen, setAnthemsModalOpen] = useState(false);
+  const [anthemsModalOpen, setAnthemsModalOpen] = useState(true);
   const [indexesModalOpen, setIndexesModalOpen] = useState(false);
 
   const {state} = useAppContext();
@@ -60,7 +60,7 @@ const AnthemScreen: React.FC = () => {
               action: () => setAnthem(randomAnthem()),
             },
             {
-              icon: 'format-list-numbered',
+              icon: 'format-list-bulleted-square',
               label: 'Indexes',
               action: () => setIndexesModalOpen(true),
               disabled: indexesModalOpen,
