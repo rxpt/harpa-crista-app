@@ -37,12 +37,12 @@ export const getIndexes = () => {
 };
 
 export const getAnthemIndexes = (id: number) => {
-  return indexes.find(index => index.anthems.includes(id)) as Indexes;
+  return indexes.find(index => index.data.includes(id)) as Indexes;
 };
 
-export const searchAnthems = (searchQuery: string, index: number = -1) => {
+export const searchAnthems = (searchQuery: string) => {
   if (searchQuery) {
-    return anthemsByIndex(index).filter(anthem => {
+    return anthems.filter(anthem => {
       return (
         anthem?.id === parseInt(searchQuery, 10) ||
         anthem?.id.toString().includes(searchQuery.trim()) ||
@@ -53,15 +53,15 @@ export const searchAnthems = (searchQuery: string, index: number = -1) => {
     }) as Anthem[];
   }
 
-  return anthemsByIndex(index) as Anthem[];
+  return anthems as Anthem[];
 };
 
-export const anthemsByIndex = (index: number) => {
-  if (index === -1) {
+export const anthemsByIndex = (index?: number) => {
+  if (!index) {
     return anthems as Anthem[];
   }
 
   return anthems.filter(anthem =>
-    indexes[index].anthems.includes(anthem?.id),
+    indexes[index].data.includes(anthem?.id),
   ) as Anthem[];
 };

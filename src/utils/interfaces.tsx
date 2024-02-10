@@ -12,7 +12,6 @@ export interface Verse {
 }
 
 export interface Indexes {
-  id: number;
   title: string;
-  anthems: number[]; // Array of anthem ids
+  data: number[]; // Array of anthem ids
 }

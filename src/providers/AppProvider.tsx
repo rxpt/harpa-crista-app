@@ -20,7 +20,6 @@ interface State {
   maxFontSize: number;
   favorites: number[];
   history: number[];
-  searchIndex: number;
   searchQuery: string;
   searchResults: Anthem[];
   currentAnthem: Anthem;
@@ -40,7 +39,6 @@ type Action =
   | {type: 'REMOVE_FAVORITE'; payload: number}
   | {type: 'TOGGLE_FAVORITE'; payload: number}
   | {type: 'ADD_HISTORY'; payload: number}
-  | {type: 'SET_SEARCH_INDEX'; payload: number}
   | {type: 'SET_SEARCH_QUERY'; payload: string}
   | {type: 'SET_SEARCH_RESULTS'; payload: Anthem[]}
   | {type: 'SET_CURRENT_ANTHEM'; payload: Anthem}
@@ -56,7 +54,6 @@ const initialState: State = {
   fontSize: storage.getNumber('fontSize') ?? 16,
   favorites: JSON.parse(storage.getString('favorites') ?? '[]'),
   history: JSON.parse(storage.getString('history') ?? '[]'),
-  searchIndex: -1,
   searchQuery: '',
   searchResults: [],
   currentAnthem:
@@ -119,11 +116,6 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         history: addHistory,
-      };
-    case 'SET_SEARCH_INDEX':
-      return {
-        ...state,
-        searchIndex: payload,
       };
     case 'SET_SEARCH_QUERY':
       return {

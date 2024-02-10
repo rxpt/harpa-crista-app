@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {MD3DarkTheme} from 'react-native-paper';
 
-const padding = 20;
+const padding = 15;
 
 export const theme = {
   ...MD3DarkTheme,
@@ -231,5 +231,34 @@ export const styles = StyleSheet.create({
   },
   bottom: {
     bottom: 0,
+  },
+  wrap: {
+    flexWrap: 'wrap',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  widthAuto: {
+    width: 'auto',
+  },
+  fullHeight: {
+    height: '100%',
+  },
+  heightAuto: {
+    height: 'auto',
+  },
+  anthemTitle: {
+    fontSize: theme.fonts.headlineSmall.fontSize,
+    fontWeight: '900',
+    flex: 1,
+  },
+  anthemButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: padding / 2,
+    backgroundColor: theme.colors.secondaryContainer,
+    color: theme.colors.secondary,
   },
 });

@@ -16,55 +16,48 @@ const AnthemsModal = () => {
   React.useEffect(() => {
     dispatch({
       type: 'SET_SEARCH_RESULTS',
-      payload: searchAnthems(
-        state.searchIndex === -1 ? state.searchQuery : '',
-        state.searchIndex,
-      ),
+      payload: searchAnthems(state.searchQuery),
     });
-  }, [dispatch, state.searchIndex, state.searchQuery]);
+  }, [dispatch, state.searchQuery]);
 
   return (
     <BottomSheet name="anthems" snapPoints={['100%']}>
-      {state.searchIndex === -1 && (
-        <View>
-          <Searchbar
-            autoFocus
-            placeholder="Pesquisar hinos"
-            keyboardType={searchType}
-            onChangeText={text => {
-              dispatch({type: 'SET_SEARCH_QUERY', payload: text});
-            }}
-            onClearIconPress={() => {
-              dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
-            }}
-            value={state.searchQuery}
-            style={styles.marginHorizontal}
-          />
-          <SegmentedButtons
-            density="small"
-            style={styles.marginHorizontal}
-            value={searchType}
-            onValueChange={value =>
-              setSearchType(value as 'numeric' | 'default')
-            }
-            buttons={[
-              {
-                label: 'Teclado',
-                value: '',
-                disabled: true,
-              },
-              {
-                icon: 'numeric',
-                value: 'numeric',
-              },
-              {
-                icon: 'format-title',
-                value: 'default',
-              },
-            ]}
-          />
-        </View>
-      )}
+      <View>
+        <Searchbar
+          autoFocus
+          placeholder="Digite número ou título..."
+          keyboardType={searchType}
+          onChangeText={text => {
+            dispatch({type: 'SET_SEARCH_QUERY', payload: text});
+          }}
+          onClearIconPress={() => {
+            dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
+          }}
+          value={state.searchQuery}
+          style={styles.marginHorizontal}
+        />
+        <SegmentedButtons
+          density="small"
+          style={[styles.marginTop, styles.marginHorizontal]}
+          value={searchType}
+          onValueChange={value => setSearchType(value as 'numeric' | 'default')}
+          buttons={[
+            {
+              label: 'Teclado',
+              value: '',
+              disabled: true,
+            },
+            {
+              icon: 'numeric',
+              value: 'numeric',
+            },
+            {
+              icon: 'format-title',
+              value: 'default',
+            },
+          ]}
+        />
+      </View>
       <BottomSheetFlatList
         data={state.searchResults}
         initialNumToRender={5}

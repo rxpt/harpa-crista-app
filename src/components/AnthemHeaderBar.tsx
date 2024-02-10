@@ -37,7 +37,6 @@ const AnthemHeaderBar = () => {
             mode="contained"
             icon="magnify"
             onPress={() => {
-              dispatch({type: 'SET_SEARCH_INDEX', payload: -1});
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'});
             }}
             animated
