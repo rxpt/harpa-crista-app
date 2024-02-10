@@ -1,19 +1,24 @@
 import React from 'react';
 import {Dimensions} from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {useAppContext} from '../providers/AppProvider';
+import {useAppContext} from '../../providers/AppProvider';
 import BackdropModal from './BackdropModal';
-import {theme} from '../utils/theme';
+import {theme} from '../../utils/theme';
 
 type BottomSheetProps = React.PropsWithChildren<{
   name: string;
+  snapPoints?: number[] | string[];
 }>;
 
-const BottomSheet = ({children, name}: BottomSheetProps) => {
+const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
   const {state, dispatch} = useAppContext();
 
   const bottomSheetRef = React.useRef(null);
   const {height} = Dimensions.get('window');
+
+  if (!snapPoints) {
+    snapPoints = [height * 0.5, height * 0.8];
+  }
 
   //const open = () => dispatch({type: 'SET_CURRENT_MODAL', payload: name});
   const close = () => dispatch({type: 'SET_CURRENT_MODAL', payload: null});
@@ -29,7 +34,7 @@ const BottomSheet = ({children, name}: BottomSheetProps) => {
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
-      snapPoints={[height / 2, height]}
+      snapPoints={snapPoints}
       backdropComponent={BackdropModal}
       onDismiss={close}
       backgroundStyle={{

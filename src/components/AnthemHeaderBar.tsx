@@ -1,20 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Appbar, Divider} from 'react-native-paper';
+import {Divider, IconButton} from 'react-native-paper';
 import {useAppContext} from '../providers/AppProvider';
+import {styles} from '../utils/theme';
 
-type AnthemHeaderBarProps = {
-  title: string;
-  buttons?: {
-    icon: string;
-    label?: string;
-    action: () => void;
-    disabled?: boolean;
-    hidden?: boolean;
-  }[];
-};
-
-const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
+const AnthemHeaderBar = () => {
   const {state, dispatch} = useAppContext();
 
   const MAX_FONT_SIZE = state.maxFontSize;
@@ -25,33 +15,35 @@ const AnthemHeaderBar = ({title, buttons}: AnthemHeaderBarProps) => {
   };
 
   return (
-    <View>
-      <Appbar.Header mode="medium">
-        <Appbar.Content title={title} />
-        {/* music music-note autorenew backup-restore bookmark-plus bookmark-remove format-annotation-minus format-annotation-plus heart heart-outline history  */}
-        <Appbar.Action
-          icon="format-annotation-minus"
-          onPress={() => changeFontSize(state.fontSize - 1)}
-          disabled={state.fontSize <= MIN_FONT_SIZE}
-        />
-        <Appbar.Action
-          icon="format-annotation-plus"
-          onPress={() => changeFontSize(state.fontSize + 1)}
-          disabled={state.fontSize >= MAX_FONT_SIZE}
-        />
-        {buttons &&
-          buttons.map(
-            (button, index) =>
-              !button.hidden && (
-                <Appbar.Action
-                  key={index}
-                  icon={button.icon}
-                  onPress={button.action}
-                  disabled={button.disabled}
-                />
-              ),
-          )}
-      </Appbar.Header>
+    <View style={[styles.paddingHeader, styles.primaryContainer]}>
+      <View style={[styles.flexRow, styles.alignCenter, styles.spaceBetween]}>
+        <View style={[styles.flexRow, styles.alignEnd]}>
+          <IconButton
+            icon="format-annotation-minus"
+            onPress={() => changeFontSize(state.fontSize - 1)}
+            disabled={state.fontSize <= MIN_FONT_SIZE}
+            size={18}
+          />
+          <IconButton
+            icon="format-annotation-plus"
+            onPress={() => changeFontSize(state.fontSize + 1)}
+            disabled={state.fontSize >= MAX_FONT_SIZE}
+            size={20}
+          />
+        </View>
+        <View style={styles.flexRow}>
+          <IconButton
+            selected
+            mode="contained"
+            icon="magnify"
+            onPress={() => {
+              dispatch({type: 'SET_SEARCH_INDEX', payload: -1});
+              dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'});
+            }}
+            animated
+          />
+        </View>
+      </View>
       <Divider />
     </View>
   );

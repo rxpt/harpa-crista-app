@@ -138,6 +138,11 @@ export const styles = StyleSheet.create({
   padding: {
     padding: padding,
   },
+  paddingHeader: {
+    paddingVertical: padding / 2,
+    paddingLeft: padding / 2,
+    paddingRight: padding,
+  },
   paddingVertical: {
     paddingVertical: padding,
   },

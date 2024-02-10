@@ -1,28 +1,24 @@
 import React, {useEffect} from 'react';
 import {View, ScrollView} from 'react-native';
 import TrackPlayer from 'react-native-track-player';
-import {Text, Divider, FAB, Snackbar} from 'react-native-paper';
+import {Text, Divider, FAB} from 'react-native-paper';
 import {activateKeepAwake} from '@sayem314/react-native-keep-awake';
 import {useAppContext} from '../providers/AppProvider';
 import AnthemVerses from '../components/AnthemVerses';
-import AnthemsModal from '../components/AnthemsModal';
-import IndexesModal from '../components/IndexesModal';
-import FavoritesModal from '../components/FavoritesModal';
+import AnthemsModal from '../components/modals/AnthemsModal';
+import IndexesModal from '../components/modals/IndexesModal';
+import FavoritesModal from '../components/modals/FavoritesModal';
+import HistoryModal from '../components/modals/HistoryModal';
+import AnthemTitle from '../components/AnthemTitle';
 import AnthemHeaderBar from '../components/AnthemHeaderBar';
 import AnthemAudioProgress from '../components/AnthemAudioProgress';
 import {anthemAudioURL, randomAnthem} from '../utils';
 import {styles} from '../utils/theme';
-import HistoryModal from '../components/HistoryModal';
 
 const AnthemScreen: React.FC = () => {
   activateKeepAwake();
 
   const {state, dispatch} = useAppContext();
-  const isFavorite = state.favorites.includes(state.currentAnthem.id);
-
-  const [visibleSnackBar, setVisibleSnackBar] = React.useState(false);
-  const [snackBarMessage, setSnackBarMessage] = React.useState('');
-  const onDismissSnackBar = () => setVisibleSnackBar(false);
 
   useEffect(() => {
     if (!state.playerReady) {
@@ -35,34 +31,8 @@ const AnthemScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll>
-        <AnthemHeaderBar
-          title={`${state.currentAnthem.id}. ${state.currentAnthem.title}`}
-          buttons={[
-            {
-              icon: isFavorite ? 'heart' : 'heart-outline',
-              action: () => {
-                dispatch({
-                  type: isFavorite ? 'REMOVE_FAVORITE' : 'ADD_FAVORITE',
-                  payload: state.currentAnthem.id,
-                });
-                setVisibleSnackBar(true);
-                setSnackBarMessage(
-                  isFavorite
-                    ? 'Hino removido dos favoritos'
-                    : 'Hino adicionado aos favoritos',
-                );
-              },
-            },
-            {
-              icon: 'magnify',
-              action: () => {
-                dispatch({type: 'SET_SEARCH_INDEX', payload: -1});
-                dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'});
-              },
-              disabled: state.currentModal === 'anthems',
-            },
-          ]}
-        />
+        <AnthemHeaderBar />
+        <AnthemTitle />
         <AnthemVerses />
         <Divider />
         <Text variant="bodySmall" style={styles.author}>
@@ -81,7 +51,7 @@ const AnthemScreen: React.FC = () => {
         icon={state.bottomMenu ? 'close' : 'plus'}
         actions={[
           {
-            icon: 'star',
+            icon: 'heart-outline',
             label: 'Favoritos',
             onPress: () =>
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'favorites'}),
@@ -97,6 +67,12 @@ const AnthemScreen: React.FC = () => {
             label: 'Índices de Assuntos',
             onPress: () =>
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'indexes'}),
+          },
+          {
+            icon: 'magnify',
+            label: 'Pesquisar hinos',
+            onPress: () =>
+              dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'}),
           },
           {
             icon: 'shuffle-variant',
@@ -128,13 +104,6 @@ const AnthemScreen: React.FC = () => {
           dispatch({type: 'SET_BOTTOM_MENU', payload: true});
         }}
       />
-      <Snackbar
-        duration={2000}
-        visible={visibleSnackBar}
-        onDismiss={onDismissSnackBar}
-        onIconPress={() => setVisibleSnackBar(false)}>
-        {snackBarMessage}
-      </Snackbar>
     </View>
   );
 };

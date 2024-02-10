@@ -38,6 +38,7 @@ type Action =
   | {type: 'SET_PLAYER_READY'; payload: boolean}
   | {type: 'ADD_FAVORITE'; payload: number}
   | {type: 'REMOVE_FAVORITE'; payload: number}
+  | {type: 'TOGGLE_FAVORITE'; payload: number}
   | {type: 'ADD_HISTORY'; payload: number}
   | {type: 'SET_SEARCH_INDEX'; payload: number}
   | {type: 'SET_SEARCH_QUERY'; payload: string}
@@ -103,6 +104,12 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         favorites: removeFavorites,
       };
+    case 'TOGGLE_FAVORITE':
+      if (state.favorites.includes(payload)) {
+        return reducer(state, {type: 'REMOVE_FAVORITE', payload});
+      } else {
+        return reducer(state, {type: 'ADD_FAVORITE', payload});
+      }
     case 'ADD_HISTORY':
       const addHistory = [
         payload,

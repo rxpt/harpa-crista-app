@@ -4,7 +4,10 @@ import indexes from '../data/indexes.json';
 import {Anthem, Indexes} from './interfaces';
 
 export const normalize = (str: string) => {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
 };
 
 export const randomAnthem = () => sample(anthems) as Anthem;
@@ -18,7 +21,15 @@ export const anthemAudioURL = (id: number) => {
 };
 
 export const getAnthem = (id: number) => {
-  return anthems.find(anthem => anthem.id === id) as Anthem;
+  return anthems.find(anthem => anthem?.id === id) as Anthem;
+};
+
+export const filterFavorites = (favorites: number[]) => {
+  return anthems.filter(anthem => favorites.includes(anthem?.id)) as Anthem[];
+};
+
+export const filterHistory = (history: number[]) => {
+  return anthems.filter(anthem => history.includes(anthem?.id)) as Anthem[];
 };
 
 export const getIndexes = () => {
@@ -33,8 +44,9 @@ export const searchAnthems = (searchQuery: string, index: number = -1) => {
   if (searchQuery) {
     return anthemsByIndex(index).filter(anthem => {
       return (
-        anthem.id === parseInt(searchQuery, 10) ||
-        normalize(anthem.title)
+        anthem?.id === parseInt(searchQuery, 10) ||
+        anthem?.id.toString().includes(searchQuery.trim()) ||
+        normalize(anthem?.title)
           .toLowerCase()
           .includes(normalize(searchQuery).toLowerCase())
       );
@@ -50,6 +62,6 @@ export const anthemsByIndex = (index: number) => {
   }
 
   return anthems.filter(anthem =>
-    indexes[index].anthems.includes(anthem.id),
+    indexes[index].anthems.includes(anthem?.id),
   ) as Anthem[];
 };
