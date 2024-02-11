@@ -261,4 +261,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.secondaryContainer,
     color: theme.colors.secondary,
   },
+  searchInput: {
+    backgroundColor: theme.colors.secondaryContainer,
+  },
 });

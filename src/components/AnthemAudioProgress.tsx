@@ -10,10 +10,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useAppContext} from '../providers/AppProvider';
 import {theme} from '../utils/theme';
+import TrackPlayer from 'react-native-track-player';
 
 const AnthemAudioProgress = () => {
   const {
-    state: {isPlaying, trackProgress: progress},
+    state: {isPlaying, trackProgress: progress, playerReady, currentAnthem},
   } = useAppContext();
 
   const width = useSharedValue(0);
@@ -24,6 +25,14 @@ const AnthemAudioProgress = () => {
       {duration: 1000, easing: Easing.linear},
     );
   }, [isPlaying, progress, width]);
+
+  useEffect(() => {
+    if (!playerReady) {
+      return;
+    }
+
+    TrackPlayer.reset();
+  }, [playerReady, currentAnthem]);
 
   const renderTime = (time: number) => {
     const minutes = Math.floor(time / 60);

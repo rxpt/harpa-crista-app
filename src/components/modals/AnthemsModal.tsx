@@ -34,7 +34,8 @@ const AnthemsModal = () => {
             dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
           }}
           value={state.searchQuery}
-          style={styles.marginHorizontal}
+          style={[styles.marginHorizontal, styles.searchInput]}
+          elevation={2}
         />
         <SegmentedButtons
           density="small"
@@ -60,7 +61,6 @@ const AnthemsModal = () => {
       </View>
       <BottomSheetFlatList
         data={state.searchResults}
-        initialNumToRender={5}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}) => {

@@ -23,7 +23,7 @@ interface State {
   searchQuery: string;
   searchResults: Anthem[];
   currentAnthem: Anthem;
-  currentModal: string | null;
+  currentModal: 'anthems' | 'favorites' | 'history' | 'indexes' | string | null;
   trackProgress: {
     position: number;
     duration: number;
@@ -56,9 +56,8 @@ const initialState: State = {
   history: JSON.parse(storage.getString('history') ?? '[]'),
   searchQuery: '',
   searchResults: [],
-  currentAnthem:
-    JSON.parse(storage.getString('currentAnthem') ?? 'null') ?? getAnthem(1),
-  currentModal: null,
+  currentAnthem: getAnthem(1),
+  currentModal: 'anthems',
   trackProgress: {
     position: 0,
     duration: 0,
@@ -128,7 +127,6 @@ const reducer = (state: State, action: Action): State => {
         searchResults: payload,
       };
     case 'SET_CURRENT_ANTHEM':
-      storage.set('currentAnthem', JSON.stringify(payload));
       return {
         ...state,
         currentAnthem: payload,
@@ -175,8 +173,8 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({
     dispatch({
       type: 'SET_TRACK_PROGRESS',
       payload: {
-        position: progress.position,
-        duration: progress.duration,
+        position: progress.position ?? 0,
+        duration: progress.duration ?? 0,
       },
     });
   }, [progress.duration, progress.position]);

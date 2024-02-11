@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Divider, IconButton} from 'react-native-paper';
+import {Surface, IconButton} from 'react-native-paper';
 import {useAppContext} from '../providers/AppProvider';
 import {styles} from '../utils/theme';
 
@@ -15,20 +15,25 @@ const AnthemHeaderBar = () => {
   };
 
   return (
-    <View style={[styles.paddingHeader, styles.primaryContainer]}>
-      <View style={[styles.flexRow, styles.alignCenter, styles.spaceBetween]}>
-        <View style={[styles.flexRow, styles.alignEnd]}>
+    <Surface elevation={2}>
+      <View
+        style={[
+          styles.paddingHeader,
+          styles.container,
+          styles.flexRow,
+          styles.alignCenter,
+          styles.spaceBetween,
+        ]}>
+        <View style={[styles.flexRow, styles.alignCenter]}>
           <IconButton
             icon="format-annotation-minus"
             onPress={() => changeFontSize(state.fontSize - 1)}
             disabled={state.fontSize <= MIN_FONT_SIZE}
-            size={18}
           />
           <IconButton
             icon="format-annotation-plus"
             onPress={() => changeFontSize(state.fontSize + 1)}
             disabled={state.fontSize >= MAX_FONT_SIZE}
-            size={20}
           />
         </View>
         <View style={styles.flexRow}>
@@ -43,8 +48,7 @@ const AnthemHeaderBar = () => {
           />
         </View>
       </View>
-      <Divider />
-    </View>
+    </Surface>
   );
 };
 
