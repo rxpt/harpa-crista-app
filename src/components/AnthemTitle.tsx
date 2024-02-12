@@ -6,6 +6,11 @@ import {styles} from '../utils/theme';
 
 const AnthemTitle = () => {
   const {state, dispatch} = useAppContext();
+
+  if (!state.currentAnthem) {
+    return null;
+  }
+
   const IS_FAVORITE = state.favorites.includes(state.currentAnthem?.id);
 
   return (

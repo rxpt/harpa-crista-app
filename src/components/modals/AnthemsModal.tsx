@@ -12,6 +12,7 @@ const AnthemsModal = () => {
   const [searchType, setSearchType] = React.useState<'numeric' | 'default'>(
     'numeric',
   );
+  const flatListRef = React.useRef(null);
 
   React.useEffect(() => {
     dispatch({
@@ -19,6 +20,16 @@ const AnthemsModal = () => {
       payload: searchAnthems(state.searchQuery),
     });
   }, [dispatch, state.searchQuery]);
+
+  React.useEffect(() => {
+    try {
+      if (state.searchResults.length > 0) {
+        (flatListRef.current as any)?.scrollToIndex({index: 0});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [state.searchResults]);
 
   return (
     <BottomSheet name="anthems" snapPoints={['100%']}>
@@ -45,7 +56,7 @@ const AnthemsModal = () => {
           buttons={[
             {
               label: 'Teclado',
-              value: '',
+              value: 'null',
               disabled: true,
             },
             {
@@ -60,9 +71,15 @@ const AnthemsModal = () => {
         />
       </View>
       <BottomSheetFlatList
+        ref={flatListRef}
         data={state.searchResults}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={item => item.id.toString()}
+        ListEmptyComponent={
+          <Text variant="titleMedium" style={styles.centered}>
+            Nenhum hino encontrado
+          </Text>
+        }
         renderItem={({item}) => {
           return (
             <View>

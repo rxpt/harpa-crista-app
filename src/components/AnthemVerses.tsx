@@ -8,22 +8,38 @@ const AnthemVerses = () => {
     state: {fontSize, currentAnthem},
   } = useAppContext();
 
-  return currentAnthem.verses.map(verse => (
-    <Text
-      key={verse.sequence}
-      variant="bodyLarge"
-      style={[
-        styles.verse,
-        verse.sequence % 2 === 0 && !verse.chorus && styles.verseEven,
-        verse.chorus && styles.chorus,
-        {
-          fontSize: fontSize,
-          lineHeight: fontSize * 1.25,
-        },
-      ]}>
-      {verse.lyrics}
-    </Text>
-  ));
+  if (!currentAnthem) {
+    return null;
+  }
+
+  let sequence = 0;
+
+  return currentAnthem.verses.map(verse => {
+    !verse.chorus && sequence++;
+
+    return (
+      <Text
+        key={verse.sequence}
+        variant="bodyLarge"
+        style={[
+          styles.verse,
+          verse.sequence % 2 === 0 && !verse.chorus && styles.verseEven,
+          verse.chorus && styles.chorus,
+          {
+            fontSize: fontSize,
+            lineHeight: fontSize * 1.25,
+          },
+        ]}>
+        {!verse.chorus && (
+          <Text variant="bodySmall" style={styles.bold}>
+            {sequence}
+            {'     '}
+          </Text>
+        )}
+        {verse.lyrics}
+      </Text>
+    );
+  });
 };
 
 export default AnthemVerses;

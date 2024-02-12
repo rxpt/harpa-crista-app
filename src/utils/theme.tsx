@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   chorus: {
     fontStyle: 'italic',
     fontWeight: '900',
-    paddingHorizontal: padding * 2,
+    paddingHorizontal: padding * 2.5,
     paddingVertical: padding,
     backgroundColor: theme.colors.primaryContainer,
   },

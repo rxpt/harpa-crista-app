@@ -7,6 +7,10 @@ import {styles} from '../utils/theme';
 const AnthemAuthor = () => {
   const {state} = useAppContext();
 
+  if (!state.currentAnthem) {
+    return null;
+  }
+
   return (
     <View
       style={[

@@ -7,6 +7,10 @@ import {styles} from '../utils/theme';
 const AnthemHeaderBar = () => {
   const {state, dispatch} = useAppContext();
 
+  if (!state.currentAnthem) {
+    return null;
+  }
+
   const MAX_FONT_SIZE = state.maxFontSize;
   const MIN_FONT_SIZE = state.minFontSize;
 

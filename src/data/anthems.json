@@ -8922,7 +8922,7 @@
   },
   {
     "id": 299,
-    "title": "Ha Um Canto Novo",
+    "title": "Há Um Canto Novo",
     "verses": [
       {
         "sequence": 1,
@@ -8959,7 +8959,7 @@
   },
   {
     "id": 300,
-    "title": "Nossa Esperanca",
+    "title": "Nossa Esperança",
     "verses": [
       {
         "sequence": 1,
@@ -9028,7 +9028,7 @@
   },
   {
     "id": 302,
-    "title": "Nao Murmures Canta",
+    "title": "Não Murmures, Canta",
     "verses": [
       {
         "sequence": 1,
@@ -9124,7 +9124,7 @@
   },
   {
     "id": 305,
-    "title": "Campeoes Da Luz",
+    "title": "Campeões Da Luz",
     "verses": [
       {
         "sequence": 1,
@@ -9151,7 +9151,7 @@
   },
   {
     "id": 306,
-    "title": "A Palavra De Deus E Um Tesouro",
+    "title": "A Palavra De Deus É Um Tesouro",
     "verses": [
       {
         "sequence": 1,
@@ -9190,7 +9190,7 @@
   },
   {
     "id": 308,
-    "title": "So O Sangue De Jesus",
+    "title": "Só O Sangue De Jesus",
     "verses": [
       {
         "sequence": 1,
@@ -9280,7 +9280,7 @@
       },
       {
         "sequence": 2,
-        "lyrics": "Jesus, Jesus, Tu és meu Salvador,\nJesus, Jesus, só Teu serei, Senhor.\nNa sanda mui verdadeira,\nGuia-me Tua mão,\nE ao findar minha carreira,\nReceberei galardão.",
+        "lyrics": "Jesus, Jesus, Tu és meu Salvador,\nJesus, Jesus, só Teu serei, Senhor.\nNa senda mui verdadeira,\nGuia-me Tua mão,\nE ao findar minha carreira,\nReceberei galardão.",
         "chorus": true
       },
       {
@@ -18080,7 +18080,7 @@
       {
         "sequence": 2,
         "lyrics": "Terra adorada, entre outras mil és tu, Brasil,\nÓ Pátria amada!\nDos filhos deste solo és mãe gentil,\nPátria amada, Brasil!",
-        "chorus": false
+        "chorus": true
       },
       {
         "sequence": 3,
