@@ -34,17 +34,25 @@ export const styles = StyleSheet.create({
   verse: {
     padding: padding,
     color: theme.colors.secondary,
+    flex: 1,
   },
   verseEven: {
     color: theme.colors.onSecondaryContainer,
     backgroundColor: theme.colors.secondaryContainer,
   },
+  verseNumber: {
+    color: theme.colors.onBackground,
+    fontWeight: '900',
+    paddingTop: padding + 2,
+    fontSize: theme.fonts.bodySmall.fontSize,
+  },
   chorus: {
+    paddingHorizontal: padding * 2.5,
+    backgroundColor: theme.colors.primaryContainer,
+  },
+  chorusText: {
     fontStyle: 'italic',
     fontWeight: '900',
-    paddingHorizontal: padding * 2.5,
-    paddingVertical: padding,
-    backgroundColor: theme.colors.primaryContainer,
   },
   author: {
     fontSize: theme.fonts.bodySmall.fontSize,

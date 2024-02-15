@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import {styles} from '../utils/theme';
 import {Text} from 'react-native-paper';
 import {useAppContext} from '../providers/AppProvider';
@@ -18,26 +19,32 @@ const AnthemVerses = () => {
     !verse.chorus && sequence++;
 
     return (
-      <Text
+      <View
         key={verse.sequence}
-        variant="bodyLarge"
         style={[
+          styles.flexRow,
           styles.verse,
-          verse.sequence % 2 === 0 && !verse.chorus && styles.verseEven,
           verse.chorus && styles.chorus,
-          {
-            fontSize: fontSize,
-            lineHeight: fontSize * 1.25,
-          },
+          verse.sequence % 2 === 0 && !verse.chorus && styles.verseEven,
         ]}>
         {!verse.chorus && (
-          <Text variant="bodySmall" style={styles.bold}>
+          <Text variant="bodySmall" style={styles.verseNumber}>
             {sequence}
-            {'     '}
           </Text>
         )}
-        {verse.lyrics}
-      </Text>
+        <Text
+          variant="bodyLarge"
+          style={[
+            styles.verse,
+            verse.chorus && styles.chorusText,
+            {
+              fontSize: fontSize,
+              lineHeight: fontSize * 1.25,
+            },
+          ]}>
+          {verse.lyrics}
+        </Text>
+      </View>
     );
   });
 };
