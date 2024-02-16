@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.harpacrista",
+  "applicationId": "br.com.ronis.harpa",
   "variantName": "release",
   "elements": [
     {
