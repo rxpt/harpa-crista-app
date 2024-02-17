@@ -4,6 +4,7 @@ import {FAB} from 'react-native-paper';
 import {useAppContext} from '../providers/AppProvider';
 import TrackPlayer from 'react-native-track-player';
 import {anthemAudioURL, randomAnthem} from '../utils';
+import {theme} from '../utils/theme';
 
 const MenuButton = () => {
   const {state, dispatch} = useAppContext();
@@ -12,6 +13,7 @@ const MenuButton = () => {
     <FAB.Group
       open={state.bottomMenu}
       visible
+      backdropColor={theme.colors.secondaryContainer}
       icon={state.bottomMenu ? 'close' : 'plus'}
       actions={[
         {
@@ -34,7 +36,7 @@ const MenuButton = () => {
         },
         {
           icon: 'magnify',
-          label: 'Pesquisar hinos',
+          label: 'Pesquisar',
           onPress: () =>
             dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'}),
         },
