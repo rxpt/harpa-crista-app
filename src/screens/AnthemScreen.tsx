@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, FlatList, TouchableWithoutFeedback} from 'react-native';
+import {View, FlatList, Pressable} from 'react-native';
 import {
   activateKeepAwake,
   deactivateKeepAwake,
@@ -27,7 +27,7 @@ const AnthemScreen: React.FC = () => {
     state: {fontSize, currentAnthem},
   } = useAppContext();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     activateKeepAwake();
 
     return () => {
@@ -35,7 +35,7 @@ const AnthemScreen: React.FC = () => {
     };
   }, []);
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     if (currentAnthem) {
       listRef.current?.scrollToOffset({animated: true, offset: 0});
       setHighlightedVerse(0);
@@ -46,13 +46,10 @@ const AnthemScreen: React.FC = () => {
     return null;
   }
 
-  let sequence = 0;
-
   const handleVersePress = (text: string) => {
     Share.open({
-      message: text,
-      title: currentAnthem.title,
-    });
+      message: `"${text}"\n\n- Hino: ${currentAnthem.id}. ${currentAnthem.title}`,
+    }).catch(() => {});
   };
 
   const handleDoubleTap = (data: any) => {
@@ -68,6 +65,8 @@ const AnthemScreen: React.FC = () => {
     }
   };
 
+  let sequence = 0;
+
   return (
     <View style={styles.container}>
       <AnthemHeaderBar />
@@ -78,8 +77,9 @@ const AnthemScreen: React.FC = () => {
         keyExtractor={item => item.sequence.toString()}
         renderItem={({item}) => {
           !item.chorus && sequence++;
+
           return (
-            <TouchableWithoutFeedback
+            <Pressable
               key={item.sequence}
               onPress={() => handleDoubleTap(item.sequence)}
               onLongPress={() => handleVersePress(item.lyrics)}>
@@ -116,7 +116,7 @@ const AnthemScreen: React.FC = () => {
                   {item.lyrics}
                 </Text>
               </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
           );
         }}
         ListFooterComponent={<AnthemAuthor />}

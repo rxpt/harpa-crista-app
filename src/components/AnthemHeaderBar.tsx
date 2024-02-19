@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, TouchableHighlight, ToastAndroid} from 'react-native';
+import {View, ToastAndroid} from 'react-native';
 import {Surface} from 'react-native-paper';
-import Icon from './Icon';
+import Button from './Button';
 import {styles} from '../utils/theme';
 import {useAppContext} from '../providers/AppProvider';
 
@@ -14,6 +14,8 @@ const AnthemHeaderBar = () => {
 
   const MAX_FONT_SIZE = state.maxFontSize;
   const MIN_FONT_SIZE = state.minFontSize;
+
+  const ICON_SIZE = 24;
 
   const IS_FAVORITE = state.favorites.includes(state.currentAnthem?.id);
   const IS_FAVORITE_ICON = IS_FAVORITE ? 'heart' : 'heart-outline';
@@ -42,45 +44,42 @@ const AnthemHeaderBar = () => {
           styles.spaceBetween,
         ]}>
         <View style={[styles.flexRow, styles.alignCenter, styles.gap]}>
-          <TouchableHighlight
+          <Button
             style={styles.iconButton}
             onPress={() =>
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'mainMenu'})
-            }>
-            <Icon name="menu" size={24} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={[
-              styles.iconButton,
-              state.fontSize <= MIN_FONT_SIZE && styles.iconButtonDisabled,
-            ]}
+            }
+            icon="menu"
+            iconSize={ICON_SIZE}
+            disabled={state.currentModal === 'mainMenu'}
+          />
+          <Button
             onPress={() => changeFontSize(state.fontSize - 1)}
-            disabled={state.fontSize <= MIN_FONT_SIZE}>
-            <Icon name="format-annotation-minus" size={24} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={[
-              styles.iconButton,
-              state.fontSize >= MAX_FONT_SIZE && styles.iconButtonDisabled,
-            ]}
+            disabled={state.fontSize <= MIN_FONT_SIZE}
+            icon="format-annotation-minus"
+            iconSize={ICON_SIZE}
+          />
+          <Button
             onPress={() => changeFontSize(state.fontSize + 1)}
-            disabled={state.fontSize >= MAX_FONT_SIZE}>
-            <Icon name="format-annotation-plus" size={24} />
-          </TouchableHighlight>
+            disabled={state.fontSize >= MAX_FONT_SIZE}
+            icon="format-annotation-plus"
+            iconSize={ICON_SIZE}
+          />
         </View>
         <View style={[styles.flexRow, styles.menuGap]}>
-          <TouchableHighlight
-            style={styles.iconButton}
-            onPress={() => toggleFavorite()}>
-            <Icon name={IS_FAVORITE_ICON} size={24} />
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.iconButton}
+          <Button
+            onPress={() => toggleFavorite()}
+            icon={IS_FAVORITE_ICON}
+            iconSize={ICON_SIZE}
+          />
+          <Button
             onPress={() =>
               dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'})
-            }>
-            <Icon name="magnify" size={24} />
-          </TouchableHighlight>
+            }
+            icon="magnify"
+            iconSize={ICON_SIZE}
+            disabled={state.currentModal === 'anthems'}
+          />
         </View>
       </View>
     </Surface>

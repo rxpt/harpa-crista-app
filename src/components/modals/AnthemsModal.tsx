@@ -1,7 +1,11 @@
 import React from 'react';
 import {View} from 'react-native';
 import BottomSheet from './BottomSheet';
-import {BottomSheetFlatList, TouchableOpacity} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetFlatListMethods,
+  TouchableOpacity,
+} from '@gorhom/bottom-sheet';
 import {Divider, Searchbar, SegmentedButtons, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
 import {searchAnthems} from '../../utils';
@@ -9,34 +13,36 @@ import {styles} from '../../utils/theme';
 import Icon from '../Icon';
 
 const AnthemsModal = () => {
-  const {state, dispatch} = useAppContext();
+  const {
+    state: {searchQuery, searchResults},
+    dispatch,
+  } = useAppContext();
   const [searchType, setSearchType] = React.useState<'numeric' | 'default'>(
     'numeric',
   );
-  const flatListRef = React.useRef(null);
+  const flatListRef = React.useRef<BottomSheetFlatListMethods>(null);
 
   React.useEffect(() => {
     dispatch({
       type: 'SET_SEARCH_RESULTS',
-      payload: searchAnthems(state.searchQuery),
+      payload: searchAnthems(searchQuery),
     });
-  }, [dispatch, state.searchQuery]);
+  }, [dispatch, searchQuery]);
 
   React.useEffect(() => {
-    try {
-      if (state.searchResults.length > 0) {
-        (flatListRef.current as any)?.scrollToIndex({index: 0});
-      }
-    } catch (error) {
-      console.log(error);
+    if (searchResults.length > 0) {
+      flatListRef.current?.scrollToOffset({
+        animated: true,
+        offset: 0,
+      });
     }
-  }, [state.searchResults]);
+  }, [searchResults]);
 
   return (
     <BottomSheet name="anthems" snapPoints={['100%']}>
       <BottomSheetFlatList
         ref={flatListRef}
-        data={state.searchResults}
+        data={searchResults}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={item => item.id.toString()}
         stickyHeaderIndices={[0]}
@@ -51,7 +57,7 @@ const AnthemsModal = () => {
             onClearIconPress={() => {
               dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
             }}
-            value={state.searchQuery}
+            value={searchQuery}
             style={[styles.searchInput]}
             elevation={2}
           />
@@ -67,7 +73,7 @@ const AnthemsModal = () => {
             <Icon name="magnify-close" size={48} />
             <Text variant="titleMedium">
               Hino não encontrado:{' '}
-              <Text style={styles.textMuted}>{state.searchQuery}</Text>
+              <Text style={styles.textMuted}>{searchQuery}</Text>
             </Text>
           </View>
         }

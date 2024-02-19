@@ -33,7 +33,7 @@ export type IconPackageType =
   | 'zocial'
   | 'simpleLineIcons';
 
-type IconProps = {
+export type IconProps = {
   name: string;
   size?: number;
   color?: ColorValue;
@@ -41,7 +41,7 @@ type IconProps = {
   from?: IconPackageType;
 };
 
-const ICON_PACKAGES: Record<IconPackageType, any> = {
+export const ICON_PACKAGES: Record<IconPackageType, any> = {
   antDesign: AntDesign,
   entypo: Entypo,
   evilIcons: EvilIcons,

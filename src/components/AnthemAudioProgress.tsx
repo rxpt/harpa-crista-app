@@ -53,11 +53,11 @@ const AnthemAudioProgress = () => {
   if (isPlaying) {
     return (
       <View style={styles.container}>
+        <Animated.View style={[styles.progressBar, progressBarStyle]} />
         <View style={styles.player}>
           <Text variant="bodySmall">{renderTime(progress.position)}</Text>
           <Text variant="bodySmall">{renderTime(progress.duration)}</Text>
         </View>
-        <Animated.View style={[styles.progressBar, progressBarStyle]} />
       </View>
     );
   }

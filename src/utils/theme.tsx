@@ -52,8 +52,6 @@ export const styles = StyleSheet.create({
   },
   highlightedVerse: {
     backgroundColor: theme.colors.primaryContainer,
-    borderColor: theme.colors.primary,
-    borderWidth: 1,
   },
   chorus: {
     paddingHorizontal: padding * 2.5,
@@ -267,24 +265,6 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     backgroundColor: theme.colors.primaryContainer,
-  },
-  buttonNextPrev: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    elevation: 5,
-    backgroundColor: theme.colors.secondaryContainer,
-    color: theme.colors.secondary,
-    position: 'absolute',
-    bottom: padding * 2,
-  },
-  rightArrow: {
-    right: -18,
-  },
-  leftArrow: {
-    left: -18,
   },
   iconButton: {
     padding: padding / 2,

@@ -1,37 +1,20 @@
 import React from 'react';
-import {Linking, TouchableHighlight, View} from 'react-native';
+import {Linking, View} from 'react-native';
 import {Divider, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
 import TrackPlayer from 'react-native-track-player';
-import Icon from '../Icon';
 import {anthemAudioURL, randomAnthem} from '../../utils';
 import BottomSheet from './BottomSheet';
+import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {styles} from '../../utils/theme';
-
-const Button = ({
-  onPress,
-  text,
-  icon,
-}: {
-  onPress: () => void;
-  text?: string;
-  icon?: string;
-}) => (
-  <TouchableHighlight onPress={onPress} style={styles.buttonMainMenu}>
-    <View
-      style={[styles.flexRow, styles.alignCenter, styles.gap, styles.padding]}>
-      {icon && <Icon name={icon} size={24} />}
-      {text && <Text>{text}</Text>}
-    </View>
-  </TouchableHighlight>
-);
+import Button from '../Button';
 
 const MenuModal = () => {
   const {state, dispatch} = useAppContext();
 
   return (
     <BottomSheet name="mainMenu" snapPoints={['95%']}>
-      <View style={styles.padding}>
+      <BottomSheetScrollView style={styles.padding}>
         <View
           style={[
             styles.flexRow,
@@ -51,38 +34,38 @@ const MenuModal = () => {
           onPress={() =>
             dispatch({type: 'SET_CURRENT_MODAL', payload: 'favorites'})
           }
-          text="Favoritos"
-          icon="heart"
-        />
+          icon="heart">
+          <Text>Favoritos</Text>
+        </Button>
         <Button
           onPress={() =>
             dispatch({type: 'SET_CURRENT_MODAL', payload: 'history'})
           }
-          text="Histórico"
-          icon="history"
-        />
+          icon="history">
+          <Text>Histórico</Text>
+        </Button>
         <Button
           onPress={() =>
             dispatch({type: 'SET_CURRENT_MODAL', payload: 'indexes'})
           }
-          text="Índices de Assuntos"
-          icon="format-list-bulleted-square"
-        />
+          icon="format-list-bulleted-square">
+          <Text>Índices de Assuntos</Text>
+        </Button>
         <Button
           onPress={() =>
             dispatch({type: 'SET_CURRENT_MODAL', payload: 'anthems'})
           }
-          text="Pesquisar"
-          icon="magnify"
-        />
+          icon="magnify">
+          <Text>Pesquisar</Text>
+        </Button>
         <Button
           onPress={() => {
             dispatch({type: 'SET_CURRENT_ANTHEM', payload: randomAnthem()});
             dispatch({type: 'SET_CURRENT_MODAL', payload: null});
           }}
-          text="Hino aleatório"
-          icon="shuffle-variant"
-        />
+          icon="shuffle-variant">
+          <Text>Hino Aleatório</Text>
+        </Button>
         <Divider style={styles.marginVertical} />
         <Text variant="titleMedium">Reprodução</Text>
         <Divider style={styles.marginVertical} />
@@ -99,9 +82,9 @@ const MenuModal = () => {
               await TrackPlayer.play();
             }
           }}
-          text={state.isPlaying ? 'Parar' : 'Reproduzir'}
-          icon={state.isPlaying ? 'stop' : 'play'}
-        />
+          icon={state.isPlaying ? 'stop' : 'play'}>
+          <Text>{state.isPlaying ? 'Parar' : 'Reproduzir'}</Text>
+        </Button>
         <Divider style={styles.marginVertical} />
         <Text variant="titleMedium">Outros</Text>
         <Divider style={styles.marginVertical} />
@@ -109,19 +92,19 @@ const MenuModal = () => {
           onPress={() =>
             Linking.openURL('https://github.com/rxog/harpa-crista')
           }
-          text="Código-fonte"
-          icon="github"
-        />
+          icon="github">
+          <Text>Sobre o App</Text>
+        </Button>
         <Button
           onPress={() =>
             Linking.openURL(
               `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${state.currentAnthem.id}`,
             )
           }
-          text="Reportar erro"
-          icon="bug"
-        />
-      </View>
+          icon="bug">
+          <Text>Reportar Erro</Text>
+        </Button>
+      </BottomSheetScrollView>
     </BottomSheet>
   );
 };
