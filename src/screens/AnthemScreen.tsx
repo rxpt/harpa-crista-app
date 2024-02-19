@@ -23,6 +23,7 @@ const AnthemScreen: React.FC = () => {
   const listRef = React.useRef<FlatList>(null);
   const [lastTap, setLastTap] = React.useState(0);
   const [highlightedVerse, setHighlightedVerse] = React.useState(0);
+  const [sequence, setSequence] = React.useState(0);
   const {
     state: {fontSize, currentAnthem},
   } = useAppContext();
@@ -39,14 +40,13 @@ const AnthemScreen: React.FC = () => {
     if (currentAnthem) {
       listRef.current?.scrollToOffset({animated: true, offset: 0});
       setHighlightedVerse(0);
+      setSequence(0);
     }
   }, [currentAnthem]);
 
   if (!currentAnthem) {
     return null;
   }
-
-  let sequence = 0;
 
   const handleVersePress = (text: string) => {
     Share.open({
@@ -77,7 +77,7 @@ const AnthemScreen: React.FC = () => {
         ListHeaderComponent={AnthemTitle}
         keyExtractor={item => item.sequence.toString()}
         renderItem={({item}) => {
-          !item.chorus && sequence++;
+          !item.chorus && setSequence(sequence+1);
           return (
             <TouchableWithoutFeedback
               key={item.sequence}
