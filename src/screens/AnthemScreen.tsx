@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, FlatList, TouchableWithoutFeedback} from 'react-native';
 import {
   activateKeepAwake,
   deactivateKeepAwake,
@@ -9,48 +9,125 @@ import IndexesModal from '../components/modals/IndexesModal';
 import FavoritesModal from '../components/modals/FavoritesModal';
 import HistoryModal from '../components/modals/HistoryModal';
 import AnthemTitle from '../components/AnthemTitle';
-import AnthemVerses from '../components/AnthemVerses';
 import AnthemAuthor from '../components/AnthemAuthor';
 import AnthemHeaderBar from '../components/AnthemHeaderBar';
 import AnthemAudioProgress from '../components/AnthemAudioProgress';
 import {useAppContext} from '../providers/AppProvider';
-import MenuButton from '../components/MenuButton';
 import {styles} from '../utils/theme';
+import {Text} from 'react-native-paper';
+import AnthemPrevNext from '../components/AnthemPrevNext';
+import MenuModal from '../components/modals/MenuModal';
+import Share from 'react-native-share';
 
 const AnthemScreen: React.FC = () => {
-  const scrollRef = React.useRef<ScrollView>(null);
-  const {state} = useAppContext();
+  const listRef = React.useRef<FlatList>(null);
+  const [lastTap, setLastTap] = React.useState(0);
+  const [highlightedVerse, setHighlightedVerse] = React.useState(0);
+  const {
+    state: {fontSize, currentAnthem},
+  } = useAppContext();
 
   React.useEffect(() => {
     activateKeepAwake();
+
     return () => {
       deactivateKeepAwake();
     };
   }, []);
 
   React.useEffect(() => {
-    if (state.currentAnthem) {
-      scrollRef.current?.scrollTo({y: 0, animated: false});
+    if (currentAnthem) {
+      listRef.current?.scrollToOffset({animated: true, offset: 0});
+      setHighlightedVerse(0);
     }
-  }, [state.currentAnthem]);
+  }, [currentAnthem]);
+
+  if (!currentAnthem) {
+    return null;
+  }
+
+  let sequence = 0;
+
+  const handleVersePress = (text: string) => {
+    Share.open({
+      message: text,
+      title: currentAnthem.title,
+    });
+  };
+
+  const handleDoubleTap = (data: any) => {
+    const now = Date.now();
+    if (lastTap && now - lastTap < 300) {
+      if (highlightedVerse === data) {
+        setHighlightedVerse(0);
+      } else {
+        setHighlightedVerse(data);
+      }
+    } else {
+      setLastTap(now);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll
-        ref={scrollRef}>
-        <AnthemHeaderBar />
-        <AnthemTitle />
-        <AnthemVerses />
-        <AnthemAuthor />
-      </ScrollView>
+      <AnthemHeaderBar />
+      <FlatList
+        ref={listRef}
+        data={currentAnthem?.verses}
+        ListHeaderComponent={AnthemTitle}
+        keyExtractor={item => item.sequence.toString()}
+        renderItem={({item}) => {
+          !item.chorus && sequence++;
+          return (
+            <TouchableWithoutFeedback
+              key={item.sequence}
+              onPress={() => handleDoubleTap(item.sequence)}
+              onLongPress={() => handleVersePress(item.lyrics)}>
+              <View
+                style={[
+                  styles.flexRow,
+                  styles.verseContainer,
+                  item.chorus && styles.chorus,
+                  item.sequence % 2 === 0 ? styles.verseEven : styles.verseOdd,
+                  highlightedVerse === item.sequence && styles.highlightedVerse,
+                ]}>
+                {!item.chorus && (
+                  <Text
+                    variant="bodySmall"
+                    style={[
+                      styles.verseNumber,
+                      {
+                        lineHeight: fontSize,
+                      },
+                    ]}>
+                    {sequence}
+                  </Text>
+                )}
+                <Text
+                  variant="bodyLarge"
+                  style={[
+                    styles.verseContainer,
+                    item.chorus && styles.chorusContent,
+                    {
+                      fontSize: fontSize,
+                      lineHeight: fontSize * 1.25,
+                    },
+                  ]}>
+                  {item.lyrics}
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          );
+        }}
+        ListFooterComponent={<AnthemAuthor />}
+      />
       <AnthemAudioProgress />
+      <AnthemPrevNext />
       <AnthemsModal />
       <IndexesModal />
-      <FavoritesModal />
       <HistoryModal />
-      <MenuButton />
+      <FavoritesModal />
+      <MenuModal />
     </View>
   );
 };

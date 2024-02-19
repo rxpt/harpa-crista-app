@@ -3,7 +3,7 @@ import BottomSheet from './BottomSheet';
 import {BottomSheetScrollView, TouchableOpacity} from '@gorhom/bottom-sheet';
 import {Appbar, Divider, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
-import {styles, theme} from '../../utils/theme';
+import {styles} from '../../utils/theme';
 import {getAnthem, getIndexes} from '../../utils';
 import {Indexes} from '../../utils/interfaces';
 import {View} from 'react-native';
@@ -33,11 +33,7 @@ const IndexesModal = () => {
 
   return (
     <BottomSheet name="indexes">
-      <Appbar.Header
-        mode="center-aligned"
-        style={{
-          backgroundColor: theme.colors.onSecondary,
-        }}>
+      <Appbar.Header mode="center-aligned">
         <Appbar.Content title="Índice de Assuntos" />
       </Appbar.Header>
       <Divider />

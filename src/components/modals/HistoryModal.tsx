@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import BottomSheet from './BottomSheet';
 import {BottomSheetFlatList, TouchableOpacity} from '@gorhom/bottom-sheet';
 import {Appbar, Divider, Text} from 'react-native-paper';
-import {styles, theme} from '../../utils/theme';
+import {styles} from '../../utils/theme';
 import {useAppContext} from '../../providers/AppProvider';
 import {filterHistory} from '../../utils';
 
@@ -12,11 +12,7 @@ const HistoryModal = () => {
 
   return (
     <BottomSheet name="history">
-      <Appbar.Header
-        mode="center-aligned"
-        style={{
-          backgroundColor: theme.colors.onSecondary,
-        }}>
+      <Appbar.Header mode="center-aligned">
         <Appbar.Content title="Histórico (últimos 10)" />
       </Appbar.Header>
       <Divider />

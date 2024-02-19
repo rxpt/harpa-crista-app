@@ -65,3 +65,18 @@ export const anthemsByIndex = (index?: number) => {
     indexes[index].data.includes(anthem?.id),
   ) as Anthem[];
 };
+
+export const toggleFavorite = (favorites: number[], id: number) => {
+  if (favorites.includes(id)) {
+    return favorites.filter(favorite => favorite !== id);
+  }
+
+  return [...favorites, id];
+};
+
+export const firstAndLastAnthemIds = () => {
+  return {
+    first: anthems[0].id,
+    last: anthems[anthems.length - 1].id,
+  };
+};

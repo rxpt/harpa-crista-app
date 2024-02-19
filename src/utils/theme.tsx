@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {MD3DarkTheme} from 'react-native-paper';
+import color from 'color';
 
 const padding = 15;
 
@@ -31,26 +32,33 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: padding,
   },
-  verse: {
+  verseContainer: {
     padding: padding,
     color: theme.colors.secondary,
     flex: 1,
   },
+  verseOdd: {
+    color: theme.colors.onSecondaryContainer,
+    backgroundColor: color(theme.colors.background).lighten(0.2).hex(),
+  },
   verseEven: {
     color: theme.colors.onSecondaryContainer,
-    backgroundColor: theme.colors.secondaryContainer,
   },
   verseNumber: {
-    color: theme.colors.onBackground,
+    color: color(theme.colors.onBackground).darken(0.5).hex(),
     fontWeight: '900',
     paddingTop: padding + 2,
     fontSize: theme.fonts.bodySmall.fontSize,
   },
+  highlightedVerse: {
+    backgroundColor: theme.colors.primaryContainer,
+    borderColor: theme.colors.primary,
+    borderWidth: 1,
+  },
   chorus: {
     paddingHorizontal: padding * 2.5,
-    backgroundColor: theme.colors.primaryContainer,
   },
-  chorusText: {
+  chorusContent: {
     fontStyle: 'italic',
     fontWeight: '900',
   },
@@ -60,15 +68,6 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: padding,
     paddingVertical: padding * 2,
-  },
-  backToTop: {
-    position: 'absolute',
-    bottom: padding,
-    right: padding,
-    padding: padding / 2,
-    borderRadius: padding / 2,
-    backgroundColor: theme.colors.onSecondaryContainer,
-    color: theme.colors.secondaryContainer,
   },
   bold: {
     fontWeight: '900',
@@ -143,13 +142,15 @@ export const styles = StyleSheet.create({
   gap: {
     gap: 5,
   },
+  menuGap: {
+    gap: 2,
+  },
   padding: {
     padding: padding,
   },
   paddingHeader: {
     paddingVertical: padding / 2,
-    paddingLeft: padding / 2,
-    paddingRight: padding,
+    paddingHorizontal: padding / 2,
   },
   paddingVertical: {
     paddingVertical: padding,
@@ -255,11 +256,6 @@ export const styles = StyleSheet.create({
   heightAuto: {
     height: 'auto',
   },
-  anthemTitle: {
-    fontSize: theme.fonts.headlineSmall.fontSize,
-    fontWeight: '900',
-    flex: 1,
-  },
   anthemButton: {
     width: 50,
     height: 50,
@@ -270,6 +266,47 @@ export const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   searchInput: {
+    backgroundColor: theme.colors.primaryContainer,
+  },
+  buttonNextPrev: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    elevation: 5,
     backgroundColor: theme.colors.secondaryContainer,
+    color: theme.colors.secondary,
+    position: 'absolute',
+    bottom: padding * 2,
+  },
+  rightArrow: {
+    right: -18,
+  },
+  leftArrow: {
+    left: -18,
+  },
+  iconButton: {
+    padding: padding / 2,
+    borderRadius: 50,
+  },
+  iconButtonActive: {
+    backgroundColor: theme.colors.primaryContainer,
+  },
+  iconButtonDisabled: {
+    opacity: 0.5,
+  },
+  iconButtonActiveDisabled: {
+    backgroundColor: theme.colors.primaryContainer,
+    opacity: 0.5,
+  },
+  iconButtonHighlight: {
+    backgroundColor: theme.colors.primaryContainer,
+  },
+  textMuted: {
+    color: color(theme.colors.onBackground).alpha(0.5).string(),
+  },
+  buttonMainMenu: {
+    borderRadius: 50,
   },
 });

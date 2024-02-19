@@ -6,6 +6,7 @@ import {Divider, Searchbar, SegmentedButtons, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
 import {searchAnthems} from '../../utils';
 import {styles} from '../../utils/theme';
+import Icon from '../Icon';
 
 const AnthemsModal = () => {
   const {state, dispatch} = useAppContext();
@@ -33,52 +34,42 @@ const AnthemsModal = () => {
 
   return (
     <BottomSheet name="anthems" snapPoints={['100%']}>
-      <View>
-        <Searchbar
-          autoFocus
-          placeholder="Digite número ou título..."
-          keyboardType={searchType}
-          onChangeText={text => {
-            dispatch({type: 'SET_SEARCH_QUERY', payload: text});
-          }}
-          onClearIconPress={() => {
-            dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
-          }}
-          value={state.searchQuery}
-          style={[styles.marginHorizontal, styles.searchInput]}
-          elevation={2}
-        />
-        <SegmentedButtons
-          density="small"
-          style={[styles.marginTop, styles.marginHorizontal]}
-          value={searchType}
-          onValueChange={value => setSearchType(value as 'numeric' | 'default')}
-          buttons={[
-            {
-              label: 'Teclado',
-              value: 'null',
-              disabled: true,
-            },
-            {
-              icon: 'numeric',
-              value: 'numeric',
-            },
-            {
-              icon: 'format-title',
-              value: 'default',
-            },
-          ]}
-        />
-      </View>
       <BottomSheetFlatList
         ref={flatListRef}
         data={state.searchResults}
         contentContainerStyle={[styles.padding, styles.gap]}
         keyExtractor={item => item.id.toString()}
+        stickyHeaderIndices={[0]}
+        ListHeaderComponent={
+          <Searchbar
+            autoFocus
+            placeholder="Digite número ou título..."
+            keyboardType={searchType}
+            onChangeText={text => {
+              dispatch({type: 'SET_SEARCH_QUERY', payload: text});
+            }}
+            onClearIconPress={() => {
+              dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
+            }}
+            value={state.searchQuery}
+            style={[styles.searchInput]}
+            elevation={2}
+          />
+        }
         ListEmptyComponent={
-          <Text variant="titleMedium" style={styles.centered}>
-            Nenhum hino encontrado
-          </Text>
+          <View
+            style={[
+              styles.flexColumn,
+              styles.justifyCenter,
+              styles.alignCenter,
+              styles.paddingVertical,
+            ]}>
+            <Icon name="magnify-close" size={48} />
+            <Text variant="titleMedium">
+              Hino não encontrado:{' '}
+              <Text style={styles.textMuted}>{state.searchQuery}</Text>
+            </Text>
+          </View>
         }
         renderItem={({item}) => {
           return (
@@ -104,6 +95,27 @@ const AnthemsModal = () => {
             </View>
           );
         }}
+      />
+      <SegmentedButtons
+        density="small"
+        style={[styles.marginHorizontal]}
+        value={searchType}
+        onValueChange={value => setSearchType(value as 'numeric' | 'default')}
+        buttons={[
+          {
+            label: 'Teclado',
+            value: 'null',
+            disabled: true,
+          },
+          {
+            icon: 'numeric',
+            value: 'numeric',
+          },
+          {
+            icon: 'format-title',
+            value: 'default',
+          },
+        ]}
       />
     </BottomSheet>
   );

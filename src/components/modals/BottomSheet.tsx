@@ -38,10 +38,10 @@ const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
       backdropComponent={BackdropModal}
       onDismiss={close}
       backgroundStyle={{
-        backgroundColor: theme.colors.onSecondary,
+        backgroundColor: theme.colors.background,
       }}
       handleIndicatorStyle={{
-        backgroundColor: theme.colors.secondary,
+        backgroundColor: theme.colors.onBackground,
       }}>
       {children}
     </BottomSheetModal>

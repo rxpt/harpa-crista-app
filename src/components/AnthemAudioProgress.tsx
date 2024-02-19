@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
   player: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 8,
+    padding: 4,
   },
   progressBar: {
-    height: 4,
+    height: 2,
     backgroundColor: theme.colors.inversePrimary,
   },
 });
