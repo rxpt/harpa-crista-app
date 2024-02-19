@@ -77,7 +77,6 @@ const AnthemScreen: React.FC = () => {
         keyExtractor={item => item.sequence.toString()}
         renderItem={({item}) => {
           !item.chorus && sequence++;
-
           return (
             <Pressable
               key={item.sequence}
