@@ -15,7 +15,7 @@ const AnthemHeaderBar = () => {
   const MAX_FONT_SIZE = state.maxFontSize;
   const MIN_FONT_SIZE = state.minFontSize;
 
-  const ICON_SIZE = 24;
+  const ICON_SIZE = 26;
 
   const IS_FAVORITE = state.favorites.includes(state.currentAnthem?.id);
   const IS_FAVORITE_ICON = IS_FAVORITE ? 'heart' : 'heart-outline';

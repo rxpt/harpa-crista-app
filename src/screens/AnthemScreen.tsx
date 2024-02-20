@@ -11,21 +11,23 @@ import HistoryModal from '../components/modals/HistoryModal';
 import AnthemTitle from '../components/AnthemTitle';
 import AnthemAuthor from '../components/AnthemAuthor';
 import AnthemHeaderBar from '../components/AnthemHeaderBar';
-import AnthemAudioProgress from '../components/AnthemAudioProgress';
 import {useAppContext} from '../providers/AppProvider';
 import {styles} from '../utils/theme';
 import {Text} from 'react-native-paper';
 import AnthemPrevNext from '../components/AnthemPrevNext';
 import MenuModal from '../components/modals/MenuModal';
 import Share from 'react-native-share';
+import {captureRef} from 'react-native-view-shot';
 
 const AnthemScreen: React.FC = () => {
   const listRef = React.useRef<FlatList>(null);
+  const viewRef = React.useRef<View>(null);
   const [lastTap, setLastTap] = React.useState(0);
   const [highlightedVerse, setHighlightedVerse] = React.useState(0);
   const {
     state: {fontSize, currentAnthem},
   } = useAppContext();
+  const sequenceRef = React.useRef(0);
 
   React.useLayoutEffect(() => {
     activateKeepAwake();
@@ -47,9 +49,21 @@ const AnthemScreen: React.FC = () => {
   }
 
   const handleVersePress = (text: string) => {
-    Share.open({
+    captureRef(viewRef, {
+      format: 'jpg',
+      quality: 0.9,
+    }).then(
+      uri => {
+        Share.open({
+          url: uri,
+          message: `"${text}"\n\n- Hino: ${currentAnthem.id}. ${currentAnthem.title}`,
+        }).catch(() => {});
+      },
+      error => console.error('Oops!', error),
+    );
+    /* Share.open({
       message: `"${text}"\n\n- Hino: ${currentAnthem.id}. ${currentAnthem.title}`,
-    }).catch(() => {});
+    }).catch(() => {}); */
   };
 
   const handleDoubleTap = (data: any) => {
@@ -65,18 +79,19 @@ const AnthemScreen: React.FC = () => {
     }
   };
 
-  let sequence = 0;
-
   return (
-    <View style={styles.container}>
+    <View ref={viewRef} style={styles.container}>
       <AnthemHeaderBar />
       <FlatList
         ref={listRef}
         data={currentAnthem?.verses}
         ListHeaderComponent={AnthemTitle}
         keyExtractor={item => item.sequence.toString()}
-        renderItem={({item}) => {
-          !item.chorus && sequence++;
+        renderItem={({item, index}) => {
+          if (index === 0) {
+            sequenceRef.current = 0;
+          }
+          const sequence = !item.chorus && ++sequenceRef.current;
           return (
             <Pressable
               key={item.sequence}
@@ -120,7 +135,6 @@ const AnthemScreen: React.FC = () => {
         }}
         ListFooterComponent={<AnthemAuthor />}
       />
-      <AnthemAudioProgress />
       <AnthemPrevNext />
       <AnthemsModal />
       <IndexesModal />

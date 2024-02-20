@@ -6,6 +6,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon, {IconPackageType} from './Icon';
+import {theme} from '../utils/theme';
 
 type Props = {
   onPress?: () => void;
@@ -28,8 +29,8 @@ const Button = ({
   disabled,
   style,
   icon,
-  iconSize,
-  iconColor,
+  iconSize = 24,
+  iconColor = theme.colors.onBackground,
   iconStyle,
   iconPackage,
   children,

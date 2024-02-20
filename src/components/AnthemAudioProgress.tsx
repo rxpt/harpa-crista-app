@@ -53,7 +53,9 @@ const AnthemAudioProgress = () => {
   if (isPlaying) {
     return (
       <View style={styles.container}>
-        <Animated.View style={[styles.progressBar, progressBarStyle]} />
+        <Animated.View
+          style={[styles.container, styles.progressBar, progressBarStyle]}
+        />
         <View style={styles.player}>
           <Text variant="bodySmall">{renderTime(progress.position)}</Text>
           <Text variant="bodySmall">{renderTime(progress.duration)}</Text>
@@ -71,7 +73,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: theme.colors.backdrop,
   },
   player: {
     flexDirection: 'row',
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   progressBar: {
-    height: 2,
+    height: '100%',
     backgroundColor: theme.colors.inversePrimary,
   },
 });

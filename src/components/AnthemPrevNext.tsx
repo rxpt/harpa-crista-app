@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Dimensions, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Button from './Button';
 import {getAnthem, firstAndLastAnthemIds} from '../utils';
 import {useAppContext} from '../providers/AppProvider';
@@ -12,7 +12,6 @@ const AnthemPrevNext = () => {
   } = useAppContext();
 
   const {first, last} = firstAndLastAnthemIds();
-  const {height} = Dimensions.get('window');
 
   const styles = StyleSheet.create({
     buttonNextPrev: {
@@ -25,13 +24,13 @@ const AnthemPrevNext = () => {
       backgroundColor: theme.colors.secondaryContainer,
       color: theme.colors.secondary,
       position: 'absolute',
-      bottom: height / 2 - 25,
+      bottom: 16,
     },
     rightArrow: {
-      right: -16,
+      right: -10,
     },
     leftArrow: {
-      left: -16,
+      left: -10,
     },
   });
 
