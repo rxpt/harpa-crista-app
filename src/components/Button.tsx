@@ -58,8 +58,15 @@ const Button = ({
     setPressed(false);
   };
 
+  const onlyIcon = icon && !children;
+
   const animatedStyle = useAnimatedStyle(() => {
-    return {opacity: opacity.value};
+    return {
+      opacity: opacity.value,
+      height: onlyIcon ? iconSize + 16 : 'auto',
+      width: onlyIcon ? iconSize + 16 : 'auto',
+      borderRadius: onlyIcon ? iconSize / 2 + 8 : 8,
+    };
   });
 
   return (
@@ -69,7 +76,7 @@ const Button = ({
       onLongPress={onLongPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}>
-      <Animated.View style={[style, animatedStyle, styles.button]}>
+      <Animated.View style={[animatedStyle, styles.button, style]}>
         {icon && (
           <Icon
             name={icon}

@@ -15,22 +15,22 @@ const AnthemPrevNext = () => {
 
   const styles = StyleSheet.create({
     buttonNextPrev: {
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 50,
-      elevation: 5,
+      elevation: 4,
       backgroundColor: theme.colors.secondaryContainer,
       color: theme.colors.secondary,
       position: 'absolute',
-      bottom: 16,
+      bottom: 5,
     },
     rightArrow: {
-      right: -10,
+      right: 5,
     },
     leftArrow: {
-      left: -10,
+      left: 5,
     },
   });
 

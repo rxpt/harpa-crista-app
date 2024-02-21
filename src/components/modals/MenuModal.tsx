@@ -14,7 +14,7 @@ const MenuModal = () => {
 
   return (
     <BottomSheet name="mainMenu" snapPoints={['95%']}>
-      <BottomSheetScrollView style={styles.padding}>
+      <BottomSheetScrollView contentContainerStyle={styles.padding}>
         <View
           style={[
             styles.flexRow,

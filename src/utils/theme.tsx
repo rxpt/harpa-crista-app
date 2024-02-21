@@ -16,6 +16,7 @@ export const theme = {
 export const colors = theme.colors;
 
 export const styles = StyleSheet.create({
+  // general styles
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -23,6 +24,9 @@ export const styles = StyleSheet.create({
   content: {
     padding: padding,
     gap: 5,
+  },
+  menuGap: {
+    gap: 2,
   },
   number: {
     width: 50,
@@ -32,41 +36,53 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     padding: padding,
   },
-  verseContainer: {
+  // anthem styles
+  anthemTitle: {
+    fontSize: 24,
+    fontFamily: 'Roboto-Bold',
+    color: theme.colors.onBackground,
+  },
+  anthemSubtitle: {
+    fontSize: 18,
+  },
+  anthemContainer: {
     padding: padding,
-    color: theme.colors.secondary,
+    gap: 10,
     flex: 1,
   },
-  verseOdd: {
-    color: theme.colors.onSecondaryContainer,
-    backgroundColor: color(theme.colors.background).lighten(0.2).hex(),
-  },
-  verseEven: {
-    color: theme.colors.onSecondaryContainer,
-  },
-  verseNumber: {
-    color: color(theme.colors.onBackground).darken(0.5).hex(),
-    fontWeight: '900',
-    paddingTop: padding + 2,
-    fontSize: theme.fonts.bodySmall.fontSize,
-  },
-  highlightedVerse: {
+  anthemContainerHighlight: {
     backgroundColor: theme.colors.primaryContainer,
   },
-  chorus: {
-    paddingHorizontal: padding * 2.5,
+  anthemContainerOdd: {
+    backgroundColor: color(theme.colors.background).lighten(0.2).hex(),
   },
-  chorusContent: {
-    fontStyle: 'italic',
-    fontWeight: '900',
+  anthemContainerEven: {},
+  anthemNumber: {
+    fontFamily: 'Roboto-Bold',
+    color: color(theme.colors.onBackground).darken(0.5).hex(),
   },
-  author: {
-    fontSize: theme.fonts.bodySmall.fontSize,
-    fontStyle: 'italic',
-    textAlign: 'center',
+  anthemLyrics: {
+    color: theme.colors.onBackground,
+    fontFamily: 'Roboto-Regular',
+    paddingRight: padding / 2,
+  },
+  anthemChorus: {
+    color: theme.colors.onBackground,
+    padding: padding * 2.5,
+    paddingRight: padding / 2,
+    fontFamily: 'Roboto-BoldItalic',
+  },
+  anthemHighlight: {
+    color: theme.colors.primary,
+    fontFamily: 'Roboto-BlackItalic',
+  },
+  anthemAuthor: {
+    fontFamily: 'Roboto-ThinItalic',
+    fontSize: 12,
     padding: padding,
     paddingVertical: padding * 2,
   },
+  // auxiliary styles
   bold: {
     fontWeight: '900',
   },
@@ -139,9 +155,6 @@ export const styles = StyleSheet.create({
   },
   gap: {
     gap: 5,
-  },
-  menuGap: {
-    gap: 2,
   },
   padding: {
     padding: padding,

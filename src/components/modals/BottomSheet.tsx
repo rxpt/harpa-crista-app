@@ -11,32 +11,39 @@ type BottomSheetProps = React.PropsWithChildren<{
 }>;
 
 const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
-  const {state, dispatch} = useAppContext();
+  const {
+    state: {currentModal},
+    dispatch,
+  } = useAppContext();
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-  const bottomSheetRef = React.useRef(null);
+  const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const {height} = Dimensions.get('window');
 
   if (!snapPoints) {
     snapPoints = [height * 0.5, height * 0.8];
   }
 
-  //const open = () => dispatch({type: 'SET_CURRENT_MODAL', payload: name});
-  const close = () => dispatch({type: 'SET_CURRENT_MODAL', payload: null});
-
-  React.useEffect(() => {
-    if (state.currentModal === name) {
-      (bottomSheetRef.current as any)?.present();
-    } else {
-      (bottomSheetRef.current as any)?.dismiss();
+  React.useMemo(() => {
+    if (currentModal === name && !isModalVisible) {
+      bottomSheetRef.current?.present();
+      setIsModalVisible(true);
+    } else if (currentModal !== name && isModalVisible) {
+      bottomSheetRef.current?.dismiss();
+      setIsModalVisible(false);
     }
-  }, [state.currentModal, name]);
+  }, [currentModal, isModalVisible, name]);
 
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
+      onDismiss={() => {
+        if (isModalVisible) {
+          dispatch({type: 'SET_CURRENT_MODAL', payload: null});
+        }
+      }}
       snapPoints={snapPoints}
       backdropComponent={BackdropModal}
-      onDismiss={close}
       backgroundStyle={{
         backgroundColor: theme.colors.background,
       }}

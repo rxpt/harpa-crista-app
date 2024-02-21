@@ -50,7 +50,7 @@ type Action =
 const initialState: State = {
   playerReady: false,
   minFontSize: 16,
-  maxFontSize: 32,
+  maxFontSize: 48,
   fontSize: storage.getNumber('fontSize') ?? 18,
   favorites: JSON.parse(storage.getString('favorites') ?? '[]'),
   history: JSON.parse(storage.getString('history') ?? '[]'),

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, ToastAndroid} from 'react-native';
 import {Surface} from 'react-native-paper';
 import Button from './Button';
-import {styles} from '../utils/theme';
+import {styles, theme} from '../utils/theme';
 import {useAppContext} from '../providers/AppProvider';
 
 const AnthemHeaderBar = () => {
@@ -35,7 +35,11 @@ const AnthemHeaderBar = () => {
   };
 
   return (
-    <Surface elevation={2}>
+    <Surface
+      elevation={2}
+      style={{
+        backgroundColor: theme.colors.onPrimary,
+      }}>
       <View
         style={[
           styles.paddingHeader,
@@ -70,6 +74,7 @@ const AnthemHeaderBar = () => {
           <Button
             onPress={() => toggleFavorite()}
             icon={IS_FAVORITE_ICON}
+            iconColor={IS_FAVORITE ? 'red' : theme.colors.onBackground}
             iconSize={ICON_SIZE}
           />
           <Button

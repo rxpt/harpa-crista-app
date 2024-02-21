@@ -1,9 +1,8 @@
 import React from 'react';
-import {Text} from 'react-native-paper';
+import {Text, View} from 'react-native';
+import AnthemAudioProgress from './AnthemAudioProgress';
 import {useAppContext} from '../providers/AppProvider';
 import {styles} from '../utils/theme';
-import AnthemAudioProgress from './AnthemAudioProgress';
-import {View} from 'react-native';
 
 const AnthemTitle = () => {
   const {state} = useAppContext();
@@ -14,25 +13,16 @@ const AnthemTitle = () => {
 
   return (
     <View>
-      <Text
-        variant="titleLarge"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        style={[
-          styles.padding,
-          styles.marginVertical,
-          styles.wrap,
-          styles.stretched,
-        ]}>
+      <View style={[styles.padding, styles.marginVertical, styles.stretched]}>
         <Text
-          variant="titleMedium"
-          style={{
-            color: styles.verseNumber.color,
-          }}>
-          {state.currentAnthem?.id}.{' '}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={[styles.wrap, styles.stretched, styles.anthemTitle]}>
+          <Text style={styles.anthemSubtitle}>{state.currentAnthem?.id}. </Text>
+          {state.currentAnthem?.title}
         </Text>
-        {state.currentAnthem?.title}
-      </Text>
+      </View>
+
       <AnthemAudioProgress />
     </View>
   );

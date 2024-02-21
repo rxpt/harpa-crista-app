@@ -22,7 +22,7 @@ const AnthemAuthor = () => {
       ]}>
       <View>
         <Divider />
-        <Text variant="bodySmall" style={styles.author}>
+        <Text variant="bodySmall" style={styles.anthemAuthor}>
           {state.currentAnthem?.author || 'Autor desconhecido'}
         </Text>
       </View>
