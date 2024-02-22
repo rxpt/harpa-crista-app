@@ -1,5 +1,6 @@
 export interface Anthem {
-  id: number;
+  _id: object;
+  number: number;
   title: string;
   verses: Verse[];
   author?: string;

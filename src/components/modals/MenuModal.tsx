@@ -75,7 +75,7 @@ const MenuModal = () => {
               await TrackPlayer.stop();
             } else {
               await TrackPlayer.load({
-                url: anthemAudioURL(state.currentAnthem.id),
+                url: anthemAudioURL(state.currentAnthem.number),
                 title: state.currentAnthem.title,
                 artist: state.currentAnthem.author,
               });
@@ -98,7 +98,7 @@ const MenuModal = () => {
         <Button
           onPress={() =>
             Linking.openURL(
-              `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${state.currentAnthem.id}`,
+              `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${state.currentAnthem.number}`,
             )
           }
           icon="bug">

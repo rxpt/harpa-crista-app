@@ -30,9 +30,9 @@ const HistoryModal = () => {
                   dispatch({type: 'SET_CURRENT_MODAL', payload: null});
                 }}>
                 <View style={[styles.flexRow, styles.alignCenter]}>
-                  {item.id && (
+                  {item.number && (
                     <View style={styles.number}>
-                      <Text style={styles.centered}>{item.id}</Text>
+                      <Text style={styles.centered}>{item.number}</Text>
                     </View>
                   )}
                   <Text variant="titleMedium" style={styles.title}>

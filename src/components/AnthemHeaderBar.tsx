@@ -17,12 +17,12 @@ const AnthemHeaderBar = () => {
 
   const ICON_SIZE = 26;
 
-  const IS_FAVORITE = state.favorites.includes(state.currentAnthem?.id);
+  const IS_FAVORITE = state.favorites.includes(state.currentAnthem?.number);
   const IS_FAVORITE_ICON = IS_FAVORITE ? 'heart' : 'heart-outline';
   const toggleFavorite = () => {
     dispatch({
       type: 'TOGGLE_FAVORITE',
-      payload: state.currentAnthem?.id,
+      payload: state.currentAnthem?.number,
     });
     ToastAndroid.show(
       IS_FAVORITE ? 'Removido dos favoritos' : 'Adicionado aos favoritos',

@@ -40,11 +40,11 @@ const AnthemPrevNext = () => {
     <View>
       <Button
         style={[styles.buttonNextPrev, styles.leftArrow]}
-        disabled={currentAnthem.id === first}
+        disabled={currentAnthem.number === first}
         onPress={() =>
           dispatch({
             type: 'SET_CURRENT_ANTHEM',
-            payload: getAnthem(currentAnthem.id - 1),
+            payload: getAnthem(currentAnthem.number - 1),
           })
         }
         icon="arrow-left"
@@ -52,11 +52,11 @@ const AnthemPrevNext = () => {
       />
       <Button
         style={[styles.buttonNextPrev, styles.rightArrow]}
-        disabled={currentAnthem.id === last}
+        disabled={currentAnthem.number === last}
         onPress={() =>
           dispatch({
             type: 'SET_CURRENT_ANTHEM',
-            payload: getAnthem(currentAnthem.id + 1),
+            payload: getAnthem(currentAnthem.number + 1),
           })
         }
         icon="arrow-right"

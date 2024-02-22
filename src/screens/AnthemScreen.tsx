@@ -27,7 +27,7 @@ const AnthemScreen: React.FC = () => {
     (newFontSize: number) => {
       dispatch({
         type: 'SET_FONT_SIZE',
-        payload: Math.round(newFontSize),
+        payload: newFontSize,
       });
     },
     [dispatch],
@@ -37,7 +37,7 @@ const AnthemScreen: React.FC = () => {
     .activeOffsetX([-20, 20])
     .runOnJS(true)
     .onEnd(event => {
-      const currentAnthemId = currentAnthem?.id;
+      const currentAnthemId = currentAnthem?.number;
       const {first, last} = firstAndLastAnthemIds();
       const left = event.translationX >= 100;
       const right = event.translationX <= -100;

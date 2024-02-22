@@ -44,7 +44,7 @@ const AnthemsModal = () => {
         ref={flatListRef}
         data={searchResults}
         contentContainerStyle={[styles.padding, styles.gap]}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item._id.toString()}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
           <Searchbar
@@ -87,9 +87,9 @@ const AnthemsModal = () => {
                   dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
                 }}>
                 <View style={[styles.flexRow, styles.alignCenter]}>
-                  {item.id && (
+                  {item.number && (
                     <View style={styles.number}>
-                      <Text style={styles.centered}>{item.id}</Text>
+                      <Text style={styles.centered}>{item.number}</Text>
                     </View>
                   )}
                   <Text variant="titleMedium" style={styles.title}>

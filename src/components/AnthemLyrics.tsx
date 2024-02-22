@@ -48,7 +48,7 @@ const AnthemLyrics = () => {
       uri => {
         Share.open({
           url: uri,
-          message: `"${text}"\n\n- Hino: ${currentAnthem.id}. ${currentAnthem.title}`,
+          message: `"${text}"\n\n- Hino: ${currentAnthem.number}. ${currentAnthem.title}`,
         }).catch(() => {});
       },
       error => console.error('Oops!', error),

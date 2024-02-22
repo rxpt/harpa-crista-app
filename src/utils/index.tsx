@@ -12,40 +12,42 @@ export const normalize = (str: string) => {
 
 export const randomAnthem = () => sample(anthems) as Anthem;
 
-export const anthemAudioURL = (id: number) => {
+export const anthemAudioURL = (number: number) => {
   return `https://harpa.nyc3.digitaloceanspaces.com/${padStart(
-    id.toString(),
+    number.toString(),
     3,
     '0',
   )}.mp3`;
 };
 
-export const getAnthem = (id: number) => {
-  return anthems.find(anthem => anthem?.id === id) as Anthem;
+export const getAnthem = (number: number) => {
+  return anthems.find(anthem => anthem?.number === number) as Anthem;
 };
 
 export const filterFavorites = (favorites: number[]) => {
-  return anthems.filter(anthem => favorites.includes(anthem?.id)) as Anthem[];
+  return anthems.filter(anthem =>
+    favorites.includes(anthem?.number),
+  ) as Anthem[];
 };
 
 export const filterHistory = (history: number[]) => {
-  return anthems.filter(anthem => history.includes(anthem?.id)) as Anthem[];
+  return anthems.filter(anthem => history.includes(anthem?.number)) as Anthem[];
 };
 
 export const getIndexes = () => {
   return indexes as Indexes[];
 };
 
-export const getAnthemIndexes = (id: number) => {
-  return indexes.find(index => index.data.includes(id)) as Indexes;
+export const getAnthemIndexes = (number: number) => {
+  return indexes.find(index => index.data.includes(number)) as Indexes;
 };
 
 export const searchAnthems = (searchQuery: string) => {
   if (searchQuery) {
     return anthems.filter(anthem => {
       return (
-        anthem?.id === parseInt(searchQuery, 10) ||
-        anthem?.id.toString().includes(searchQuery.trim()) ||
+        anthem?.number === parseInt(searchQuery, 10) ||
+        anthem?.number.toString().includes(searchQuery.trim()) ||
         normalize(anthem?.title)
           .toLowerCase()
           .includes(normalize(searchQuery).toLowerCase())
@@ -62,21 +64,21 @@ export const anthemsByIndex = (index?: number) => {
   }
 
   return anthems.filter(anthem =>
-    indexes[index].data.includes(anthem?.id),
+    indexes[index].data.includes(anthem?.number),
   ) as Anthem[];
 };
 
-export const toggleFavorite = (favorites: number[], id: number) => {
-  if (favorites.includes(id)) {
-    return favorites.filter(favorite => favorite !== id);
+export const toggleFavorite = (favorites: number[], number: number) => {
+  if (favorites.includes(number)) {
+    return favorites.filter(favorite => favorite !== number);
   }
 
-  return [...favorites, id];
+  return [...favorites, number];
 };
 
 export const firstAndLastAnthemIds = () => {
   return {
-    first: anthems[0].id,
-    last: anthems[anthems.length - 1].id,
+    first: anthems[0].number,
+    last: anthems[anthems.length - 1].number,
   };
 };

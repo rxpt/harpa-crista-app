@@ -184,8 +184,8 @@ export const AppProvider: React.FC<{children: React.ReactNode}> = ({
   }, [playing]);
 
   useEffect(() => {
-    dispatch({type: 'ADD_HISTORY', payload: state.currentAnthem.id});
-  }, [state.currentAnthem.id]);
+    dispatch({type: 'ADD_HISTORY', payload: state.currentAnthem.number});
+  }, [state.currentAnthem.number]);
 
   useEffect(() => {
     const initializePlayer = async () => {

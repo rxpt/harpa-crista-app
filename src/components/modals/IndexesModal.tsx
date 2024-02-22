@@ -12,7 +12,7 @@ const IndexesModal = () => {
   const {dispatch} = useAppContext();
 
   const renderAnthems = (index: Indexes) => {
-    return index.data.map((id: number, i: number) => {
+    return index.data.map((number: number, i: number) => {
       return (
         <View key={i}>
           <TouchableOpacity
@@ -20,11 +20,11 @@ const IndexesModal = () => {
             onPress={() => {
               dispatch({
                 type: 'SET_CURRENT_ANTHEM',
-                payload: getAnthem(id),
+                payload: getAnthem(number),
               });
               dispatch({type: 'SET_CURRENT_MODAL', payload: null});
             }}>
-            <Text variant="bodySmall">{id}</Text>
+            <Text variant="bodySmall">{number}</Text>
           </TouchableOpacity>
         </View>
       );

@@ -5,9 +5,11 @@ import {useAppContext} from '../providers/AppProvider';
 import {styles} from '../utils/theme';
 
 const AnthemTitle = () => {
-  const {state} = useAppContext();
+  const {
+    state: {currentAnthem},
+  } = useAppContext();
 
-  if (!state.currentAnthem) {
+  if (!currentAnthem) {
     return null;
   }
 
@@ -18,8 +20,8 @@ const AnthemTitle = () => {
           numberOfLines={1}
           ellipsizeMode="tail"
           style={[styles.wrap, styles.stretched, styles.anthemTitle]}>
-          <Text style={styles.anthemSubtitle}>{state.currentAnthem?.id}. </Text>
-          {state.currentAnthem?.title}
+          <Text style={styles.anthemSubtitle}>{currentAnthem?.number}. </Text>
+          {currentAnthem?.title}
         </Text>
       </View>
 
