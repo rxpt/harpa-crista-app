@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import Button from './Button';
-import {getAnthem, firstAndLastAnthemIds} from '../utils';
-import {useAppContext} from '../providers/AppProvider';
-import {theme} from '../utils/theme';
+import Button from '../Button';
+import {getAnthem, firstAndLastAnthemIds} from '../../utils';
+import {useAppContext} from '../../providers/AppProvider';
+import {theme} from '../../utils/theme';
 
 const AnthemPrevNext = () => {
   const {
@@ -24,13 +24,13 @@ const AnthemPrevNext = () => {
       backgroundColor: theme.colors.secondaryContainer,
       color: theme.colors.secondary,
       position: 'absolute',
-      bottom: 5,
+      bottom: 30,
     },
     rightArrow: {
-      right: 5,
+      right: 10,
     },
     leftArrow: {
-      left: 5,
+      left: 10,
     },
   });
 

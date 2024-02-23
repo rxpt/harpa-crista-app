@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, ToastAndroid} from 'react-native';
 import {Surface} from 'react-native-paper';
-import Button from './Button';
-import {styles, theme} from '../utils/theme';
-import {useAppContext} from '../providers/AppProvider';
+import Button from '../Button';
+import {styles, theme} from '../../utils/theme';
+import {useAppContext} from '../../providers/AppProvider';
 
-const AnthemHeaderBar = () => {
+const HeaderBar = () => {
   const {state, dispatch} = useAppContext();
 
   if (!state.currentAnthem) {
@@ -91,4 +91,4 @@ const AnthemHeaderBar = () => {
   );
 };
 
-export default AnthemHeaderBar;
+export default HeaderBar;

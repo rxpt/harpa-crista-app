@@ -1,8 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Divider, Text} from 'react-native-paper';
-import {useAppContext} from '../providers/AppProvider';
-import {styles} from '../utils/theme';
+import {useAppContext} from '../../providers/AppProvider';
+import {styles} from '../../utils/theme';
 
 const AnthemAuthor = () => {
   const {state} = useAppContext();

@@ -7,8 +7,7 @@ import React, {
 } from 'react';
 import {MMKV} from 'react-native-mmkv';
 import {setupPlayer} from '../services';
-import {getAnthem} from '../utils';
-import {Anthem} from '../utils/interfaces';
+import {getAnthem, IAnthem} from '../utils';
 import {useProgress, useIsPlaying} from 'react-native-track-player';
 
 export const storage = new MMKV();
@@ -21,8 +20,8 @@ interface State {
   favorites: number[];
   history: number[];
   searchQuery: string;
-  searchResults: Anthem[];
-  currentAnthem: Anthem;
+  searchResults: IAnthem[];
+  currentAnthem: IAnthem;
   currentModal: 'anthems' | 'favorites' | 'history' | 'indexes' | string | null;
   trackProgress: {
     position: number;
@@ -40,8 +39,8 @@ type Action =
   | {type: 'TOGGLE_FAVORITE'; payload: number}
   | {type: 'ADD_HISTORY'; payload: number}
   | {type: 'SET_SEARCH_QUERY'; payload: string}
-  | {type: 'SET_SEARCH_RESULTS'; payload: Anthem[]}
-  | {type: 'SET_CURRENT_ANTHEM'; payload: Anthem}
+  | {type: 'SET_SEARCH_RESULTS'; payload: IAnthem[]}
+  | {type: 'SET_CURRENT_ANTHEM'; payload: IAnthem}
   | {type: 'SET_CURRENT_MODAL'; payload: string | null}
   | {type: 'SET_TRACK_PROGRESS'; payload: {position: number; duration: number}}
   | {type: 'SET_IS_PLAYING'; payload: boolean}

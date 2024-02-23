@@ -8,8 +8,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useAppContext} from '../providers/AppProvider';
-import {theme} from '../utils/theme';
+import {useAppContext} from '../../providers/AppProvider';
+import {theme} from '../../utils/theme';
 import TrackPlayer from 'react-native-track-player';
 
 const AnthemAudioProgress = () => {

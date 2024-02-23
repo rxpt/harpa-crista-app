@@ -1,8 +1,35 @@
 import {sample, padStart} from 'lodash';
 import anthems from '../data/anthems.json';
 import indexes from '../data/indexes.json';
-import {Anthem, Indexes} from './interfaces';
+/* import colors from './colors';
+import styles from './styles'; */
 
+// Interfaces
+interface ObjectId {
+  $oid: string;
+}
+
+export interface IAnthem {
+  _id: ObjectId;
+  number: number;
+  title: string;
+  verses: IVerse[];
+  author?: string;
+}
+
+export interface IVerse {
+  sequence: number;
+  lyrics: string;
+  chorus: boolean;
+}
+
+export interface Indexes {
+  _id: ObjectId;
+  title: string;
+  data: number[]; // Array of anthem ids
+}
+
+// Functions
 export const normalize = (str: string) => {
   return str
     .normalize('NFD')
@@ -10,7 +37,7 @@ export const normalize = (str: string) => {
     .trim();
 };
 
-export const randomAnthem = () => sample(anthems) as Anthem;
+export const randomAnthem = () => sample(anthems) as IAnthem;
 
 export const anthemAudioURL = (number: number) => {
   return `https://harpa.nyc3.digitaloceanspaces.com/${padStart(
@@ -21,17 +48,19 @@ export const anthemAudioURL = (number: number) => {
 };
 
 export const getAnthem = (number: number) => {
-  return anthems.find(anthem => anthem?.number === number) as Anthem;
+  return anthems.find(anthem => anthem?.number === number) as IAnthem;
 };
 
 export const filterFavorites = (favorites: number[]) => {
   return anthems.filter(anthem =>
     favorites.includes(anthem?.number),
-  ) as Anthem[];
+  ) as IAnthem[];
 };
 
 export const filterHistory = (history: number[]) => {
-  return anthems.filter(anthem => history.includes(anthem?.number)) as Anthem[];
+  return anthems.filter(anthem =>
+    history.includes(anthem?.number),
+  ) as IAnthem[];
 };
 
 export const getIndexes = () => {
@@ -52,20 +81,20 @@ export const searchAnthems = (searchQuery: string) => {
           .toLowerCase()
           .includes(normalize(searchQuery).toLowerCase())
       );
-    }) as Anthem[];
+    }) as IAnthem[];
   }
 
-  return anthems as Anthem[];
+  return anthems as IAnthem[];
 };
 
 export const anthemsByIndex = (index?: number) => {
   if (!index) {
-    return anthems as Anthem[];
+    return anthems as IAnthem[];
   }
 
   return anthems.filter(anthem =>
     indexes[index].data.includes(anthem?.number),
-  ) as Anthem[];
+  ) as IAnthem[];
 };
 
 export const toggleFavorite = (favorites: number[], number: number) => {
@@ -74,6 +103,10 @@ export const toggleFavorite = (favorites: number[], number: number) => {
   }
 
   return [...favorites, number];
+};
+
+export const isFavorite = (favorites: number[], number: number) => {
+  return favorites.includes(number);
 };
 
 export const firstAndLastAnthemIds = () => {

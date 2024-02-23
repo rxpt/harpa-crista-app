@@ -5,8 +5,8 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import Icon, {IconPackageType} from './Icon';
-import {theme} from '../utils/theme';
+import Icon, {IconPackageType} from '../Icon';
+import {theme} from '../../utils/theme';
 
 type Props = {
   onPress?: () => void;

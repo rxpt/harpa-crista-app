@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import AnthemAudioProgress from './AnthemAudioProgress';
-import {useAppContext} from '../providers/AppProvider';
-import {styles} from '../utils/theme';
+import AnthemAudioProgress from './AudioProgress';
+import {useAppContext} from '../../providers/AppProvider';
+import {styles} from '../../utils/theme';
 
 const AnthemTitle = () => {
   const {

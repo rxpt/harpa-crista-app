@@ -2,13 +2,19 @@ import React from 'react';
 import {Dimensions} from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useAppContext} from '../../providers/AppProvider';
-import BackdropModal from './BackdropModal';
+import {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import {theme} from '../../utils/theme';
 
 type BottomSheetProps = React.PropsWithChildren<{
   name: string;
   snapPoints?: number[] | string[];
 }>;
+
+const BackdropModal = (props: any) => {
+  return (
+    <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
+  );
+};
 
 const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
   const {

@@ -1,19 +1,19 @@
 import React from 'react';
-import {FlatList, Pressable, View} from 'react-native';
-import AnthemTitle from './AnthemTitle';
-import AnthemAuthor from './AnthemAuthor';
+import {FlatList, Pressable, Text, View} from 'react-native';
+import AnthemTitle from './Title';
+import AnthemAuthor from './Author';
 import {captureRef} from 'react-native-view-shot';
-import {useAppContext} from '../providers/AppProvider';
+import {useAppContext} from '../../providers/AppProvider';
 import Animated, {
   useSharedValue,
   withTiming,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Share from 'react-native-share';
-import {styles} from '../utils/theme';
-import {Verse} from '../utils/interfaces';
+import {styles} from '../../utils/theme';
+import AnthemPrevNext from './PrevNext';
 
-const AnthemLyrics = () => {
+const Anthem = () => {
   const sequenceRef = React.useRef(0);
   const listRef = React.useRef<FlatList>(null);
   const [lastTap, setLastTap] = React.useState(0);
@@ -71,10 +71,16 @@ const AnthemLyrics = () => {
   return (
     <FlatList
       ref={listRef}
-      data={currentAnthem?.verses}
+      data={currentAnthem.verses}
       ListHeaderComponent={AnthemTitle}
       keyExtractor={item => item.sequence.toString()}
-      renderItem={({item, index}: {item: Verse; index: number}) => {
+      renderItem={({
+        item,
+        index,
+      }: {
+        item: (typeof currentAnthem.verses)[0];
+        index: number;
+      }) => {
         if (index === 0) {
           sequenceRef.current = 0;
         }
@@ -101,22 +107,25 @@ const AnthemLyrics = () => {
                 verseOddEvenStyle,
                 verseContainerHighlightStyle,
               ]}>
-              {!item.chorus && (
-                <Animated.Text style={[styles.anthemNumber, fontSizeStyle]}>
-                  {sequence}
-                </Animated.Text>
-              )}
               <Animated.Text
                 style={[verseStyle, verseHighlightStyle, fontSizeStyle]}>
+                {!item.chorus && (
+                  <Text style={[styles.anthemNumber]}>{sequence}</Text>
+                )}
                 {item.lyrics}
               </Animated.Text>
             </View>
           </Pressable>
         );
       }}
-      ListFooterComponent={<AnthemAuthor />}
+      ListFooterComponent={
+        <View>
+          <AnthemAuthor />
+          <AnthemPrevNext />
+        </View>
+      }
     />
   );
 };
 
-export default AnthemLyrics;
+export default Anthem;

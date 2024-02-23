@@ -10,7 +10,6 @@ export const theme = {
     ...MD3DarkTheme.colors,
   },
   dark: true,
-  mode: 'adaptive',
 };
 
 export const colors = theme.colors;
@@ -58,6 +57,8 @@ export const styles = StyleSheet.create({
   },
   anthemContainerEven: {},
   anthemNumber: {
+    letterSpacing: 20,
+    fontSize: 16,
     fontFamily: 'Roboto-Bold',
     color: color(theme.colors.onBackground).darken(0.5).hex(),
   },

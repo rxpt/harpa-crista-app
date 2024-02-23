@@ -1,5 +1,5 @@
 import React from 'react';
-import BottomSheet from './BottomSheet';
+import BottomSheet from '../BottomSheetModal';
 import {BottomSheetScrollView, TouchableOpacity} from '@gorhom/bottom-sheet';
 import {Appbar, Divider, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';

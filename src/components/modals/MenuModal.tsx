@@ -4,16 +4,19 @@ import {Divider, Text} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
 import TrackPlayer from 'react-native-track-player';
 import {anthemAudioURL, randomAnthem} from '../../utils';
-import BottomSheet from './BottomSheet';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import BottomSheet from '../BottomSheetModal';
 import {styles} from '../../utils/theme';
 import Button from '../Button';
 
 const MenuModal = () => {
-  const {state, dispatch} = useAppContext();
+  const {
+    state: {isPlaying, currentAnthem},
+    dispatch,
+  } = useAppContext();
 
   return (
-    <BottomSheet name="mainMenu" snapPoints={['95%']}>
+    <BottomSheet name="mainMenu">
       <BottomSheetScrollView contentContainerStyle={styles.padding}>
         <View
           style={[
@@ -71,19 +74,19 @@ const MenuModal = () => {
         <Divider style={styles.marginVertical} />
         <Button
           onPress={async () => {
-            if (state.isPlaying) {
+            if (isPlaying) {
               await TrackPlayer.stop();
             } else {
               await TrackPlayer.load({
-                url: anthemAudioURL(state.currentAnthem.number),
-                title: state.currentAnthem.title,
-                artist: state.currentAnthem.author,
+                url: anthemAudioURL(currentAnthem.number),
+                title: currentAnthem.title,
+                artist: currentAnthem.author,
               });
               await TrackPlayer.play();
             }
           }}
-          icon={state.isPlaying ? 'stop' : 'play'}>
-          <Text>{state.isPlaying ? 'Parar' : 'Reproduzir'}</Text>
+          icon={isPlaying ? 'stop' : 'play'}>
+          <Text>{isPlaying ? 'Parar' : 'Reproduzir'}</Text>
         </Button>
         <Divider style={styles.marginVertical} />
         <Text variant="titleMedium">Outros</Text>
@@ -98,7 +101,7 @@ const MenuModal = () => {
         <Button
           onPress={() =>
             Linking.openURL(
-              `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${state.currentAnthem.number}`,
+              `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${currentAnthem.number}`,
             )
           }
           icon="bug">

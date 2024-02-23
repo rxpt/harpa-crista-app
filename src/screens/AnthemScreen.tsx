@@ -4,17 +4,12 @@ import {
   activateKeepAwake,
   deactivateKeepAwake,
 } from '@sayem314/react-native-keep-awake';
-import AnthemsModal from '../components/modals/AnthemsModal';
-import IndexesModal from '../components/modals/IndexesModal';
-import FavoritesModal from '../components/modals/FavoritesModal';
-import HistoryModal from '../components/modals/HistoryModal';
-import AnthemHeaderBar from '../components/AnthemHeaderBar';
-import {useAppContext} from '../providers/AppProvider';
-import {styles} from '../utils/theme';
-import AnthemPrevNext from '../components/AnthemPrevNext';
-import MenuModal from '../components/modals/MenuModal';
-import AnthemLyrics from '../components/AnthemLyrics';
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
+import {useAppContext} from '../providers/AppProvider';
+import HeaderBar from '../components/HeaderBar';
+import Anthem from '../components/Anthem';
+import Modals from '../components/Modals';
+import {styles} from '../utils/theme';
 import {getAnthem, firstAndLastAnthemIds} from '../utils';
 
 const AnthemScreen: React.FC = () => {
@@ -61,9 +56,12 @@ const AnthemScreen: React.FC = () => {
     .runOnJS(true)
     .onUpdate(event => {
       const scale = event.scale;
+      const isZoomIn = scale > 1;
+      //const isZoomOut = scale < 1;
+
       const newFontSize = Math.max(
         minFontSize,
-        Math.min(maxFontSize, fontSize * scale),
+        Math.min(maxFontSize, isZoomIn ? fontSize + 1 : fontSize - 1),
       );
 
       setFontSize(newFontSize);
@@ -81,16 +79,11 @@ const AnthemScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <AnthemHeaderBar />
+      <HeaderBar />
       <GestureDetector gesture={gestureRace}>
-        <AnthemLyrics />
+        <Anthem />
       </GestureDetector>
-      <AnthemPrevNext />
-      <AnthemsModal />
-      <IndexesModal />
-      <HistoryModal />
-      <FavoritesModal />
-      <MenuModal />
+      <Modals />
     </View>
   );
 };

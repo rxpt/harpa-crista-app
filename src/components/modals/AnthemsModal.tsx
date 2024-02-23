@@ -1,6 +1,6 @@
 import React from 'react';
-import {View} from 'react-native';
-import BottomSheet from './BottomSheet';
+import {View, Keyboard} from 'react-native';
+import BottomSheet from '../BottomSheetModal';
 import {
   BottomSheetFlatList,
   BottomSheetFlatListMethods,
@@ -21,6 +21,27 @@ const AnthemsModal = () => {
     'numeric',
   );
   const flatListRef = React.useRef<BottomSheetFlatListMethods>(null);
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false);
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   React.useEffect(() => {
     dispatch({
@@ -44,7 +65,7 @@ const AnthemsModal = () => {
         ref={flatListRef}
         data={searchResults}
         contentContainerStyle={[styles.padding, styles.gap]}
-        keyExtractor={item => item._id.toString()}
+        keyExtractor={item => item._id.$oid}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
           <Searchbar
@@ -102,27 +123,29 @@ const AnthemsModal = () => {
           );
         }}
       />
-      <SegmentedButtons
-        density="small"
-        style={[styles.marginHorizontal]}
-        value={searchType}
-        onValueChange={value => setSearchType(value as 'numeric' | 'default')}
-        buttons={[
-          {
-            label: 'Teclado',
-            value: 'null',
-            disabled: true,
-          },
-          {
-            icon: 'numeric',
-            value: 'numeric',
-          },
-          {
-            icon: 'format-title',
-            value: 'default',
-          },
-        ]}
-      />
+      {keyboardVisible && (
+        <SegmentedButtons
+          density="small"
+          style={[styles.marginHorizontal]}
+          value={searchType}
+          onValueChange={value => setSearchType(value as 'numeric' | 'default')}
+          buttons={[
+            {
+              label: 'Teclado',
+              value: 'null',
+              disabled: true,
+            },
+            {
+              icon: 'numeric',
+              value: 'numeric',
+            },
+            {
+              icon: 'format-title',
+              value: 'default',
+            },
+          ]}
+        />
+      )}
     </BottomSheet>
   );
 };

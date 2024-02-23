@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import BottomSheet from './BottomSheet';
+import BottomSheet from '../BottomSheetModal';
 import {BottomSheetFlatList, TouchableOpacity} from '@gorhom/bottom-sheet';
 import {Appbar, Divider, Text} from 'react-native-paper';
 import {styles} from '../../utils/theme';
