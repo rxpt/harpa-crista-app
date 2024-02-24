@@ -6,34 +6,35 @@ import {
   BottomSheetFlatListMethods,
   TouchableOpacity,
 } from '@gorhom/bottom-sheet';
-import {Divider, Searchbar, SegmentedButtons, Text} from 'react-native-paper';
+import {Searchbar, SegmentedButtons} from 'react-native-paper';
 import {useAppContext} from '../../providers/AppProvider';
-import {searchAnthems} from '../../utils';
-import {styles} from '../../utils/theme';
+import Text from '../Text';
 import Icon from '../Icon';
+import {styles} from '../../utils/theme';
+import {flex, gap, padding} from '../../utils/styles';
+import {searchAnthems} from '../../utils';
 
 const AnthemsModal = () => {
   const {
-    state: {searchQuery, searchResults},
+    state: {searchQuery, searchResults, keyboardVisible},
     dispatch,
   } = useAppContext();
   const [searchType, setSearchType] = React.useState<'numeric' | 'default'>(
     'numeric',
   );
   const flatListRef = React.useRef<BottomSheetFlatListMethods>(null);
-  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        setKeyboardVisible(true);
+        dispatch({type: 'SET_KEYBOARD_VISIBLE', payload: true});
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setKeyboardVisible(false);
+        dispatch({type: 'SET_KEYBOARD_VISIBLE', payload: false});
       },
     );
 
@@ -41,16 +42,16 @@ const AnthemsModal = () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
-  }, []);
+  }, [dispatch]);
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     dispatch({
       type: 'SET_SEARCH_RESULTS',
       payload: searchAnthems(searchQuery),
     });
   }, [dispatch, searchQuery]);
 
-  React.useEffect(() => {
+  React.useMemo(() => {
     if (searchResults.length > 0) {
       flatListRef.current?.scrollToOffset({
         animated: true,
@@ -64,7 +65,7 @@ const AnthemsModal = () => {
       <BottomSheetFlatList
         ref={flatListRef}
         data={searchResults}
-        contentContainerStyle={[styles.padding, styles.gap]}
+        contentContainerStyle={[padding(10), gap(5)]}
         keyExtractor={item => item._id.$oid}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={
@@ -79,20 +80,19 @@ const AnthemsModal = () => {
               dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
             }}
             value={searchQuery}
-            style={[styles.searchInput]}
             elevation={2}
           />
         }
         ListEmptyComponent={
           <View
             style={[
-              styles.flexColumn,
-              styles.justifyCenter,
-              styles.alignCenter,
-              styles.paddingVertical,
+              flex.flexColumn,
+              flex.justifyCenter,
+              flex.alignCenter,
+              padding(20),
             ]}>
             <Icon name="magnify-close" size={48} />
-            <Text variant="titleMedium">
+            <Text>
               Hino não encontrado:{' '}
               <Text style={styles.textMuted}>{searchQuery}</Text>
             </Text>
@@ -100,26 +100,16 @@ const AnthemsModal = () => {
         }
         renderItem={({item}) => {
           return (
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
-                  dispatch({type: 'SET_CURRENT_MODAL', payload: null});
-                  dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
-                }}>
-                <View style={[styles.flexRow, styles.alignCenter]}>
-                  {item.number && (
-                    <View style={styles.number}>
-                      <Text style={styles.centered}>{item.number}</Text>
-                    </View>
-                  )}
-                  <Text variant="titleMedium" style={styles.title}>
-                    {item.title}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <Divider />
-            </View>
+            <TouchableOpacity
+              style={[flex.flexRow, flex.alignCenter]}
+              onPress={() => {
+                dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
+                dispatch({type: 'SET_CURRENT_MODAL', payload: null});
+                dispatch({type: 'SET_SEARCH_QUERY', payload: ''});
+              }}>
+              {item.number && <Text style={flex.flex1}>{item.number}</Text>}
+              <Text style={flex.flex12}>{item.title}</Text>
+            </TouchableOpacity>
           );
         }}
       />

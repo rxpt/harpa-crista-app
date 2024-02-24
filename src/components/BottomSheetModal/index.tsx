@@ -3,7 +3,7 @@ import {Dimensions} from 'react-native';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useAppContext} from '../../providers/AppProvider';
 import {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import {theme} from '../../utils/theme';
+import {styles} from '../../utils/styles';
 
 type BottomSheetProps = React.PropsWithChildren<{
   name: string;
@@ -30,7 +30,7 @@ const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
     snapPoints = [height * 0.5, height * 0.8];
   }
 
-  React.useMemo(() => {
+  React.useLayoutEffect(() => {
     if (currentModal === name && !isModalVisible) {
       bottomSheetRef.current?.present();
       setIsModalVisible(true);
@@ -50,12 +50,8 @@ const BottomSheet = ({children, name, snapPoints}: BottomSheetProps) => {
       }}
       snapPoints={snapPoints}
       backdropComponent={BackdropModal}
-      backgroundStyle={{
-        backgroundColor: theme.colors.background,
-      }}
-      handleIndicatorStyle={{
-        backgroundColor: theme.colors.onBackground,
-      }}>
+      backgroundStyle={styles.app.background}
+      handleIndicatorStyle={styles.app.backgroundInverse}>
       {children}
     </BottomSheetModal>
   );

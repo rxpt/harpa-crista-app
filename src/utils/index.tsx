@@ -30,6 +30,8 @@ export interface Indexes {
 }
 
 // Functions
+export const objectId = (object: {$oid: string}) => object.$oid;
+
 export const normalize = (str: string) => {
   return str
     .normalize('NFD')

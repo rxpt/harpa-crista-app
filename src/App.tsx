@@ -1,27 +1,24 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
 import AnthemScreen from './screens/AnthemScreen';
-import {PaperProvider} from 'react-native-paper';
-import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {AppProvider} from './providers/AppProvider';
-import {styles, theme} from './utils/theme';
+import {flex, styles} from './utils/styles';
+import {colors} from './utils/styles/colors';
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <PaperProvider theme={theme as ThemeProp}>
+    <GestureHandlerRootView style={[flex.flex1, styles.app.background]}>
+      <AppProvider>
         <StatusBar
           barStyle="light-content"
-          backgroundColor={theme.colors.onPrimary}
+          backgroundColor={colors.surfaceVariant100}
         />
         <BottomSheetModalProvider>
-          <AppProvider>
-            <AnthemScreen />
-          </AppProvider>
+          <AnthemScreen />
         </BottomSheetModalProvider>
-      </PaperProvider>
+      </AppProvider>
     </GestureHandlerRootView>
   );
 }

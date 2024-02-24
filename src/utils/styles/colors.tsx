@@ -1,39 +1,41 @@
-const colors = {
-  primary: '#3F51B5',
-  primaryDark: '#303F9F',
-  primaryLight: '#C5CAE9',
-  secondary: '#FFC107',
-  secondaryDark: '#FFA000',
-  secondaryLight: '#FFECB3',
-  background: '#F5F5F5',
-  surface: '#FFFFFF',
-  error: '#B00020',
-  onPrimary: '#FFFFFF',
-  onSecondary: '#000000',
-  onBackground: '#000000',
-  onSurface: '#000000',
-  onError: '#FFFFFF',
+import Color from 'color';
+
+interface Colors {
+  [key: string]: string;
+}
+
+const defaultColors = {
+  primary: '#382bf0',
+  secondary: '#5e43f3',
+  tertiary: '#7a5af5',
+  success: '#00d25b',
+  warning: '#ff8c00',
+  danger: '#ff3d71',
+  white: '#ffffff',
   black: '#000000',
-  white: '#FFFFFF',
-  transparent: 'transparent',
-  muted: '#00000066',
-  mutedLight: '#00000033',
-  mutedLighter: '#00000019',
-  mutedLightest: '#0000000D',
-  mutedDark: '#00000099',
-  mutedDarker: '#000000CC',
-  mutedDarkest: '#000000E6',
-  mutedPrimary: '#3F51B566',
-  mutedSecondary: '#FFC10766',
-  mutedError: '#B0002066',
-  mutedOnPrimary: '#FFFFFF66',
-  mutedOnSecondary: '#00000066',
-  mutedOnBackground: '#00000066',
-  mutedOnSurface: '#00000066',
-  mutedOnError: '#FFFFFF66',
-  mutedBlack: '#00000066',
-  mutedWhite: '#FFFFFF66',
-  text: '#000000',
+  surface: '#121212',
+  surfaceVariant: '#1a1625',
+  backdrop: '#000000',
 };
 
-export default colors;
+const variantColors: Colors = Object.entries(defaultColors).reduce(
+  (acc, [key, value]) => {
+    const color = Color(value);
+    const variants: Colors = {};
+
+    for (let i = 0; i < 10; i++) {
+      if (i < 5) {
+        variants[`${key}${i}00`] = color.lighten(i / 10).hex();
+      } else {
+        variants[`${key}${i}00`] = color.darken((i - 5) / 10).hex();
+      }
+    }
+
+    return {...acc, [key]: value, ...variants};
+  },
+  {},
+);
+
+const colors = variantColors as typeof variantColors & typeof defaultColors;
+
+export {colors};

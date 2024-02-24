@@ -2,47 +2,41 @@ import React from 'react';
 import {View} from 'react-native';
 import BottomSheet from '../BottomSheetModal';
 import {BottomSheetFlatList, TouchableOpacity} from '@gorhom/bottom-sheet';
-import {Appbar, Divider, Text} from 'react-native-paper';
-import {styles} from '../../utils/theme';
 import {useAppContext} from '../../providers/AppProvider';
+import Text from '../Text';
 import {filterFavorites} from '../../utils';
+import {padding, gap, flex, styles} from '../../utils/styles';
 
 const FavoritesModal = () => {
-  const {state, dispatch} = useAppContext();
+  const {
+    state: {favorites},
+    dispatch,
+  } = useAppContext();
 
   return (
     <BottomSheet name="favorites">
-      <Appbar.Header mode="center-aligned">
-        <Appbar.Content title="Favoritos" />
-      </Appbar.Header>
-      <Divider />
       <BottomSheetFlatList
-        data={filterFavorites(state.favorites)}
+        data={filterFavorites(favorites)}
+        ListHeaderComponent={
+          <View>
+            <Text style={styles.app.menuTitle}>Favoritos</Text>
+            <Text style={styles.app.menuSubtitle}>Hinos favoritos</Text>
+          </View>
+        }
         ListEmptyComponent={<Text>Adicione seus hinos favoritos</Text>}
-        initialNumToRender={5}
-        contentContainerStyle={[styles.padding, styles.gap]}
+        contentContainerStyle={[padding(20), gap(5)]}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => {
           return (
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
-                  dispatch({type: 'SET_CURRENT_MODAL', payload: null});
-                }}>
-                <View style={[styles.flexRow, styles.alignCenter]}>
-                  {item.number && (
-                    <View style={styles.number}>
-                      <Text style={styles.centered}>{item.number}</Text>
-                    </View>
-                  )}
-                  <Text variant="titleMedium" style={styles.title}>
-                    {item.title}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <Divider />
-            </View>
+            <TouchableOpacity
+              style={[flex.flexRow, flex.alignCenter]}
+              onPress={() => {
+                dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
+                dispatch({type: 'SET_CURRENT_MODAL', payload: null});
+              }}>
+              {item.number && <Text style={flex.flex1}>{item.number}</Text>}
+              <Text style={flex.flex12}>{item.title}</Text>
+            </TouchableOpacity>
           );
         }}
       />

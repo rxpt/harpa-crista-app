@@ -1,31 +1,29 @@
 import React from 'react';
-import {View} from 'react-native';
-import {Divider, Text} from 'react-native-paper';
+import {View, Text} from 'react-native';
 import {useAppContext} from '../../providers/AppProvider';
-import {styles} from '../../utils/theme';
+import {padding, flex, styles} from '../../utils/styles';
 
 const AnthemAuthor = () => {
-  const {state} = useAppContext();
+  const {
+    state: {currentAnthem},
+  } = useAppContext();
 
-  if (!state.currentAnthem) {
+  if (!currentAnthem) {
     return null;
   }
 
   return (
     <View
       style={[
-        styles.padding,
-        styles.flexRow,
-        styles.alignCenter,
-        styles.justifyCenter,
-        styles.wrap,
+        padding(10),
+        flex.flexRow,
+        flex.alignCenter,
+        flex.justifyCenter,
+        flex.flexWrap,
       ]}>
-      <View>
-        <Divider />
-        <Text variant="bodySmall" style={styles.anthemAuthor}>
-          {state.currentAnthem?.author || 'Autor desconhecido'}
-        </Text>
-      </View>
+      <Text style={styles.anthem.author}>
+        {currentAnthem.author || 'Autor desconhecido'}
+      </Text>
     </View>
   );
 };

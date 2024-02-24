@@ -29,6 +29,7 @@ interface State {
   };
   isPlaying: boolean;
   bottomMenu: boolean;
+  keyboardVisible: boolean;
 }
 
 type Action =
@@ -44,7 +45,8 @@ type Action =
   | {type: 'SET_CURRENT_MODAL'; payload: string | null}
   | {type: 'SET_TRACK_PROGRESS'; payload: {position: number; duration: number}}
   | {type: 'SET_IS_PLAYING'; payload: boolean}
-  | {type: 'SET_BOTTOM_MENU'; payload: boolean};
+  | {type: 'SET_BOTTOM_MENU'; payload: boolean}
+  | {type: 'SET_KEYBOARD_VISIBLE'; payload: boolean};
 
 const initialState: State = {
   playerReady: false,
@@ -63,6 +65,7 @@ const initialState: State = {
   },
   isPlaying: false,
   bottomMenu: false,
+  keyboardVisible: false,
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -149,6 +152,11 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         bottomMenu: payload,
+      };
+    case 'SET_KEYBOARD_VISIBLE':
+      return {
+        ...state,
+        keyboardVisible: payload,
       };
 
     default:

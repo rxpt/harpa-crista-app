@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import colors from './colors';
-import Color from 'color';
+import {colors} from './colors';
+import fonts from './fonts';
 
 export const flex = StyleSheet.create({
   flexRow: {
@@ -181,31 +181,42 @@ export const margin = (
 
 export const text = StyleSheet.create({
   title: {
+    ...fonts.robotoBold,
     fontSize: 24,
-    fontWeight: 'bold',
+    color: colors.primary100,
   },
   titleMedium: {
+    ...fonts.robotoBold,
+    color: colors.primary100,
     fontSize: 20,
-    fontWeight: 'bold',
   },
   titleSmall: {
+    ...fonts.robotoBold,
     fontSize: 16,
-    fontWeight: 'bold',
+    color: colors.primary100,
   },
   body: {
+    ...fonts.robotoRegular,
     fontSize: 16,
+    color: colors.primary100,
   },
   bodyMedium: {
     fontSize: 14,
+    ...fonts.robotoRegular,
   },
   bodySmall: {
+    ...fonts.robotoRegular,
     fontSize: 12,
+    color: colors.primary100,
   },
   bodyTiny: {
+    ...fonts.robotoRegular,
     fontSize: 10,
+    color: colors.primary100,
   },
   textMuted: {
-    color: Color(colors.primary).alpha(0.5).string(),
+    ...fonts.robotoRegular,
+    color: colors.primary800,
   },
   centered: {
     textAlign: 'center',
@@ -214,7 +225,7 @@ export const text = StyleSheet.create({
 
 export const shadows = StyleSheet.create({
   shadow: {
-    shadowColor: colors.black,
+    shadowColor: colors.primary100,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -300,17 +311,124 @@ export const borders = StyleSheet.create({
   },
 });
 
-export const styles = StyleSheet.create({
-  searchInput: {
-    margin: 8,
+export const elevation = StyleSheet.create({
+  elevation1: {
+    elevation: 1,
   },
-  number: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
+  elevation2: {
+    elevation: 2,
+  },
+  elevation3: {
+    elevation: 3,
+  },
+  elevation4: {
+    elevation: 4,
+  },
+  elevation5: {
+    elevation: 5,
+  },
+  elevation6: {
+    elevation: 6,
+  },
+  elevation7: {
+    elevation: 7,
+  },
+  elevation8: {
+    elevation: 8,
+  },
+  elevation9: {
+    elevation: 9,
+  },
+  elevation10: {
+    elevation: 10,
   },
 });
+
+export const styles = {
+  app: StyleSheet.create({
+    background: {
+      backgroundColor: colors.primary100,
+    },
+    backgroundInverse: {
+      backgroundColor: colors.primary300,
+    },
+    onBackground: {
+      color: colors.primary300,
+    },
+    onBackgroundInverse: {
+      color: colors.primary100,
+    },
+    header: {
+      backgroundColor: colors.surfaceVariant100,
+      ...padding(15),
+      ...flex.flexRow,
+      ...flex.alignCenter,
+      ...flex.justifyBetween,
+      ...elevation.elevation4,
+    },
+    headerButton: {
+      ...flex.alignCenter,
+      ...flex.justifyCenter,
+      ...borders.rounded,
+    },
+    menu: {
+      ...padding(15),
+      ...flex.flex1,
+    },
+    menuTitle: {
+      ...text.title,
+    },
+    menuSubtitle: {
+      ...text.body,
+    },
+    menuButton: {
+      ...padding(10),
+      ...flex.alignCenter,
+      ...flex.justifyCenter,
+      ...borders.rounded,
+    },
+    menuButtonText: {
+      ...text.titleSmall,
+    },
+    menuButtonIcon: {
+      ...padding(10),
+      color: colors.primary100,
+    },
+  }),
+  anthem: StyleSheet.create({
+    container: {
+      ...padding(15),
+      ...gap(10),
+      ...flex.flex1,
+    },
+    containerHighlight: {
+      backgroundColor: colors.primary900,
+    },
+    containerOdd: {
+      backgroundColor: colors.surface100,
+    },
+    containerEven: {
+      backgroundColor: colors.surfaceVariant100,
+    },
+    number: {
+      letterSpacing: 20,
+      ...fonts.robotoBold,
+    },
+    lyrics: {
+      ...fonts.robotoRegular,
+    },
+    chorus: {
+      ...fonts.robotoItalic,
+      padding: 30,
+    },
+    author: {
+      ...text.bodySmall,
+      ...fonts.robotoThinItalic,
+      color: colors.white,
+      padding: 15,
+    },
+    highlight: {
+      color: colors.primary100,
+    },
+  }),
+};

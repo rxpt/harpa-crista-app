@@ -77,12 +77,6 @@ export const styles = StyleSheet.create({
     color: theme.colors.primary,
     fontFamily: 'Roboto-BlackItalic',
   },
-  anthemAuthor: {
-    fontFamily: 'Roboto-ThinItalic',
-    fontSize: 12,
-    padding: padding,
-    paddingVertical: padding * 2,
-  },
   // auxiliary styles
   bold: {
     fontWeight: '900',
