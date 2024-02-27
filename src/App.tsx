@@ -3,22 +3,36 @@ import {StatusBar} from 'react-native';
 import AnthemScreen from './screens/AnthemScreen';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {AppProvider} from './providers/AppProvider';
-import {flex, styles} from './utils/styles';
-import {colors} from './utils/styles/colors';
+import {flex, styles, theme} from './utils/styles';
+import {enableScreens} from 'react-native-screens';
+import {Provider} from 'react-redux';
+import {store} from './store';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import Navigator from './components/Navigator';
+
+enableScreens();
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={[flex.flex1, styles.app.background]}>
-      <AppProvider>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={colors.surfaceVariant100}
-        />
-        <BottomSheetModalProvider>
-          <AnthemScreen />
-        </BottomSheetModalProvider>
-      </AppProvider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={[flex.flex1, styles.app.background]}>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={theme.background}
+          />
+          <BottomSheetModalProvider>
+            <Navigator
+              screens={{
+                anthem: {
+                  title: 'Harpa Cristã',
+                  component: AnthemScreen,
+                },
+              }}
+            />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </Provider>
   );
 }

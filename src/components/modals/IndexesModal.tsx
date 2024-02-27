@@ -1,61 +1,52 @@
 import React from 'react';
-import BottomSheet from '../BottomSheetModal';
-import {BottomSheetScrollView, TouchableOpacity} from '@gorhom/bottom-sheet';
-import {Appbar, Divider, Text} from 'react-native-paper';
-import {useAppContext} from '../../providers/AppProvider';
-import {styles} from '../../utils/theme';
-import {getAnthem, getIndexes} from '../../utils';
-import {View} from 'react-native';
+import {
+  BottomSheetSectionList,
+  BottomSheetFlatList,
+} from '@gorhom/bottom-sheet';
+import {getIndexes} from '../../utils';
+import ButtonSelectAnthem from '../Button/SelectAnthem';
+import ModalTitle from '../ModalTitle';
+import {margin, styles} from '../../utils/styles';
+import {StyleSheet} from 'react-native';
 
 const IndexesModal = () => {
-  const {dispatch} = useAppContext();
-
   return (
-    <BottomSheet name="indexes">
-      <BottomSheetScrollView>
-        <Appbar.Header mode="center-aligned">
-          <Appbar.Content title="Índice de Assuntos" />
-        </Appbar.Header>
-        <Divider />
-        {getIndexes().map(item => {
-          return (
-            <View key={item._id.$oid}>
-              <Text variant="titleMedium" style={styles.padding}>
-                {item.title}
-              </Text>
-              <Divider />
-              <View
-                style={[
-                  styles.flexRow,
-                  styles.padding,
-                  styles.wrap,
-                  styles.gap,
-                ]}>
-                {item.data.map((number: number, index: number) => {
-                  return (
-                    <View key={index}>
-                      <TouchableOpacity
-                        style={styles.anthemButton}
-                        onPress={() => {
-                          dispatch({
-                            type: 'SET_CURRENT_ANTHEM',
-                            payload: getAnthem(number),
-                          });
-                          dispatch({type: 'SET_CURRENT_MODAL', payload: null});
-                        }}>
-                        <Text variant="bodySmall">{number}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })}
-              </View>
-              <Divider />
-            </View>
-          );
-        })}
-      </BottomSheetScrollView>
-    </BottomSheet>
+    <BottomSheetSectionList
+      contentContainerStyle={styles.app.modalContent}
+      keyExtractor={item => item.toString()}
+      stickyHeaderIndices={[0]}
+      ListHeaderComponent={<ModalTitle title="Índice de assuntos" />}
+      sections={getIndexes()}
+      renderSectionHeader={({section: {title, data}}) => (
+        <React.Fragment>
+          <ModalTitle subtitle={title} goBack={false} />
+          <BottomSheetFlatList
+            data={data}
+            horizontal
+            style={margin(-15, 'horizontal')}
+            contentContainerStyle={margin(10, 'horizontal')}
+            showsHorizontalScrollIndicator
+            keyExtractor={item => item.toString()}
+            renderItem={({item}) => (
+              <ButtonSelectAnthem number={item} style={itemStyles.item} />
+            )}
+          />
+        </React.Fragment>
+      )}
+      stickyHeaderHiddenOnScroll={true}
+      renderItem={() => {
+        return null;
+      }}
+    />
   );
 };
+
+const itemStyles = StyleSheet.create({
+  item: {
+    margin: 5,
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+  },
+});
 
 export default IndexesModal;

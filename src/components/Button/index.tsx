@@ -6,7 +6,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import Icon, {IconPackageType} from '../Icon';
-import {theme} from '../../utils/theme';
+import {theme} from '../../utils/styles';
 
 type Props = {
   onPress?: () => void;
@@ -30,7 +30,7 @@ const Button = ({
   style,
   icon,
   iconSize = 24,
-  iconColor = theme.colors.onBackground,
+  iconColor = theme.text,
   iconStyle,
   iconPackage,
   children,
@@ -58,7 +58,7 @@ const Button = ({
     setPressed(false);
   };
 
-  const onlyIcon = icon && !children;
+  const onlyIcon = !!icon && !children;
 
   const animatedStyle = useAnimatedStyle(() => {
     return {

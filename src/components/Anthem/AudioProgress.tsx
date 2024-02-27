@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-paper';
 import {padStart} from 'lodash';
 import Animated, {
   Easing,
@@ -8,15 +7,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {useAppContext} from '../../providers/AppProvider';
-import {theme} from '../../utils/theme';
-import TrackPlayer from 'react-native-track-player';
+import {theme} from '../../utils/styles';
+import {useIsPlaying, useProgress} from 'react-native-track-player';
+import {setupPlayer} from '../../services';
+import Text from '../Text';
 
-const AnthemAudioProgress = () => {
-  const {
-    state: {isPlaying, trackProgress: progress, playerReady, currentAnthem},
-  } = useAppContext();
-
+const AnthemAudioProgress = ({number}: {number: number}) => {
+  const isPlaying = useIsPlaying().playing;
+  const progress = useProgress();
   const width = useSharedValue(0);
 
   useEffect(() => {
@@ -27,12 +25,8 @@ const AnthemAudioProgress = () => {
   }, [isPlaying, progress, width]);
 
   useEffect(() => {
-    if (!playerReady) {
-      return;
-    }
-
-    TrackPlayer.reset();
-  }, [playerReady, currentAnthem]);
+    setupPlayer();
+  }, [number]);
 
   const renderTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -57,8 +51,8 @@ const AnthemAudioProgress = () => {
           style={[styles.container, styles.progressBar, progressBarStyle]}
         />
         <View style={styles.player}>
-          <Text variant="bodySmall">{renderTime(progress.position)}</Text>
-          <Text variant="bodySmall">{renderTime(progress.duration)}</Text>
+          <Text style={styles.playerText}>{renderTime(progress.position)}</Text>
+          <Text style={styles.playerText}>{renderTime(progress.duration)}</Text>
         </View>
       </View>
     );
@@ -73,15 +67,19 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    backgroundColor: theme.surface,
   },
   player: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 4,
+  },
+  playerText: {
+    color: theme.text,
+    fontSize: 12,
   },
   progressBar: {
     height: '100%',
-    backgroundColor: theme.colors.inversePrimary,
+    backgroundColor: theme.accent,
   },
 });
 

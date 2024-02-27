@@ -1,0 +1,36 @@
+{
+  "darkTheme": {
+    "primary": "#2196F3",
+    "secondary": "#FFC107",
+    "tertiary": "#9C27B0",
+    "info": "#03A9F4",
+    "warning": "#FF9800",
+    "link": "#00BCD4",
+    "divider": "#BDBDBD",
+    "overlay": "rgba(0, 0, 0, 0.5)",
+    "background": "#121212",
+    "surface": "#212121",
+    "text": "#FFFFFF",
+    "accent": "#FF5722",
+    "success": "#4CAF50",
+    "error": "#FF5252",
+    "disabled": "#757575"
+  },
+  "ultraDarkTheme": {
+    "primary": "#1976D2",
+    "secondary": "#FFA000",
+    "tertiary": "#673AB7",
+    "info": "#0288D1",
+    "warning": "#FFC107",
+    "link": "#009688",
+    "divider": "#9E9E9E",
+    "overlay": "rgba(255, 255, 255, 0.5)",
+    "background": "#000000",
+    "surface": "#121212",
+    "text": "#FFFFFF",
+    "accent": "#FF7043",
+    "success": "#689F38",
+    "error": "#D32F2F",
+    "disabled": "#616161"
+  }
+}

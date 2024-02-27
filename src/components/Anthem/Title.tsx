@@ -1,32 +1,22 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import AnthemAudioProgress from './AudioProgress';
-import {useAppContext} from '../../providers/AppProvider';
-import {styles} from '../../utils/theme';
-import {padding, margin, flex} from '../../utils/styles';
+import {styles, padding, margin, flex} from '../../utils/styles';
 
-const AnthemTitle = () => {
-  const {
-    state: {currentAnthem},
-  } = useAppContext();
-
-  if (!currentAnthem) {
-    return null;
-  }
-
+const AnthemTitle = ({title, number}: {title: string; number: number}) => {
   return (
     <View>
-      <View style={[padding(20), margin(30, 'vertical'), flex.flex1]}>
+      <View style={[padding(20), margin(20, 'vertical'), flex.flex1]}>
         <Text
           numberOfLines={1}
           ellipsizeMode="tail"
-          style={[flex.flexWrap, flex.flex1, styles.anthemTitle]}>
-          <Text style={styles.anthemSubtitle}>{currentAnthem?.number}. </Text>
-          {currentAnthem?.title}
+          style={[flex.flexWrap, flex.flex1, styles.anthem.title]}>
+          <Text style={styles.anthem.subtitle}>{number}. </Text>
+          {title}
         </Text>
       </View>
 
-      <AnthemAudioProgress />
+      <AnthemAudioProgress number={number} />
     </View>
   );
 };

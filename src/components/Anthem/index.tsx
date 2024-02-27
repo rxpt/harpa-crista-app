@@ -1,9 +1,9 @@
 import React from 'react';
-import {FlatList, Pressable, View} from 'react-native';
+import {FlatList, Pressable, View, BackHandler} from 'react-native';
+import {useConfigHooks, useAnthemHooks} from '../../store/hooks';
 import AnthemTitle from './Title';
 import AnthemAuthor from './Author';
 import {captureScreen} from 'react-native-view-shot';
-import {useAppContext} from '../../providers/AppProvider';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -16,13 +16,17 @@ import Text from '../Text';
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
 const Anthem = () => {
+  const config = useConfigHooks();
+  const anthems = useAnthemHooks();
+  const currentAnthem = anthems.getCurrent();
+  const {current: fontSize} = config.getFontSize();
+
   const sequenceRef = React.useRef(0);
   const listRef = React.useRef<FlatList>(null);
+
   const [lastTap, setLastTap] = React.useState(0);
   const [highlightedVerse, setHighlightedVerse] = React.useState(0);
-  const {
-    state: {fontSize, currentAnthem},
-  } = useAppContext();
+
   const fontSizeValue = useSharedValue(fontSize);
   const fontSizeStyle = useAnimatedStyle(() => {
     return {
@@ -32,6 +36,20 @@ const Anthem = () => {
   });
 
   React.useEffect(() => {
+    const backAction = () => {
+      setHighlightedVerse(0);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  React.useMemo(() => {
     fontSizeValue.value = fontSize;
   }, [fontSize, fontSizeValue]);
 
@@ -41,6 +59,10 @@ const Anthem = () => {
       setHighlightedVerse(0);
     }
   }, [currentAnthem]);
+
+  if (!currentAnthem) {
+    return null;
+  }
 
   const handleVersePress = (text: string) => {
     captureScreen({
@@ -60,11 +82,7 @@ const Anthem = () => {
   const handleDoubleTap = (data: any) => {
     const now = Date.now();
     if (lastTap && now - lastTap < 300) {
-      if (highlightedVerse === data) {
-        setHighlightedVerse(0);
-      } else {
-        setHighlightedVerse(data);
-      }
+      setHighlightedVerse(highlightedVerse === data ? 0 : data);
     } else {
       setLastTap(now);
     }
@@ -75,7 +93,12 @@ const Anthem = () => {
       <FlatList
         ref={listRef}
         data={currentAnthem.verses}
-        ListHeaderComponent={AnthemTitle}
+        ListHeaderComponent={
+          <AnthemTitle
+            title={currentAnthem.title}
+            number={currentAnthem.number}
+          />
+        }
         keyExtractor={item => item.sequence.toString()}
         renderItem={({
           item,
@@ -123,7 +146,7 @@ const Anthem = () => {
             </Pressable>
           );
         }}
-        ListFooterComponent={<AnthemAuthor />}
+        ListFooterComponent={<AnthemAuthor author={currentAnthem.author} />}
       />
     </GestureHandler>
   );

@@ -1,17 +1,8 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {useAppContext} from '../../providers/AppProvider';
 import {padding, flex, styles} from '../../utils/styles';
 
-const AnthemAuthor = () => {
-  const {
-    state: {currentAnthem},
-  } = useAppContext();
-
-  if (!currentAnthem) {
-    return null;
-  }
-
+const AnthemAuthor = ({author}: {author?: string}) => {
   return (
     <View
       style={[
@@ -21,9 +12,7 @@ const AnthemAuthor = () => {
         flex.justifyCenter,
         flex.flexWrap,
       ]}>
-      <Text style={styles.anthem.author}>
-        {currentAnthem.author || 'Autor desconhecido'}
-      </Text>
+      <Text style={styles.anthem.author}>{author || 'Autor desconhecido'}</Text>
     </View>
   );
 };

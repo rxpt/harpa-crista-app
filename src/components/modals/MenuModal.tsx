@@ -1,18 +1,17 @@
 import React from 'react';
 import {Linking, View, Text} from 'react-native';
-import {useAppContext} from '../../providers/AppProvider';
-import TrackPlayer from 'react-native-track-player';
-import {anthemAudioURL, randomAnthem} from '../../utils';
+import TrackPlayer, {useIsPlaying} from 'react-native-track-player';
 import {BottomSheetScrollView} from '@gorhom/bottom-sheet';
-import BottomSheet from '../BottomSheetModal';
 import Button from '../Button';
 import {padding, styles} from '../../utils/styles';
+import {useAnthemHooks, useNavigationHooks} from '../../store/hooks';
+import ModalTitle from '../ModalTitle';
 
 const MenuModal = () => {
-  const {
-    state: {isPlaying, currentAnthem},
-    dispatch,
-  } = useAppContext();
+  const {clearModals, openModal} = useNavigationHooks();
+  const anthemHooks = useAnthemHooks();
+  const currentAnthem = anthemHooks.getCurrent();
+  const isPlaying = useIsPlaying().playing;
 
   const ButtonModal = React.useCallback(
     ({
@@ -30,7 +29,7 @@ const MenuModal = () => {
         <Button
           onPress={() => {
             onPress && onPress();
-            dispatch({type: 'SET_CURRENT_MODAL', payload: modalName || null});
+            modalName ? openModal(modalName) : clearModals();
           }}
           icon={icon}
           iconStyle={styles.app.menuButtonIcon}>
@@ -38,73 +37,76 @@ const MenuModal = () => {
         </Button>
       );
     },
-    [dispatch],
+    [clearModals, openModal],
   );
 
   const Subtitle = React.useCallback(({children}: {children: string}) => {
     return (
       <View style={padding(10)}>
-        {<Text style={styles.app.menuSubtitle}>{children}</Text>}
+        {<ModalTitle subtitle={children} goBack={false} />}
       </View>
     );
   }, []);
 
   return (
-    <BottomSheet name="mainMenu">
-      <BottomSheetScrollView contentContainerStyle={styles.app.menu}>
-        <ButtonModal text="Favoritos" icon="star" modalName="favorites" />
-        <ButtonModal text="Histórico" icon="history" modalName="history" />
-        <ButtonModal
-          text="Índices de Assuntos"
-          icon="format-list-bulleted-square"
-          modalName="indexes"
-        />
-        <ButtonModal text="Pesquisar" icon="magnify" modalName="anthems" />
-        <ButtonModal
-          onPress={() => {
-            dispatch({type: 'SET_CURRENT_ANTHEM', payload: randomAnthem()});
-          }}
-          text="Hino Aleatório"
-          icon="shuffle-variant"
-        />
+    <BottomSheetScrollView contentContainerStyle={styles.app.menu}>
+      <View style={padding(10)}>
+        <ModalTitle title="Menu" goBack={false} />
+      </View>
+      <ButtonModal text="Favoritos" icon="star" modalName="favorites" />
+      <ButtonModal text="Histórico" icon="history" modalName="history" />
+      <ButtonModal
+        text="Índices de Assuntos"
+        icon="format-list-bulleted-square"
+        modalName="indexes"
+      />
+      <ButtonModal text="Pesquisar" icon="magnify" modalName="anthems" />
+      <ButtonModal
+        onPress={() => {
+          anthemHooks.setRandom();
+        }}
+        text="Hino Aleatório"
+        icon="shuffle-variant"
+      />
 
-        <Subtitle>Reprodução</Subtitle>
-        <ButtonModal
-          onPress={async () => {
-            if (isPlaying) {
-              await TrackPlayer.stop();
-            } else {
-              await TrackPlayer.load({
-                url: anthemAudioURL(currentAnthem.number),
-                title: currentAnthem.title,
-                artist: currentAnthem.author,
-              });
-              await TrackPlayer.play();
-            }
-          }}
-          icon={isPlaying ? 'stop' : 'play'}
-          text={isPlaying ? 'Parar' : 'Reproduzir'}
-        />
+      {currentAnthem && (
+        <React.Fragment>
+          <Subtitle>Reprodução</Subtitle>
+          <ButtonModal
+            onPress={async () => {
+              if (isPlaying) {
+                await TrackPlayer.stop();
+              } else {
+                await TrackPlayer.load({
+                  url: anthemHooks.currentAudioURL() as string,
+                  title: currentAnthem.title,
+                  artist: currentAnthem.author,
+                });
+                await TrackPlayer.play();
+              }
+            }}
+            icon={isPlaying ? 'stop' : 'play'}
+            text={isPlaying ? 'Parar' : 'Reproduzir'}
+          />
+        </React.Fragment>
+      )}
 
-        <Subtitle>Outros</Subtitle>
-        <ButtonModal
-          onPress={() =>
-            Linking.openURL('https://github.com/rxog/harpa-crista')
-          }
-          icon="github"
-          text="Sobre o App"
-        />
-        <ButtonModal
-          onPress={() =>
-            Linking.openURL(
-              `mailto:dev@ronis.com.br?subject=Harpa Cristã: Erro no hino ${currentAnthem.number}`,
-            )
-          }
-          icon="bug"
-          text="Reportar erro"
-        />
-      </BottomSheetScrollView>
-    </BottomSheet>
+      <Subtitle>Outros</Subtitle>
+      <ButtonModal
+        onPress={() => Linking.openURL('https://github.com/rxog/harpa-crista')}
+        icon="github"
+        text="Sobre o App"
+      />
+      <ButtonModal
+        onPress={() =>
+          Linking.openURL(
+            'mailto:dev@ronis.com.br?subject=Harpa Cristã: Encotrei um erro&body=Olá, encontrei um erro no aplicativo Harpa Cristã:',
+          )
+        }
+        icon="bug"
+        text="Reportar erro"
+      />
+    </BottomSheetScrollView>
   );
 };
 

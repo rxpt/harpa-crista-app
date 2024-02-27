@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {GestureDetector, Gesture} from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -7,21 +7,23 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import {firstAndLastAnthemIds, getAnthem} from '../../utils';
-import {useAppContext} from '../../providers/AppProvider';
 import {flex} from '../../utils/styles';
+import {useAnthemHooks, useConfigHooks} from '../../store/hooks';
 
 const GestureHandler = ({children}: React.PropsWithChildren) => {
-  const {
-    state: {currentAnthem, fontSize, minFontSize, maxFontSize},
-    dispatch,
-  } = useAppContext();
-  const currentAnthemId = currentAnthem?.number;
-  const {first, last} = firstAndLastAnthemIds();
-  const isFirst = currentAnthemId === first;
-  const isLast = currentAnthemId === last;
+  const windowWidth = useWindowDimensions().width;
+  const configHooks = useConfigHooks();
+  const anthemHooks = useAnthemHooks();
 
-  const windowWidth = Dimensions.get('window').width;
+  const {
+    current: fontSize,
+    min: MIN_FONT_SIZE,
+    max: MAX_FONT_SIZE,
+  } = configHooks.getFontSize();
+
+  const isFirst = anthemHooks.currentIsFirst();
+  const isLast = anthemHooks.currentIsLast();
+
   const opacity = useSharedValue(1);
   const translationX = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => {
@@ -33,12 +35,9 @@ const GestureHandler = ({children}: React.PropsWithChildren) => {
 
   const setFontSize = React.useCallback(
     (newFontSize: number) => {
-      dispatch({
-        type: 'SET_FONT_SIZE',
-        payload: newFontSize,
-      });
+      configHooks.setFontSize(newFontSize);
     },
-    [dispatch],
+    [configHooks],
   );
 
   const isFirstOrLast = (pX: number) => {
@@ -67,15 +66,9 @@ const GestureHandler = ({children}: React.PropsWithChildren) => {
       const right = event.translationX <= -Math.min(windowWidth / 2, 100);
 
       if (left && !isFirst) {
-        dispatch({
-          type: 'SET_CURRENT_ANTHEM',
-          payload: getAnthem(currentAnthemId - 1),
-        });
+        anthemHooks.previous();
       } else if (right && !isLast) {
-        dispatch({
-          type: 'SET_CURRENT_ANTHEM',
-          payload: getAnthem(currentAnthemId + 1),
-        });
+        anthemHooks.next();
       }
 
       translationX.value = left ? -windowWidth : right ? windowWidth : 0;
@@ -89,8 +82,8 @@ const GestureHandler = ({children}: React.PropsWithChildren) => {
       const isZoomIn = event.scale > 1;
 
       const newFontSize = Math.max(
-        minFontSize,
-        Math.min(maxFontSize, isZoomIn ? fontSize + 1 : fontSize - 1),
+        MIN_FONT_SIZE,
+        Math.min(MAX_FONT_SIZE, isZoomIn ? fontSize + 1 : fontSize - 1),
       );
 
       setFontSize(newFontSize);

@@ -1,6 +1,9 @@
 import {StyleSheet} from 'react-native';
-import {colors} from './colors';
+import colors from './colors.json';
 import fonts from './fonts';
+import Color from 'color';
+
+export const theme = colors.darkTheme;
 
 export const flex = StyleSheet.create({
   flexRow: {
@@ -183,22 +186,22 @@ export const text = StyleSheet.create({
   title: {
     ...fonts.robotoBold,
     fontSize: 24,
-    color: colors.primary100,
+    color: theme.text,
   },
   titleMedium: {
     ...fonts.robotoBold,
-    color: colors.primary100,
+    color: theme.text,
     fontSize: 20,
   },
   titleSmall: {
     ...fonts.robotoBold,
     fontSize: 16,
-    color: colors.primary100,
+    color: theme.text,
   },
   body: {
     ...fonts.robotoRegular,
     fontSize: 16,
-    color: colors.primary100,
+    color: theme.text,
   },
   bodyMedium: {
     fontSize: 14,
@@ -207,32 +210,19 @@ export const text = StyleSheet.create({
   bodySmall: {
     ...fonts.robotoRegular,
     fontSize: 12,
-    color: colors.primary100,
+    color: theme.text,
   },
   bodyTiny: {
     ...fonts.robotoRegular,
     fontSize: 10,
-    color: colors.primary100,
+    color: theme.text,
   },
   textMuted: {
     ...fonts.robotoRegular,
-    color: colors.primary800,
+    color: theme.text,
   },
   centered: {
     textAlign: 'center',
-  },
-});
-
-export const shadows = StyleSheet.create({
-  shadow: {
-    shadowColor: colors.primary100,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
   },
 });
 
@@ -347,88 +337,139 @@ export const elevation = StyleSheet.create({
 export const styles = {
   app: StyleSheet.create({
     background: {
-      backgroundColor: colors.primary100,
-    },
-    backgroundInverse: {
-      backgroundColor: colors.primary300,
+      backgroundColor: theme.background,
     },
     onBackground: {
-      color: colors.primary300,
+      color: theme.text,
     },
-    onBackgroundInverse: {
-      color: colors.primary100,
+    surface: {
+      backgroundColor: theme.surface,
     },
-    header: {
-      backgroundColor: colors.surfaceVariant100,
-      ...padding(15),
-      ...flex.flexRow,
-      ...flex.alignCenter,
-      ...flex.justifyBetween,
-      ...elevation.elevation4,
+    onSurface: {
+      color: theme.text,
     },
-    headerButton: {
-      ...flex.alignCenter,
-      ...flex.justifyCenter,
-      ...borders.rounded,
+    shadow: {
+      shadowColor: theme.divider,
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+      elevation: 4,
     },
-    menu: {
-      ...padding(15),
-      ...flex.flex1,
+    text: {
+      color: theme.text,
     },
-    menuTitle: {
+    textMuted: {
+      color: Color(theme.text).alpha(0.5).string(),
+    },
+    modalBackground: {
+      backgroundColor: theme.surface,
+    },
+    modalIndicator: {
+      backgroundColor: theme.text,
+    },
+    modalContent: {
+      padding: 15,
+      paddingTop: 0,
+    },
+    modalTitle: {
       ...text.title,
     },
-    menuSubtitle: {
+    modalSubtitle: {
       ...text.body,
+      color: Color(theme.text).alpha(0.5).string(),
+    },
+    modalBackButton: {
+      padding: 10,
+      color: theme.text,
+    },
+    searchBar: {
+      backgroundColor: theme.background,
+      paddingHorizontal: 10,
+      marginBottom: 10,
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: 8,
+    },
+    searchInput: {
+      padding: 10,
+      color: theme.text,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: theme.surface,
+      elevation: 4,
+      padding: 15,
+    },
+    headerButton: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 8,
+    },
+    menu: {
+      flex: 1,
+      padding: 15,
     },
     menuButton: {
-      ...padding(10),
-      ...flex.alignCenter,
-      ...flex.justifyCenter,
-      ...borders.rounded,
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 8,
     },
     menuButtonText: {
       ...text.titleSmall,
     },
     menuButtonIcon: {
-      ...padding(10),
-      color: colors.primary100,
+      padding: 10,
+      color: theme.text,
     },
   }),
   anthem: StyleSheet.create({
     container: {
-      ...padding(15),
-      ...gap(10),
-      ...flex.flex1,
+      flex: 1,
+      gap: 10,
+      padding: 15,
     },
     containerHighlight: {
-      backgroundColor: colors.primary900,
+      backgroundColor: theme.accent,
     },
     containerOdd: {
-      backgroundColor: colors.surface100,
+      backgroundColor: theme.background,
     },
     containerEven: {
-      backgroundColor: colors.surfaceVariant100,
+      backgroundColor: theme.surface,
     },
     number: {
       letterSpacing: 20,
       ...fonts.robotoBold,
+      color: Color(theme.text).alpha(0.5).string(),
+    },
+    title: {
+      ...text.title,
+    },
+    subtitle: {
+      ...text.titleSmall,
+      color: Color(theme.text).alpha(0.5).string(),
     },
     lyrics: {
       ...fonts.robotoRegular,
     },
     chorus: {
-      ...fonts.robotoItalic,
+      ...fonts.robotoBoldItalic,
       padding: 30,
     },
     author: {
       ...text.bodySmall,
       ...fonts.robotoThinItalic,
-      color: colors.white,
       padding: 15,
     },
     highlight: {
-      color: colors.primary100,
+      ...fonts.robotoBlackItalic,
     },
   }),
 };

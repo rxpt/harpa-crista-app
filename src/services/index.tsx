@@ -16,13 +16,12 @@ export const setupPlayer = async () => {
         appKilledPlaybackBehavior:
           AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
       },
-      capabilities: [
+      capabilities: [Capability.Play, Capability.Pause, Capability.SeekTo],
+      compactCapabilities: [
         Capability.Play,
         Capability.Pause,
-        Capability.Stop,
         Capability.SeekTo,
       ],
-      compactCapabilities: [Capability.Play, Capability.Pause, Capability.Stop],
       progressUpdateEventInterval: 2,
     });
 
@@ -35,7 +34,6 @@ export const setupPlayer = async () => {
 export const PlaybackService = async () => {
   TrackPlayer.addEventListener(Event.RemotePlay, () => TrackPlayer.play());
   TrackPlayer.addEventListener(Event.RemotePause, () => TrackPlayer.pause());
-  TrackPlayer.addEventListener(Event.RemoteStop, () => TrackPlayer.stop());
   TrackPlayer.addEventListener(Event.RemoteSeek, e => {
     if (e.position) {
       TrackPlayer.seekTo(e.position);

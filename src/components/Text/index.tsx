@@ -9,12 +9,8 @@ interface Props extends TextProps {
 
 class Text extends React.Component<Props> {
   render() {
-    const {style, children, ...otherProps} = this.props;
-    return (
-      <RNText {...otherProps} style={[styles.app.onBackground, style]}>
-        {children}
-      </RNText>
-    );
+    const {style, ...otherProps} = this.props;
+    return <RNText {...otherProps} style={[styles.app.onBackground, style]} />;
   }
 }
 

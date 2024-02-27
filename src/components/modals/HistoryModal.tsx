@@ -1,44 +1,25 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import BottomSheet from '../BottomSheetModal';
-import {BottomSheetFlatList, TouchableOpacity} from '@gorhom/bottom-sheet';
-import {useAppContext} from '../../providers/AppProvider';
-import {flex, padding, gap, styles} from '../../utils/styles';
-import {filterHistory} from '../../utils';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import {useAnthemHooks} from '../../store/hooks';
+import {styles} from '../../utils/styles';
+import ButtonSelectAnthem from '../Button/SelectAnthem';
+import ModalTitle from '../ModalTitle';
 
 const HistoryModal = () => {
-  const {
-    state: {history},
-    dispatch,
-  } = useAppContext();
+  const anthemHooks = useAnthemHooks();
 
   return (
-    <BottomSheet name="history">
-      <BottomSheetFlatList
-        ListHeaderComponent={
-          <View>
-            <Text style={styles.app.menuTitle}>Histórico</Text>
-            <Text style={styles.app.menuSubtitle}>Últimos hinos acessados</Text>
-          </View>
-        }
-        data={filterHistory(history)}
-        contentContainerStyle={[padding(10), gap(5)]}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({item}) => {
-          return (
-            <TouchableOpacity
-              style={[flex.flexRow, flex.alignCenter]}
-              onPress={() => {
-                dispatch({type: 'SET_CURRENT_ANTHEM', payload: item});
-                dispatch({type: 'SET_CURRENT_MODAL', payload: null});
-              }}>
-              {item.number && <Text style={flex.flex1}>{item.number}</Text>}
-              <Text style={flex.flex12}>{item.title}</Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </BottomSheet>
+    <BottomSheetFlatList
+      ListHeaderComponent={
+        <ModalTitle title="Histórico" subtitle="Hinos recentes" />
+      }
+      data={anthemHooks.getHistory()}
+      contentContainerStyle={styles.app.modalContent}
+      keyExtractor={(_, index) => index.toString()}
+      renderItem={({item}) => {
+        return <ButtonSelectAnthem number={item.number} title={item.title} />;
+      }}
+    />
   );
 };
 
