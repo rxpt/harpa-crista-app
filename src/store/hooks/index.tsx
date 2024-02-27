@@ -27,23 +27,44 @@ export const useNavigationHooks = () => {
         }),
       );
     },
-    canGoBack: () => {
-      return navigation.screens.history.length > 1;
-    },
     navigateBack: () => {
       dispatch(navigationActions.navigateBack());
     },
-    openModal: (modal: string) => {
-      dispatch(navigationActions.openModal(modal));
+    navigateReset: () => {
+      dispatch(navigationActions.navigateReset());
+    },
+    isScreenOpen: (screen: string) => {
+      return navigation.screens.current?.name === screen;
+    },
+    currentScreen: () => {
+      return navigation.screens.current;
+    },
+    canGoBack: () => {
+      return navigation.screens.history.length > 1;
+    },
+    setScreenParams: (params: any) => {
+      dispatch(navigationActions.setScreenParams(params));
+    },
+    openModal: (modal: string, params?: any) => {
+      dispatch(navigationActions.modalOpen({name: modal, params}));
     },
     closeModal: () => {
-      dispatch(navigationActions.closeModal());
+      dispatch(navigationActions.modalBack());
     },
     clearModals: () => {
-      dispatch(navigationActions.clearModals());
+      dispatch(navigationActions.modalReset());
     },
     isModalOpen: (modal: string) => {
-      return navigation.modals.current === modal;
+      return navigation.modals.current?.name === modal;
+    },
+    currentModal: () => {
+      return navigation.modals.current;
+    },
+    canGoModalBack: () => {
+      return navigation.modals.history.length > 1;
+    },
+    setModalParams: (params: any) => {
+      dispatch(navigationActions.setModalParams(params));
     },
     isKeyboardVisible: () => {
       return navigation.isKeyboardVisible;
@@ -59,6 +80,9 @@ export const useNavigationHooks = () => {
     },
     setSearchTyping: (typing: boolean) => {
       dispatch(navigationActions.setSearchTyping(typing));
+    },
+    searchReset: () => {
+      dispatch(navigationActions.searchReset());
     },
   };
 };
@@ -163,14 +187,14 @@ export const useAnthemHooks = () => {
         currentNumber,
         3,
         '0',
-      )}.mp3)}`;
+      )}.mp3`;
     },
     next: () => {
       const next = anthem.current ? anthem.current.number + 1 : first?.number;
 
       dispatch(
         anthemActions.setCurrentAnthem(
-          anthem.anthems.find(a => a.number === next) || last,
+          anthem.anthems.find(a => a.number === next) || first,
         ),
       );
     },
@@ -181,7 +205,7 @@ export const useAnthemHooks = () => {
 
       dispatch(
         anthemActions.setCurrentAnthem(
-          anthem.anthems.find(a => a.number === previous) || first,
+          anthem.anthems.find(a => a.number === previous) || last,
         ),
       );
     },

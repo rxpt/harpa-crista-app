@@ -1,20 +1,16 @@
 import React from 'react';
-import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {useAnthemHooks} from '../../store/hooks';
-import {styles} from '../../utils/styles';
 import ButtonSelectAnthem from '../Button/SelectAnthem';
-import ModalTitle from '../ModalTitle';
+import ModalFlatList from '../ModalFlatList';
 
 const HistoryModal = () => {
   const anthemHooks = useAnthemHooks();
 
   return (
-    <BottomSheetFlatList
-      ListHeaderComponent={
-        <ModalTitle title="Histórico" subtitle="Hinos recentes" />
-      }
+    <ModalFlatList
       data={anthemHooks.getHistory()}
-      contentContainerStyle={styles.app.modalContent}
+      title="Histórico"
+      subtitle="Seus hinos recentes"
       keyExtractor={(_, index) => index.toString()}
       renderItem={({item}) => {
         return <ButtonSelectAnthem number={item.number} title={item.title} />;

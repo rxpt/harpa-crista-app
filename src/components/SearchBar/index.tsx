@@ -29,7 +29,6 @@ const SearchBar = () => {
             setSearchTyping(true);
           }
         }}
-        clearButtonMode="while-editing"
         value={search.query}
         editable={!search.disabled}
       />

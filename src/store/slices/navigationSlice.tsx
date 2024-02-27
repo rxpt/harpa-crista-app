@@ -17,8 +17,8 @@ interface NavigationState {
     current: NavigateToAction | null;
   };
   modals: {
-    history: string[];
-    current: string | null;
+    history: NavigateToAction[];
+    current: NavigateToAction | null;
   };
   search: {
     query: string;
@@ -62,25 +62,30 @@ const navigationSlice = createSlice({
       state.screens.current = lodash.last(state.screens.history) || null;
     },
     navigateReset: state => {
-      state.screens.history = [];
-      state.screens.current = null;
+      state.screens = initialState.screens;
     },
     setScreenParams: (state, action) => {
       if (state.screens.current) {
         state.screens.current.params = action.payload;
       }
     },
-    openModal: (state, action) => {
-      state.modals.history.push(action.payload);
-      state.modals.current = action.payload;
+    modalOpen: (state, action) => {
+      const {name, params} = action.payload;
+      const current = {name, params};
+      state.modals.history.push(current);
+      state.modals.current = current;
     },
-    closeModal: state => {
+    modalBack: state => {
       state.modals.history.pop();
       state.modals.current = lodash.last(state.modals.history) || null;
     },
-    clearModals: state => {
-      state.modals.history = [];
-      state.modals.current = null;
+    modalReset: state => {
+      state.modals = initialState.modals;
+    },
+    setModalParams: (state, action) => {
+      if (state.modals.current) {
+        state.modals.current.params = action.payload;
+      }
     },
     setSearch: (state, action) => {
       state.search.query = action.payload.query;
@@ -99,6 +104,9 @@ const navigationSlice = createSlice({
     },
     setSearchDisabled: (state, action) => {
       state.search.disabled = action.payload;
+    },
+    searchReset: state => {
+      state.search = initialState.search;
     },
     setKeyboardVisible: (state, action) => {
       state.isKeyboardVisible = action.payload;

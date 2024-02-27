@@ -11,7 +11,7 @@ import {flex} from '../../utils/styles';
 import {useAnthemHooks, useConfigHooks} from '../../store/hooks';
 
 const GestureHandler = ({children}: React.PropsWithChildren) => {
-  const windowWidth = useWindowDimensions().width;
+  const {width: windowWidth} = useWindowDimensions();
   const configHooks = useConfigHooks();
   const anthemHooks = useAnthemHooks();
 
@@ -21,14 +21,15 @@ const GestureHandler = ({children}: React.PropsWithChildren) => {
     max: MAX_FONT_SIZE,
   } = configHooks.getFontSize();
 
-  const isFirst = anthemHooks.currentIsFirst();
-  const isLast = anthemHooks.currentIsLast();
-
   const opacity = useSharedValue(1);
   const translationX = useSharedValue(0);
+  const translationY = useSharedValue(0);
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{translateX: translationX.value}],
+      transform: [
+        {translateX: translationX.value},
+        {translateY: translationY.value},
+      ],
       opacity: opacity.value,
     };
   });
@@ -40,37 +41,23 @@ const GestureHandler = ({children}: React.PropsWithChildren) => {
     [configHooks],
   );
 
-  const isFirstOrLast = (pX: number) => {
-    return (isFirst && pX > 0) || (isLast && pX < 0);
-  };
-
   const pan = Gesture.Pan()
     .activeOffsetX([-20, 20])
     .runOnJS(true)
     .onUpdate(event => {
-      if (isFirstOrLast(event.translationX)) {
-        return;
-      }
-
       translationX.value = withTiming(event.translationX);
       opacity.value = withTiming(
         1 - Math.abs(event.translationX / windowWidth),
       );
     })
     .onEnd(event => {
-      if (isFirstOrLast(event.translationX)) {
-        return;
-      }
-
       const left = event.translationX >= Math.min(windowWidth / 2, 100);
       const right = event.translationX <= -Math.min(windowWidth / 2, 100);
 
-      if (left && !isFirst) {
-        anthemHooks.previous();
-      } else if (right && !isLast) {
-        anthemHooks.next();
-      }
+      left && anthemHooks.previous();
+      right && anthemHooks.next();
 
+      translationY.value = 0;
       translationX.value = left ? -windowWidth : right ? windowWidth : 0;
       translationX.value = withSpring(0);
       opacity.value = withSpring(1);

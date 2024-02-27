@@ -1,7 +1,10 @@
 import React from 'react';
 import {useWindowDimensions} from 'react-native';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
-import {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetModal,
+  BottomSheetBackdrop,
+  useBottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import MenuModal from './MenuModal';
 import AnthemsModal from './AnthemsModal';
 import IndexesModal from './IndexesModal';
@@ -10,13 +13,8 @@ import FavoritesModal from './FavoritesModal';
 import {useNavigationHooks} from '../../store/hooks';
 import {styles} from '../../utils/styles';
 
-interface Modal {
-  snapPoints?: number[];
-  component: () => JSX.Element;
-}
-
 interface Modals {
-  [key: string]: Modal;
+  [key: string]: () => JSX.Element;
 }
 
 const BackdropModal = (props: any) => {
@@ -26,59 +24,60 @@ const BackdropModal = (props: any) => {
 };
 
 const Modals = () => {
-  const {height} = useWindowDimensions();
-  const {getState, clearModals} = useNavigationHooks();
-  const currentModal = getState().modals.current;
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
-  const defaultSnapPoints = React.useMemo(
+  const {currentModal, clearModals} = useNavigationHooks();
+  const currentModalName = currentModal()?.name;
+  const {dismissAll} = useBottomSheetModal();
+  const {height} = useWindowDimensions();
+  const snapPoints = React.useMemo(
     () => [height * 0.5, height * 0.75, height],
     [height],
   );
-  const modals: Modals = React.useMemo(() => {
-    return {
-      menu: {
-        component: MenuModal,
-      },
-      indexes: {
-        component: IndexesModal,
-      },
-      history: {
-        component: HistoryModal,
-      },
-      favorites: {
-        component: FavoritesModal,
-      },
-      anthems: {
-        snapPoints: [height],
-        component: AnthemsModal,
-      },
-    };
-  }, [height]);
+
+  const ModalComponent = React.useMemo(() => {
+    switch (currentModalName) {
+      case 'menu':
+        return MenuModal;
+      case 'anthems':
+        return AnthemsModal;
+      case 'indexes':
+        return IndexesModal;
+      case 'history':
+        return HistoryModal;
+      case 'favorites':
+        return FavoritesModal;
+      default:
+        return () => null;
+    }
+  }, [currentModalName]);
+
+  const openModal = React.useCallback(() => {
+    bottomSheetRef.current?.present();
+  }, []);
+
+  const closeModal = React.useCallback(() => {
+    dismissAll();
+    clearModals();
+  }, [clearModals, dismissAll]);
 
   React.useEffect(() => {
-    if (currentModal) {
-      bottomSheetRef.current?.present();
-    } else {
-      bottomSheetRef.current?.forceClose();
-    }
-  }, [currentModal]);
+    currentModalName ? openModal() : closeModal();
+  }, [currentModalName, openModal, closeModal]);
 
-  const ModalComponent = currentModal && modals[currentModal].component;
+  if (!currentModalName) {
+    return null;
+  }
 
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
+      index={0}
       onDismiss={clearModals}
-      snapPoints={React.useMemo(() => {
-        if (currentModal && modals[currentModal].snapPoints) {
-          return modals[currentModal].snapPoints;
-        }
-        return defaultSnapPoints;
-      }, [currentModal, defaultSnapPoints, modals])}
+      snapPoints={snapPoints}
       backdropComponent={BackdropModal}
       backgroundStyle={styles.app.modalBackground}
       handleIndicatorStyle={styles.app.modalIndicator}>
-      {ModalComponent}
+      <ModalComponent />
     </BottomSheetModal>
   );
 };

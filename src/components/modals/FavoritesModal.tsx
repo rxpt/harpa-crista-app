@@ -1,25 +1,21 @@
 import React from 'react';
-import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {useAnthemHooks} from '../../store/hooks';
 import Text from '../Text';
-import {styles} from '../../utils/styles';
 import ButtonSelectAnthem from '../Button/SelectAnthem';
-import ModalTitle from '../ModalTitle';
+import ModalFlatList from '../ModalFlatList';
 
 const FavoritesModal = () => {
   const anthemHooks = useAnthemHooks();
 
   return (
-    <BottomSheetFlatList
-      ListHeaderComponent={
-        <ModalTitle title="Favoritos" subtitle="Hinos marcados" />
-      }
+    <ModalFlatList
+      title="Hinos Favoritos"
+      subtitle="Seus hinos favoritos"
       data={anthemHooks.getFavorites()}
       ListEmptyComponent={<Text>Adicione seus hinos favoritos</Text>}
-      contentContainerStyle={styles.app.modalContent}
       keyExtractor={(_, index) => index.toString()}
-      renderItem={({item}) => {
-        return <ButtonSelectAnthem number={item.number} title={item.title} />;
+      renderItem={({item: {number, title}}) => {
+        return <ButtonSelectAnthem number={number} title={title} />;
       }}
     />
   );

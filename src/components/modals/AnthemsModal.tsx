@@ -1,37 +1,22 @@
 import React from 'react';
 import {View} from 'react-native';
-import {
-  BottomSheetFlatList,
-  BottomSheetFlatListMethods,
-} from '@gorhom/bottom-sheet';
+import ModalFlatList from '../ModalFlatList';
 import {useAnthemHooks, useNavigationHooks} from '../../store/hooks';
+import ButtonSelectAnthem from '../Button/SelectAnthem';
+import SearchBar from '../SearchBar';
 import Text from '../Text';
 import Icon from '../Icon';
 import {flex, padding, styles} from '../../utils/styles';
-import ButtonSelectAnthem from '../Button/SelectAnthem';
-import SearchBar from '../SearchBar';
 
 const AnthemsModal = () => {
   const {getState: navigateState} = useNavigationHooks();
-  const anthems = useAnthemHooks();
-  const searchedAnthems = anthems.getSearchResults();
+  const anthemHooks = useAnthemHooks();
   const {search} = navigateState();
-  const flatListRef = React.useRef<BottomSheetFlatListMethods>(null);
-
-  React.useMemo(() => {
-    if (searchedAnthems.length > 0) {
-      flatListRef.current?.scrollToOffset({
-        animated: true,
-        offset: 0,
-      });
-    }
-  }, [searchedAnthems]);
+  const searchedAnthems = anthemHooks.getSearchResults();
 
   return (
-    <BottomSheetFlatList
-      ref={flatListRef}
+    <ModalFlatList
       data={searchedAnthems}
-      contentContainerStyle={styles.app.modalContent}
       keyExtractor={item => item._id.$oid}
       stickyHeaderIndices={[0]}
       ListHeaderComponent={SearchBar}
@@ -54,8 +39,8 @@ const AnthemsModal = () => {
           </Text>
         </View>
       }
-      renderItem={({item}) => {
-        return <ButtonSelectAnthem number={item.number} title={item.title} />;
+      renderItem={({item: {number, title}}) => {
+        return <ButtonSelectAnthem number={number} title={title} />;
       }}
     />
   );

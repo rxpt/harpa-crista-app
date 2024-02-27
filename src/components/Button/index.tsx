@@ -40,7 +40,7 @@ const Button = ({
   const opacity = useSharedValue(1);
 
   React.useEffect(() => {
-    opacity.value = withTiming(pressed || disabled ? 0.25 : 1);
+    opacity.value = withTiming(pressed || disabled ? 0.3 : 1);
   }, [disabled, opacity, pressed]);
 
   const handlePressIn = () => {

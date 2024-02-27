@@ -29,7 +29,7 @@ const HeaderBar = () => {
 
   const IS_FAVORITE = anthemHooks.currentIsFavorite();
   const IS_FAVORITE_ICON = IS_FAVORITE ? 'heart' : 'heart-outline';
-  const IS_FAVORITE_COLOR = IS_FAVORITE ? 'red' : ICON_COLOR;
+  const IS_FAVORITE_COLOR = IS_FAVORITE ? theme.error : ICON_COLOR;
 
   return (
     <View style={styles.app.header}>

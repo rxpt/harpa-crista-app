@@ -11,9 +11,14 @@ interface ModalTitleProps {
   goBack?: boolean;
 }
 
-const ModalTitle = ({title, subtitle, goBack = true}: ModalTitleProps) => {
+const ModalTitle = ({title, subtitle, goBack = false}: ModalTitleProps) => {
   const {closeModal, getState} = useNavigationHooks();
-  const canGoBack = getState().modals.history.length > 1 && goBack;
+  const [canGoBack, setCanGoBack] = React.useState(false);
+
+  React.useEffect(() => {
+    setCanGoBack(getState().modals.history.length > 1 && goBack);
+  }, [getState, goBack]);
+
   if (!title && !subtitle) {
     return null;
   }

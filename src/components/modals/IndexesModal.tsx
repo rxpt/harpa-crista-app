@@ -1,52 +1,44 @@
 import React from 'react';
-import {
-  BottomSheetSectionList,
-  BottomSheetFlatList,
-} from '@gorhom/bottom-sheet';
 import {getIndexes} from '../../utils';
 import ButtonSelectAnthem from '../Button/SelectAnthem';
-import ModalTitle from '../ModalTitle';
-import {margin, styles} from '../../utils/styles';
-import {StyleSheet} from 'react-native';
+import ButtonSelectIndex from '../Button/SelectIndex';
+import {styles} from '../../utils/styles';
+import ModalFlatList from '../ModalFlatList';
+import {useNavigationHooks, useAnthemHooks} from '../../store/hooks';
 
 const IndexesModal = () => {
+  const currentParams = useNavigationHooks().currentModal()?.params;
+  const findAllAnthems = useAnthemHooks().findAll;
+
+  if (currentParams) {
+    const {title, data} = currentParams as {
+      title: string;
+      data: number[];
+    };
+    return (
+      <ModalFlatList
+        title={title}
+        contentContainerStyle={styles.app.modalContent}
+        keyExtractor={item => item._id.$oid}
+        data={findAllAnthems(data)}
+        renderItem={({item}) => (
+          <ButtonSelectAnthem number={item.number} title={item.title} />
+        )}
+      />
+    );
+  }
+
   return (
-    <BottomSheetSectionList
+    <ModalFlatList
+      title="Índices de Assuntos"
       contentContainerStyle={styles.app.modalContent}
-      keyExtractor={item => item.toString()}
-      stickyHeaderIndices={[0]}
-      ListHeaderComponent={<ModalTitle title="Índice de assuntos" />}
-      sections={getIndexes()}
-      renderSectionHeader={({section: {title, data}}) => (
-        <React.Fragment>
-          <ModalTitle subtitle={title} goBack={false} />
-          <BottomSheetFlatList
-            data={data}
-            horizontal
-            style={margin(-15, 'horizontal')}
-            contentContainerStyle={margin(10, 'horizontal')}
-            showsHorizontalScrollIndicator
-            keyExtractor={item => item.toString()}
-            renderItem={({item}) => (
-              <ButtonSelectAnthem number={item} style={itemStyles.item} />
-            )}
-          />
-        </React.Fragment>
+      keyExtractor={item => item._id.$oid}
+      data={getIndexes()}
+      renderItem={({item: {title, data}}) => (
+        <ButtonSelectIndex title={title} data={data} />
       )}
-      stickyHeaderHiddenOnScroll={true}
-      renderItem={() => {
-        return null;
-      }}
     />
   );
 };
-
-const itemStyles = StyleSheet.create({
-  item: {
-    margin: 5,
-    padding: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-  },
-});
 
 export default IndexesModal;

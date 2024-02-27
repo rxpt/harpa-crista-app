@@ -11,6 +11,7 @@ import {theme} from '../../utils/styles';
 import {useIsPlaying, useProgress} from 'react-native-track-player';
 import {setupPlayer} from '../../services';
 import Text from '../Text';
+import Color from 'color';
 
 const AnthemAudioProgress = ({number}: {number: number}) => {
   const isPlaying = useIsPlaying().playing;
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: theme.surface,
+    backgroundColor: Color(theme.accent).alpha(0.3).string(),
   },
   player: {
     flexDirection: 'row',
