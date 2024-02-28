@@ -6,7 +6,6 @@ import {
   useBottomSheetModal,
 } from '@gorhom/bottom-sheet';
 import MenuModal from './MenuModal';
-import AnthemsModal from './AnthemsModal';
 import IndexesModal from './IndexesModal';
 import HistoryModal from './HistoryModal';
 import FavoritesModal from './FavoritesModal';
@@ -38,8 +37,6 @@ const Modals = () => {
     switch (currentModalName) {
       case 'menu':
         return MenuModal;
-      case 'anthems':
-        return AnthemsModal;
       case 'indexes':
         return IndexesModal;
       case 'history':

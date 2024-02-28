@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Pressable, View, BackHandler} from 'react-native';
+import {FlatList, Pressable, View} from 'react-native';
 import {useConfigHooks, useAnthemHooks} from '../../store/hooks';
 import AnthemTitle from './Title';
 import AnthemAuthor from './Author';
@@ -34,20 +34,6 @@ const Anthem = () => {
       lineHeight: fontSizeValue.value * 1.25,
     };
   });
-
-  React.useEffect(() => {
-    const backAction = () => {
-      setHighlightedVerse(0);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
   React.useMemo(() => {
     fontSizeValue.value = fontSize;

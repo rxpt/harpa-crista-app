@@ -19,7 +19,7 @@ export const useNavigationHooks = () => {
     getState: () => {
       return navigation;
     },
-    navigateTo: (screen: string, params: any) => {
+    navigateTo: (screen: string, params?: any) => {
       dispatch(
         navigationActions.navigateTo({
           name: screen,

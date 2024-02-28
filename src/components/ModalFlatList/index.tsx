@@ -1,4 +1,5 @@
 import React, {useRef} from 'react';
+import {FlatList, FlatListProps} from 'react-native';
 import {
   BottomSheetFlatList,
   BottomSheetFlatListMethods,
@@ -7,13 +8,13 @@ import ModalTitle from '../ModalTitle';
 import {styles} from '../../utils/styles';
 
 interface ModalFlatListProps<T>
-  extends React.ComponentProps<typeof BottomSheetFlatList<T>> {
+  extends FlatListProps<T>,
+    Omit<typeof BottomSheetFlatList<T>, 'ListHeaderComponent'> {
   data: T[];
   title?: string;
   subtitle?: string;
-  onEndReached?: (info: {distanceFromEnd: number}) => void;
-  onStartReached?: (info: {distanceFromStart: number}) => void;
   ListHeaderComponent?: React.ComponentType<any>;
+  type?: 'native' | 'bottom-sheet';
 }
 
 const ModalFlatList = <T,>({
@@ -22,12 +23,17 @@ const ModalFlatList = <T,>({
   subtitle,
   contentContainerStyle,
   ListHeaderComponent,
+  type = 'bottom-sheet',
   ...props
 }: ModalFlatListProps<T>) => {
-  const modalRef = useRef<BottomSheetFlatListMethods>(null);
+  const modalRef = useRef<
+    (FlatListProps<T> & BottomSheetFlatListMethods) | null
+  >(null);
+
+  const Component = type === 'bottom-sheet' ? BottomSheetFlatList : FlatList;
 
   return (
-    <BottomSheetFlatList
+    <Component
       ref={modalRef}
       data={data}
       ListHeaderComponent={

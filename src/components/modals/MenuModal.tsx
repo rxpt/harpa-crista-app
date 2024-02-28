@@ -42,16 +42,14 @@ const MenuModal = () => {
 
   const Subtitle = React.useCallback(({children}: {children: string}) => {
     return (
-      <View style={padding(10)}>
-        {<ModalTitle subtitle={children} goBack={false} />}
-      </View>
+      <View style={padding(10)}>{<ModalTitle subtitle={children} />}</View>
     );
   }, []);
 
   return (
     <BottomSheetScrollView contentContainerStyle={styles.app.menu}>
-      <View style={padding(10)}>
-        <ModalTitle title="Menu" goBack={false} />
+      <View style={padding(10, 'horizontal')}>
+        <ModalTitle title="Menu" />
       </View>
       <ButtonModal text="Favoritos" icon="star" modalName="favorites" />
       <ButtonModal text="Histórico" icon="history" modalName="history" />
@@ -60,7 +58,6 @@ const MenuModal = () => {
         icon="format-list-bulleted-square"
         modalName="indexes"
       />
-      <ButtonModal text="Pesquisar" icon="magnify" modalName="anthems" />
       <ButtonModal
         onPress={() => {
           anthemHooks.setRandom();

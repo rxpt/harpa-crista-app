@@ -1,4 +1,5 @@
 import React from 'react';
+import {BackHandler} from 'react-native';
 import {useNavigationHooks} from '../../store/hooks';
 
 interface Screen {
@@ -13,6 +14,24 @@ const Navigator = ({
   initial?: string;
   screens: {[key: string]: Screen};
 }) => {
+  const {navigateBack, canGoBack: canGoBackFn} = useNavigationHooks();
+  const canGoBack = canGoBackFn();
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (canGoBack) {
+          navigateBack();
+          return true;
+        }
+        return false;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, [canGoBack, navigateBack]);
+
   const {getState} = useNavigationHooks();
   const currentScreen = getState().screens.current;
 

@@ -386,17 +386,19 @@ export const styles = {
       color: theme.text,
     },
     searchBar: {
-      backgroundColor: theme.background,
-      paddingHorizontal: 10,
-      marginBottom: 10,
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       borderRadius: 8,
+      backgroundColor: theme.surface,
+      paddingHorizontal: 10,
+      marginVertical: 10,
+      elevation: 4,
     },
     searchInput: {
       padding: 10,
       color: theme.text,
+      flex: 1,
     },
     header: {
       flexDirection: 'row',

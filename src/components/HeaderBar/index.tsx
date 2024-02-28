@@ -11,7 +11,7 @@ import {
 const HeaderBar = () => {
   const anthemHooks = useAnthemHooks();
   const configHooks = useConfigHooks();
-  const {openModal, isModalOpen} = useNavigationHooks();
+  const {openModal, isModalOpen, navigateTo} = useNavigationHooks();
 
   const currentAnthem = anthemHooks.getCurrent();
   const {
@@ -68,11 +68,10 @@ const HeaderBar = () => {
           style={styles.app.headerButton}
         />
         <Button
-          onPress={() => openModal('anthems')}
+          onPress={() => navigateTo('search')}
           icon="magnify"
           iconColor={ICON_COLOR}
           iconSize={ICON_SIZE}
-          disabled={isModalOpen('anthems')}
           style={styles.app.headerButton}
         />
       </View>

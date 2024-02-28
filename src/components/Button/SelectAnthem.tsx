@@ -17,8 +17,8 @@ const ButtonSelectAnthem = ({
   number,
   style,
 }: ButtonSelectAnthemProps) => {
+  const {searchReset, currentScreen, navigateTo} = useNavigationHooks();
   const {dismissAll} = useBottomSheetModal();
-  const {searchReset} = useNavigationHooks();
   const {setCurrent} = useAnthemHooks();
   return (
     <TouchableOpacity
@@ -26,6 +26,9 @@ const ButtonSelectAnthem = ({
       onPress={() => {
         setCurrent(number);
         searchReset();
+        if (currentScreen()?.name !== 'anthem') {
+          return navigateTo('anthem');
+        }
         dismissAll();
       }}>
       <Text style={flex.flex1}>{number}</Text>

@@ -3,26 +3,32 @@ import {View} from 'react-native';
 import ModalFlatList from '../ModalFlatList';
 import {useAnthemHooks, useNavigationHooks} from '../../store/hooks';
 import ButtonSelectAnthem from '../Button/SelectAnthem';
-import SearchBar from '../SearchBar';
+import SearchBar from './Bar';
 import Text from '../Text';
 import Icon from '../Icon';
 import {flex, padding, styles} from '../../utils/styles';
 
-const AnthemsModal = () => {
-  const {getState: navigateState} = useNavigationHooks();
-  const anthemHooks = useAnthemHooks();
-  const {search} = navigateState();
-  const searchedAnthems = anthemHooks.getSearchResults();
+const SearchResults = () => {
+  const search = useNavigationHooks().getSearchParams();
+  const searchedAnthems = useAnthemHooks().getSearchResults();
+
+  const ButtonMemo = React.memo(ButtonSelectAnthem);
 
   return (
     <ModalFlatList
+      type="native"
+      windowSize={50}
       data={searchedAnthems}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      removeClippedSubviews={true}
       keyExtractor={item => item._id.$oid}
       stickyHeaderIndices={[0]}
       ListHeaderComponent={SearchBar}
       ListEmptyComponent={
         <View
           style={[
+            flex.flex1,
             flex.flexColumn,
             flex.justifyCenter,
             flex.alignCenter,
@@ -40,10 +46,10 @@ const AnthemsModal = () => {
         </View>
       }
       renderItem={({item: {number, title}}) => {
-        return <ButtonSelectAnthem number={number} title={title} />;
+        return <ButtonMemo number={number} title={title} />;
       }}
     />
   );
 };
 
-export default AnthemsModal;
+export default SearchResults;
