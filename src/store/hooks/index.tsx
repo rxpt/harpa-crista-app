@@ -40,7 +40,7 @@ export const useNavigationHooks = () => {
       return navigation.screens.current;
     },
     canGoBack: () => {
-      return navigation.screens.history.length > 1;
+      return navigation.screens.history.length > 2;
     },
     setScreenParams: (params: any) => {
       dispatch(navigationActions.setScreenParams(params));
